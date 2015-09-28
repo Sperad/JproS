@@ -1,16 +1,10 @@
 <?php
 namespace base;
-use base\core\Object;
+use base\web\HTTP;
 use base\web\Route;
 use base\web\Template;
 
-class Controller extends Object{
-
-
-	function __construct()
-	{
-
-	}
+class Controller extends HTTP{
 
 	public function loadView($viewPath = null)
 	{
@@ -24,6 +18,11 @@ class Controller extends Object{
 			}
 		}
 		new Template($viewPath);
+	}
+
+	public function getBD()
+	{
+		
 	}
 
 }

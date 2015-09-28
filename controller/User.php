@@ -3,7 +3,6 @@
 namespace controller;
 use base\db\Mysql;
 use base\Controller;
-use base\web\HTTP;
 
 class User extends Controller{
 
@@ -19,8 +18,7 @@ class User extends Controller{
 		if($this->method == 'GET')
 		{
 			//view层
-			// var_dump($db);
-			// $this->loadView();
+			$this->loadView();
 			// $this->loadView('user/login');
 		}
 	}
