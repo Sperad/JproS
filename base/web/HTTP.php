@@ -1,13 +1,14 @@
 <?php
-namespace base\core;
-class _HTTP extends Object{
+namespace base\web;
+
+class HTTP extends WebObject{
 
 	private $url;
 	private $method;	
 
 	public function __construct()
 	{
-		$this->url = new _URL();
+		$this->url = new URL();
 		$this->method = $_SERVER['REQUEST_METHOD'];
 	}
 

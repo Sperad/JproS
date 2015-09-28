@@ -1,7 +1,7 @@
 <?php
-namespace base\core;
+namespace base\web;
 
-class _URL extends Object{
+class URL extends WebObject{
 	
 	/* User_signUp/a=123&b=124 */
 	private $query_String;

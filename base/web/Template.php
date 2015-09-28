@@ -1,7 +1,7 @@
 <?php
-namespace base\core;
+namespace base\web;
 
-class Template extends Object{
+class Template extends WebObject{
 	private $fromPath ;
 	private $toPath ;
 	private $cacheTplFile;

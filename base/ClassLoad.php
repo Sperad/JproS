@@ -1,5 +1,6 @@
 <?php
 namespace base;
+use base\web\Route;
 
 class ClassLoad 
 {
@@ -66,10 +67,19 @@ class ClassLoad
 	{
 		//自动注册类
 		$className = basename($classNamespace);
+		// var_dump(self::$_classMap);
 		// echo $className.'<br />';
 		if(array_key_exists($className, self::$_classMap))
 			require self::$_classMap[$className];
 	}
+
+	public function run()
+	{
+		//路由分发
+		// $r = Route::getInstance();
+		$r = Route::getInstance()->run();
+	}
+
 }
 
 function autoDir($path, &$_dirMap)
@@ -81,13 +91,13 @@ function autoDir($path, &$_dirMap)
 		{
 			if($file == '.' || $file == '..') 
 				continue;
-			$configPath = $path.'/'.$file;
-			if(is_dir($configPath)){
-				autoDir($configPath,$_dirMap);
+			$file_Path = $path.'/'.$file;
+			if(is_dir($file_Path)){
+				autoDir($file_Path,$_dirMap);
 			}
-			if(is_file($configPath))
+			if(is_file($file_Path))
 			{
-				$_dirMap[] = $configPath;
+				$_dirMap[] = $file_Path;
 			}
 		}
 	}else{

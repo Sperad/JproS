@@ -1,9 +1,7 @@
 <?php
-namespace base\core;
+namespace base\web;
 
-use base\core\_HTTP;
-
-class Route extends Object{
+class Route extends WebObject{
 
 	public static $routeInstance = null;
 	public static $http ;
@@ -19,9 +17,14 @@ class Route extends Object{
 
 	function __construct()
 	{
-		self::$http = new _HTTP();
+		self::$http = new HTTP();
 	}
 
+	/**
+	 * [run description]
+	 * @return [type] [description]
+	 * CONTROLLER_DIR.'\\'.
+	 */
 	public function run()
 	{
 		$_CclassName = CONTROLLER_DIR.'\\'.ucwords(self::$http->url->CV[0]);

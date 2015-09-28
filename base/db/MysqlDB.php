@@ -1,8 +1,7 @@
 <?php
- namespace base\core;
- use base\core\_DB;
+namespace base\db;
 
- class MysqlDB extends Object{
+class MysqlDB extends DBObject{
 
  	private $db = null;
  	private $sql = null;
@@ -15,7 +14,7 @@
 
  	function __construct()
  	{
- 		$_dbObj = _DB::getInstance();
+ 		$_dbObj = DB::getInstance();
  		$this->db  = $_dbObj->getConn();
  	}
 

@@ -1,7 +1,7 @@
 <?php
-namespace base\core;
+namespace base\db;
 
-class _DB {
+class DB {
 
 	private $conn = null;
 	private static $_dbInstance = null;

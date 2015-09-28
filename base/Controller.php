@@ -1,5 +1,8 @@
 <?php
-namespace base\core;
+namespace base;
+use base\core\Object;
+use base\web\Route;
+use base\web\Template;
 
 class Controller extends Object{
 
