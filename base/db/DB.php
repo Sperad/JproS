@@ -1,39 +1,24 @@
 <?php
 namespace base\db;
 
-class DB {
+class DB extends DBObject{
 
-	private $conn = null;
-	private static $_dbInstance = null;
+	protected $link = null;
+	public static $_dbInstance = array();
 	
-	private function __construct()
+	public function __construct($DB_NAME)
 	{
-		$this->conn = mysqli_connect ( DB_HOST , DB_USER ,DB_PSD, DB_NAME );
-		if(!$this->conn)
+		$this->link = mysqli_connect ( DB_HOST , DB_USER ,DB_PSD, $DB_NAME);
+		if(!$this->link)
 		{
 			die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 		}
-		$this->conn->query("SET NAMES 'utf8'");
+		$this->link->query("SET NAMES 'utf8'");
 	}
 
-	 //单例方法  
-    public static function getInstance()  
-    {  
-        if(!isset(self::$_dbInstance) )  
-        {  
-            self::$_dbInstance = new self;  
-        }  
-        return self::$_dbInstance; 
-    }      
-      
     //阻止用户复制对象实例  
     public function __clone()  
     {  
         trigger_error('Clone is not allow' ,E_USER_ERROR);  
     } 
-
-    public function getConn(){
-    	return $this->conn;
-    }
-
 }

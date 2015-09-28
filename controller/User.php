@@ -1,14 +1,27 @@
 <?php
+
 namespace controller;
-use base\core\MysqlDB;
-use base\core\Controller;
+use base\db\Mysql;
+use base\Controller;
+use base\web\HTTP;
 
 class User extends Controller{
 
 	public function signUp()
 	{
-		//view层
-		// $this->loadView('user/login');
-		$this->loadView();
+		if($this->method == 'POST')
+		{
+			//相数据库写数据
+			$sql = "insert into dntk_chat_user (nickname,password,sex,birthday) value ('111','111',1,'1443152918' );";
+			// $db = Mysql::getInstance()->insertOne($sql);
+			// $db2 = Mysql::getInstance('jpros')->insertOne($sql);
+		}
+		if($this->method == 'GET')
+		{
+			//view层
+			// var_dump($db);
+			// $this->loadView();
+			// $this->loadView('user/login');
+		}
 	}
 }

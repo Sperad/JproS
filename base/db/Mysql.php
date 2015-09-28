@@ -1,10 +1,8 @@
 <?php
 namespace base\db;
 
-class MysqlDB extends DBObject{
+class Mysql extends DB{
 
- 	private $db = null;
- 	private $sql = null;
  	private $errorTpye = array(
  					'insert' => "添加失败",
  					'update' => "更新失败",
@@ -12,11 +10,21 @@ class MysqlDB extends DBObject{
  					'select' => "查询失败"
 			 		);
 
- 	function __construct()
+ 	public function __construct($DB_NAME)
  	{
- 		$_dbObj = DB::getInstance();
- 		$this->db  = $_dbObj->getConn();
+ 		parent::__construct($DB_NAME);
  	}
+
+ 	 //单例方法 + 工厂模式 
+    public static function getInstance($DB_NAME = null)  
+    {  
+        if(!isset(static::$_dbInstance[$DB_NAME]) )  
+        {  
+            $DB_NAME = !is_null($DB_NAME) ? $DB_NAME : DB_NAME;
+            static::$_dbInstance[$DB_NAME] = new self($DB_NAME);  
+        }  
+        return static::$_dbInstance[$DB_NAME]; 
+    }      
 
  	/**
  	 * [insertOne 插入一条数据]
@@ -25,9 +33,9 @@ class MysqlDB extends DBObject{
  	 */
  	public function insertOne($sql)
  	{
- 		if($this->db->query($sql) == true)
+ 		if($this->link->query($sql) == true)
  		{
- 			return $this->db->insert_id;
+ 			return $this->link->insert_id;
  		}
  		die($this->errorTpye['insert'].' : '.$sql);
  	}
@@ -39,26 +47,26 @@ class MysqlDB extends DBObject{
  	 */
  	public function updateOne($sql)
  	{
- 		if($this->db->query($sql) == true)
+ 		if($this->link->query($sql) == true)
  		{
- 			return $this->db->affected_rows == 1;
+ 			return $this->link->affected_rows == 1;
  		}
  		die($this->errorTpye['update'].' : '.$sql);
  	}
 
  	public function deleteOne()
  	{
- 		if($this->db->query($sql) == true)
+ 		if($this->link->query($sql) == true)
  		{
- 			return $this->db->affected_rows == 1;
+ 			return $this->link->affected_rows == 1;
  		}
  		die($this->errorTpye['delete'].' : '.$sql);
  	}
 
  	public function select()
  	{
- 		$result = $this->db->query($sql);
- 		if($this->db->num_rows)
+ 		$result = $this->link->query($sql);
+ 		if($this->link->num_rows)
  		{
  			return $result->fetch_array();
  		}

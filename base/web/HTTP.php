@@ -16,4 +16,9 @@ class HTTP extends WebObject{
 		return $this->url;
 	}
 
+	public function getMethod()
+	{
+		return $this->method;
+	}
+
 }
