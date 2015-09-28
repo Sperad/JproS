@@ -15,8 +15,12 @@ class User extends Controller{
 			$sql = " insert into dntk_chat_user (nickname,password,sex,birthday) value ".
 						"(:a,:b,:c,:birthday );";
 			$sqlParams = array('111','111','1','1443152918');
-			$db = Mysql::getInstance()->insertOne($sql,$sqlParams);
-			// $db2 = Mysql::getInstance('jpros')->insertOne($sql);
+			$sqlParams2 = array('nickname'=>'我等我期待','password'=>'111','sex'=>1,'birthday'=>'1443152918');
+			/*
+				$my = new Mysql();
+				$r = $my->insert('dntk_chat_user',$sqlParams2);
+				echo $my->_sql;
+			*/
 			
 			//接口Json API
 			// $a =  Json::J2Arr($this->body);

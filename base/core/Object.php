@@ -26,4 +26,10 @@ class Object {
             die('Setting unknown property: ' . get_class($this) . '::' . $name);
         }
     }
+
+    //阻止用户复制对象实例  
+    public function __clone()  
+    {  
+        trigger_error('Clone is not allow' ,E_USER_ERROR);  
+    } 
 }

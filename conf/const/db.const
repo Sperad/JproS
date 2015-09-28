@@ -1,7 +1,10 @@
 <?php
 return [
+		'DB_TPYE' =>  "mysql",
 		'DB_HOST' =>  "127.0.0.1",
+		'DB_PORT' =>  3306,
 		'DB_USER' =>  "root",
 		'DB_PSD'  =>  "root",
-		'DB_NAME' =>  "tests",
+		'DB_NAME' =>  "jpros",
+		'P_CONNECT' =>  true,/*长链接*/
 	];
