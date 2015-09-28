@@ -14,3 +14,6 @@ use base\ClassLoad;
 $loader = ClassLoad::ClassAllLoad($initParams);
 
 $loader->run();
+
+// use base\web\Crul;
+// Crul::send2();

@@ -31,8 +31,9 @@ class Mysql extends DB{
  	 * @param  [type] $sql [description]
  	 * @return [type]      [插入的一条数据的id]
  	 */
- 	public function insertOne($sql)
+ 	public function insertOne($sql,$bindParams = null)
  	{
+        $_link = &$this->link;
  		if($this->link->query($sql) == true)
  		{
  			return $this->link->insert_id;

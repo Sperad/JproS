@@ -21,9 +21,9 @@ class Route extends WebObject{
 	}
 
 	/**
-	 * [run description]
-	 * @return [type] [description]
-	 * CONTROLLER_DIR.'\\'.
+	 * [run 应用App 运行入口]
+	 * new 控制层 的类对象，并执行相应的方法
+	 * CV[0] 控制器类名(controller)， CV[1] 方法名(View)
 	 */
 	public function run()
 	{
