@@ -4,7 +4,7 @@ use base\web\Route;
 
 class ClassLoad 
 {
-	private static $_classMap = array();
+	public static $_classMap = array();
 	public static function ClassAllLoad($initParams = null)
 	{
 		if(is_null($initParams))
@@ -53,24 +53,22 @@ class ClassLoad
 	{
 		autoDir($path,$fileList);
 		foreach ($fileList as &$f) {
-			$classPath =  preg_replace('/'.addslashes( rtrim(APP_DIR,'/') ).'/','',$f);
-			$classPath =  preg_replace('/\//','\\', $classPath);
+			$classPath = preg_replace('/'.addslashes( rtrim(APP_DIR,'/') ).'/','',$f);
+			$classPath = preg_replace('/\//','\\', $classPath);
 			$className = basename($classPath,PHP_EXT);
-			self::$_classMap[$className] = $f;
+			$namespace = substr($classPath,0,-strlen(PHP_EXT));
+			self::$_classMap[$namespace] = $className;
 		}
 		return true;
 	}
-
 
 	// $namespace =  self::$_classMap[$className].$className; use 不能在局部定义
 	public static function autoRegister($classNamespace)
 	{
 		//自动注册类
 		$className = basename($classNamespace);
-		// var_dump(self::$_classMap);
-		// echo $className.'<br />';
-		if(array_key_exists($className, self::$_classMap))
-			require self::$_classMap[$className];
+		if(in_array($className, self::$_classMap))
+			require APP_DIR.$classNamespace.PHP_EXT;
 	}
 
 	public function run()
