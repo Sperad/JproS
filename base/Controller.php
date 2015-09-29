@@ -1,10 +1,17 @@
 <?php
 namespace base;
 use base\web\HTTP;
-use base\web\Route;
+use base\web\Session;
 use base\web\Template;
 
 class Controller extends HTTP{
+
+	public static $Session;
+
+	public function __construct()
+	{
+		static::$Session = Session::getInstance();
+	}
 
 	public function loadView($viewPath = null)
 	{

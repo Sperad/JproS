@@ -6,6 +6,7 @@ class Route extends WebObject{
 
 	public static $routeInstance = null;
 	public static $http ;
+	public static $sess ;
 
 	public static function getInstance()
 	{
@@ -18,7 +19,8 @@ class Route extends WebObject{
 
 	function __construct()
 	{
-		self::$http = new HTTP();
+		self::$http = new Http();
+		self::$sess = Session::getInstance();
 	}
 
 	/**
