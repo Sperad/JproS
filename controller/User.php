@@ -1,8 +1,8 @@
 <?php
 namespace controller;
 
-use base\db\Mysql;
 use base\Controller;
+use base\db\Mysql;
 use base\helper\Json;
 
 class User extends Controller{
@@ -28,9 +28,26 @@ class User extends Controller{
 		}
 		if($this->method == 'GET')
 		{
-			//view层
-			$this->loadView();
-			// $this->loadView('user/login');
+			$this->loadView(); //或者 $this->loadView('user/login');
+		}
+	}
+
+	public function login()
+	{
+		$obj = self::$Session; 
+		$obj->setMap('use','asda1');
+		// echo $obj->getMap('use');
+		$obj->close();
+		echo $obj->getMap('use');
+		// var_dump($_SESSION);
+	}
+
+	public function Group()
+	{
+		//添加组名
+		if($this->method == 'POST')
+		{
+
 		}
 	}
 }

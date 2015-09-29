@@ -36,6 +36,4 @@
 	</tr> 
 </table>
 </form>
-
-</body>
-</html>
+<script type="text/javascript" src="../static/js/plug/laydate.js"></script>

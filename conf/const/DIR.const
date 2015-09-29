@@ -5,4 +5,5 @@ return [
 			'TPL_DIR' => 'tpl/',
 			'CONTROLLER_DIR' => 'controller',/*不能controller/  有后面的/(与new 一个类有关系)   */
 			'STATIC_DIR' => 'static',
+			'WWW_DIR' => 'www',
 		];
