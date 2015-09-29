@@ -26,13 +26,22 @@ class Template extends WebObject{
 
 		$this->tplFile = file_get_contents($this->fromPath) or die('模板 源文件 不存在');
 		//正则 找到 文件 路径
-		preg_match_all($pattern, $this->tplFile, $fileList);
+		preg_match_all($pattern, $this->tplFile, $pathList);
 		//去掉 前@后# 符号
-		for ($i=count($fileList = $fileList[0]); $i-->0;)
+		$pathList =$pathList[0];
+		for ($i=0; $i<count($pathList); $i++)
 		{ 
-			$filePath = substr($fileList[$i],1,strlen($fileList[$i])-2);
-			$replacement = "<?php include '".APP_DIR.STATIC_DIR.'/'.$filePath."'; ?>";
-			$this->tplFile = preg_replace($pattern, $replacement, $this->tplFile);
+			$path = substr($pathList[$i],1,strlen($pathList[$i])-2);
+
+			$staticDir = WWW_DIR==='' ? STATIC_DIR : '../'.STATIC_DIR;
+			if(stripos($pathList[$i],'js') == 1){
+				$replacement = '<script type="text/javascript" src="'.$staticDir.'/'.$path.'"" ></script>';			
+			}elseif(stripos($pathList[$i],'css') == 1){
+				$replacement = '<link rel="stylesheet" type="text/css" href="'.$staticDir.'/'.$path.'">';
+			}else{
+				$replacement = "<?php include '".APP_DIR.STATIC_DIR.'/'.$path."'; ?>";
+			}
+			$this->tplFile = str_replace($pathList[$i], $replacement, $this->tplFile);
 		}
 	}
 
