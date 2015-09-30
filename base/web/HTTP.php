@@ -6,18 +6,25 @@ class HTTP extends WebObject{
 	private $url;
 	private $method;
 	private $body;
+	private $isAjax = false;
 
 	public function __construct()
 	{
 		$this->url    = new URL();
 		$this->body   = file_get_contents('php://input');
 		$this->method = $_SERVER['REQUEST_METHOD'];
+		if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && 
+				strtolower($_SERVER["HTTP_X_REQUESTED_WITH"])=="xmlhttprequest")
+			$this->isAjax = true;
 	}
 
 	public function getUrl(){
 		return $this->url;
 	}
 
+	public function getIsAjax(){
+		return $this->isAjax;
+	}
 	public function getBody(){
 		return $this->body;
 	}

@@ -4,6 +4,11 @@ namespace base\db;
 class Mysql extends DB{
 
     private static $mysql;
+    public $errorTpye = array(
+                    'insert' => "添加失败",
+                    'update' => "更新失败",
+                    'delete' => "删除失败",
+                    'select' => "查询失败");
  	//单例方法
     public static function getInstance()  
     {  
@@ -40,5 +45,10 @@ class Mysql extends DB{
  	{
  		
  	}
+
+    public function count($sql)
+    {
+        return $this->doSql($sql)[0];
+    }
 
  }

@@ -1,7 +1,7 @@
 <?php
 namespace base\db;
 use PDO;
-
+use Exception;
 /**
 * 只是负责连接数据库
 **/
@@ -16,12 +16,6 @@ class DB extends DBObject {
     protected $_trans = 0; //事务指令数
 
 	protected static $link = null;
-
-	public $errorTpye = array(
- 					'insert' => "添加失败",
- 					'update' => "更新失败",
- 					'delete' => "删除失败",
- 					'select' => "查询失败");
 
 	public function __construct()
 	{
@@ -110,8 +104,9 @@ class DB extends DBObject {
      * @param string $sql sql指令 
      * @return mixed 
 	 */
-	private function _Query()
+	private function _Query($sql =null)
 	{
+        $this->_sql = is_null($sql) ? $this->_sql : $sql;
         $pdostmt = static::$link->prepare($this->_sql); //prepare或者query 返回一个PDOStatement
         $pdostmt->execute();
         return  $pdostmt->fetchAll(PDO::FETCH_ASSOC);
@@ -122,8 +117,9 @@ class DB extends DBObject {
     * @param string $sql sql指令 
     * @return integer 
     */
-    private function _Exec()
+    private function _Exec($sql = null)
     {
+        $this->_sql = is_null($sql) ? $this->_sql : $sql;
         return static::$link->exec($this->_sql);
     }
 
@@ -379,5 +375,10 @@ class DB extends DBObject {
     public function get_Sql()
     { 
         return $this->_sql;
+    }
+
+    public function lastInsertId()
+    {
+        return static::$link->lastInsertId();
     }
 }

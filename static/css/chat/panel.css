@@ -41,34 +41,3 @@
 	display: block;
 	cursor: pointer
 }
-/*用户个人中心的控制面板*/
-#chat_self{
-	position: absolute;
-	top:20;
-	right: 100px;
-	width: 200px;
-	border: 1px solid red;
-}
-.self_container{
-	position: relative;
-	margin:8px 4px;
-}
-.self_search>div{
-	position:  absolute;
-	display: none;
-}
-
-.self_friend{
-	margin-top: 8px;
-	border: 1px solid green;
-}
-
-.friend_group{
-	border:  1px solid #00dcb4;
-	cursor: pointer;
-	margin-top: 8px;
-}
-.friend_group ul{
-	margin-left: 16px;
-	/*display:  none;*/
-}
