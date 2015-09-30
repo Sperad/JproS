@@ -43,10 +43,10 @@ class Template extends WebObject{
 			}else{
 				$replacement = "<?php include '".APP_DIR.STATIC_DIR.'/'.$path."'; ?>";
 			}
-			//解析变量标签
-			$this->parseVal();
 			$this->tplFile = str_replace($pathList[$i], $replacement, $this->tplFile);
 		}
+		//解析变量标签
+		$this->parseVal();
 	}
 
     /**
@@ -54,28 +54,30 @@ class Template extends WebObject{
 	* @param $str  模板内容  
 	* @return ture  
 	*/  
-	private function parseVal($str)
+	private function parseVal()
 	{
+		$str = $this->tplFile;
+	    //变量
 		//if elseif 判断
-		$str = preg_replace("/#if\s+(.+?)@/", 	"<?php if(\\1) {    	?>", $str);  
+		$str = preg_replace("/#if\s+(.+?)@/", 	    "<?php if(\\1) {    	?>", $str);  
 		$str = preg_replace("/#else@/", 			"<?php } else {     	?>", $str);  
 		$str = preg_replace("/#elseif\s+(.+?)@/", 	"<?php } elseif (\\1) { ?>", $str);  
 		$str = preg_replace("/#if\/@/", 			"<?php } 				?>", $str);  
 	    //for 循环 
-	    $str = preg_replace("/#for\s+(.+?)@/",    "<?php for(\\1) { 		?>", $str);  
-	    $str = preg_replace("/#for\/@/",			"<?php } 				?>", $str);  
+	    $str = preg_replace("/#for\s+(.+?)@/",    	"<?php for(\\1) { 		?>", $str);  
+	    $str = preg_replace("/#for\/@/",			"<?php}?>", $str);  
+	    //foreach 循环 
+	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)@/", 			"<?php if(is_array(\\$\\1)) foreach(\\$\\1 AS \\$\\2) 	   { ?>", $str );
+	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)\s+(\S+)@/", 	"<?php if(is_array(\\$\\1)) foreach(\\$\\1 AS \\$\\2  =>\\$\\3){?>", $str );  
+	    $str = preg_replace("/#foreach\/@/", 						"<?php } ?>", $str);  
 	    //++ --  
 	    $str = preg_replace("/#\+\+(.+?)@/",		"<?php ++\\1; 			?>", $str);  
 	    $str = preg_replace("/#\-\-(.+?)@/",		"<?php ++\\1; 			?>", $str);  
 	    $str = preg_replace("/#(.+?)\+\+@/",		"<?php \\1++; 			?>", $str);  
 	    $str = preg_replace("/#(.+?)\-\-@/",		"<?php \\1--; 			?>", $str);
-
-	    $str = preg_replace("/#loop\s+(\S+)\s+(\S+)@/", 		"<?php \$n=1; if(is_array(\\1)) foreach(\\1 AS \\2) 		{?>", $str );
-	    $str = preg_replace("/#loop\s+(\S+)\s+(\S+)\s+(\S+)@/", "<?php \$n=1; if(is_array(\\1)) foreach(\\1 AS \\2 => \\3)  {?>", $str );  
-	    $str = preg_replace("/#loop@/", 						"<?php \$n++; } unset(\$n); ?>", $str);  
-	    //变量
-	    $str = preg_replace("/#\\$[a-zA-Z0-9_]*@/", 				"<?php echo \\1;			?>", $str );//输出值
-	    return $str; 
+	    $str = preg_replace("/#([a-zA-Z0-9_\x7f-\xff]*)@/",	"<?php echo \$\\1;	?>", $str);//输出值--支持中文变量
+	    $this->tplFile = $str;
+	    var_dump($str);
 	}
 
 	private function createCacheTplFile()
@@ -103,7 +105,8 @@ class Template extends WebObject{
 			include $this->toPath;
 		}else{
 		   //eval 是在你当前程序代码处嵌入PHP代码，所以你需要将当前程序代码结束掉才可以。
-		   echo eval('?>'.$this->tplFile );
+		   //eval('>'.$this->tplFile);
+		    // echo htmlspecialchars_decode($this->tplFile);
 		}
 	}
 

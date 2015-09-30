@@ -17,7 +17,7 @@ class Controller extends HTTP{
 
 	public function loadView($viewPath = null, $val = null)
 	{
-		if(is_null($viewPath))
+		if($viewPath == 'this' )
 		{
 			$view = Route::$http->url->CV[1];
 			if(in_array($view,get_class_methods($this)))

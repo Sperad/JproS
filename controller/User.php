@@ -65,8 +65,15 @@ class User extends Controller{
 		// $obj = self::$Session; 
 		// $name = $obj->getMap('userName');
 		$name = 'sperad';
-		$list = array('a'=>"b",'aa'=>'bb');
+		$list = array('contact'=>'土地',
+					  '组名称_1'=>array('成员11'=>'id','成员12'=>'id','成员13'=>'id','成员14'=>'id'),
+					  '组名称_2'=>array('成员21'=>'id','成员22'=>'id','成员23'=>'id','成员24'=>'id'),
+					  '组名称_3'=>array('成员31'=>'id','成员32'=>'id','成员33'=>'id','成员34'=>'id'),
+					  '组名称_4'=>array('成员41'=>'id','成员42'=>'id','成员43'=>'id','成员44'=>'id'),
+					  '组名称_5'=>array('成员51'=>'id','成员52'=>'id','成员53'=>'id','成员54'=>'id'),
+						);
 		$this->loadView('this',array($name,$list));
+		// include '../cache/tpl/User/panel.htm';
 	}
 }
 //接口Json API
