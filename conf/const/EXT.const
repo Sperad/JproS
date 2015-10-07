@@ -3,5 +3,5 @@ return [
 		'PHP_EXT' => '.php',
 		'VIEW_EXT' => '.tpl',
 		'CACHE_TPL_EXT' => '.htm',
-		'IS_USE_CACHE_TPL' => false,
+		'USE_CACHE_TPL' => false,
 	];

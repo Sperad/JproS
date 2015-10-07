@@ -26,6 +26,7 @@ class Controller extends HTTP{
 				$viewPath = $class[count($class)-1].'/'.$view;
 			}
 		}
-		new Template($viewPath,$val);
+		$tpl = new Template($viewPath,$val);
+		$tpl->outPage();
 	}
 }

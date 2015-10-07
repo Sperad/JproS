@@ -14,8 +14,7 @@ class Template extends WebObject{
 		$this->fromPath = APP_DIR.              TPL_DIR.$viewPath.VIEW_EXT;
 		$this->val 		= $val;
 		$this->parseTpl();
-		IS_USE_CACHE_TPL and $this->createCacheTplFile();
-		$this->outPage();
+		USE_CACHE_TPL and $this->createCacheTplFile();
 	}
 
 	/**
@@ -57,27 +56,27 @@ class Template extends WebObject{
 	private function parseVal()
 	{
 		$str = $this->tplFile;
+	    //++ --  
+	    $str = preg_replace("/#\+\+(.+?)@/","<?php ++\\1;?>", $str);  
+	    $str = preg_replace("/#\-\-(.+?)@/","<?php ++\\1;?>", $str);  
+	    $str = preg_replace("/#(.+?)\+\+@/","<?php \\1++;?>", $str);  
+	    $str = preg_replace("/#(.+?)\-\-@/","<?php \\1--;?>", $str);
+
+	    $str = preg_replace("/#\\$([a-zA-Z0-9_\x7f-\xff]*)@/","<?php echo \\$\\1;?>", $str);//输出值--支持中文变量
 	    //变量
 		//if elseif 判断
-		$str = preg_replace("/#if\s+(.+?)@/", 	    "<?php if(\\1) {    	?>", $str);  
-		$str = preg_replace("/#else@/", 			"<?php } else {     	?>", $str);  
-		$str = preg_replace("/#elseif\s+(.+?)@/", 	"<?php } elseif (\\1) { ?>", $str);  
-		$str = preg_replace("/#if\/@/", 			"<?php } 				?>", $str);  
-	    //for 循环 
-	    $str = preg_replace("/#for\s+(.+?)@/",    	"<?php for(\\1) { 		?>", $str);  
-	    $str = preg_replace("/#for\/@/",			"<?php}?>", $str);  
+		$str = preg_replace("/#if\s+(.+?)@/","<?php if(\\1) { ?>", $str);  
+		$str = preg_replace("/#else@/","<?php } else { ?>", $str);  
+		$str = preg_replace("/#elseif\s+(.+?)@/","<?php } elseif (\\1) { ?>", $str);  
+		$str = preg_replace("/#if\/@/","<?php } ?>", $str);  
 	    //foreach 循环 
-	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)@/", 			"<?php if(is_array(\\$\\1)) foreach(\\$\\1 AS \\$\\2) 	   { ?>", $str );
-	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)\s+(\S+)@/", 	"<?php if(is_array(\\$\\1)) foreach(\\$\\1 AS \\$\\2  =>\\$\\3){?>", $str );  
-	    $str = preg_replace("/#foreach\/@/", 						"<?php } ?>", $str);  
-	    //++ --  
-	    $str = preg_replace("/#\+\+(.+?)@/",		"<?php ++\\1; 			?>", $str);  
-	    $str = preg_replace("/#\-\-(.+?)@/",		"<?php ++\\1; 			?>", $str);  
-	    $str = preg_replace("/#(.+?)\+\+@/",		"<?php \\1++; 			?>", $str);  
-	    $str = preg_replace("/#(.+?)\-\-@/",		"<?php \\1--; 			?>", $str);
-	    $str = preg_replace("/#([a-zA-Z0-9_\x7f-\xff]*)@/",	"<?php echo \$\\1;	?>", $str);//输出值--支持中文变量
+	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)@/","<?php if(is_array(\\1)) foreach(\\1 AS \\2){ ?>", $str );
+	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)\s+(\S+)@/","<?php if(is_array(\\1)) foreach(\\1 AS \\2=>\\3){?>",$str );  
+	    //for 循环 
+	    $str = preg_replace("/#for\s+(.+?)@/","<?php for(\\1) { ?>", $str);  
+	    $str = preg_replace("/#for\/@/","<?php}?>", $str);  
+	    $str = preg_replace("/#foreach\/@/","<?php } ?>", $str);  
 	    $this->tplFile = $str;
-	    var_dump($str);
 	}
 
 	private function createCacheTplFile()
@@ -99,13 +98,15 @@ class Template extends WebObject{
 		}
 	}
 
-	private function outPage()
+	public function outPage()
 	{
-		if(IS_USE_CACHE_TPL){
+		$name = $this->val[0];
+		$list = $this->val[1];
+		if(USE_CACHE_TPL){
 			include $this->toPath;
 		}else{
 		   //eval 是在你当前程序代码处嵌入PHP代码，所以你需要将当前程序代码结束掉才可以。
-		   //eval('>'.$this->tplFile);
+		   eval('?>'.$this->tplFile);
 		    // echo htmlspecialchars_decode($this->tplFile);
 		}
 	}
