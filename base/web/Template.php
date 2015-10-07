@@ -100,8 +100,7 @@ class Template extends WebObject{
 
 	public function outPage()
 	{
-		$name = $this->val[0];
-		$list = $this->val[1];
+		extract($this->val, EXTR_OVERWRITE);
 		if(USE_CACHE_TPL){
 			include $this->toPath;
 		}else{

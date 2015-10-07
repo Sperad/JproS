@@ -72,8 +72,7 @@ class User extends Controller{
 					  '组名称_4'=>array('成员41'=>'id','成员42'=>'id','成员43'=>'id','成员44'=>'id'),
 					  '组名称_5'=>array('成员51'=>'id','成员52'=>'id','成员53'=>'id','成员54'=>'id'),
 						);
-		$this->loadView('this',array($name,$list));
-		// include '../cache/tpl/User/panel.htm';
+		$this->loadView('this',array('name'=>$name,'list'=>$list));
 	}
 }
 //接口Json API
