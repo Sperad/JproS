@@ -226,7 +226,7 @@ class DB extends DBObject {
                     $condition = ' ('.$this->_addChar($field).' '.$relative.' '.$v[0].') ';
                 } else {
                     $logic = 'and';
-                    $condition = ' ('.$this->_addChar($field).'	='.$v.') ';
+                    $condition = ' ('.$this->_addChar($field).'	=\''.$v.'\') ';
                 }
                 $this->_where .= isset($mark) ? $logic.$condition : $condition;
                 $mark = 1;

@@ -4,7 +4,7 @@
 <table id="table1">
 	<tr>
 		<td class="td1">昵称：</td>
-		<td><input type="text"  name="nickname"  placeholder='请输入昵称' value="sperad" /> *</td>
+		<td><input type="text"  name="nickname"  placeholder='请输入昵称' value="" /> *</td>
 	</tr>
 	<tr>
 		<td class="td1">真实姓名：</td>
@@ -12,11 +12,11 @@
 	</tr>
 	<tr>
 		<td class="td1">密码：</td>
-		<td><input type="password" name="password"  value="111111" /> *</td>
+		<td><input type="password" name="password"  value="" /> *</td>
 	</tr>
 	<tr>
 		<td class="td1">确认密码：</td>
-		<td><input type="password" name="repassword" value="111111" /> *</td>
+		<td><input type="password" name="repassword" value="" /> *</td>
 	</tr>
 	<tr>
 		<td class="td1">性别：</td>

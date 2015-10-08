@@ -25,6 +25,21 @@
 	border: 1px solid green;
 }
 
+.chat_contact{
+	border:  1px solid red;
+	height: 30px;
+	line-height: 30px;
+	width: 100%;
+}
+.chat_contact a{
+	margin-left: 8px;
+}
+.chat_contact span{
+	background-color: #00bce4;
+	cursor: pointer;
+	font-size: 20px;
+}
+
 .friend_group{
 	border:  1px solid #00dcb4;
 	cursor: pointer;

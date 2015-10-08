@@ -16,10 +16,10 @@
 				</ul>
 			</div>
 		</div>
-		<ul class="self_friend">
+		<ul class="self_friend" id="self_contact">
 		#foreach $list $k $v@
 			#if $k =='contact'@
-				<li>
+				<li class="chat_contact">
 					<a href="#">#$v@</a>
 					<span>+</span>
 				</li>
@@ -33,6 +33,10 @@
 				</li>
 			#if/@
 		#foreach/@
+				<li class="friend_group">
+					<input type="text" name="1" value="2" maxlength="16" />
+					<span>确定</span><span>取消</span>
+				</li>
 		</ul>
 	</div>
 </div>
