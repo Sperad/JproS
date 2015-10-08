@@ -40,10 +40,6 @@ class User extends Controller{
 
 	public function login()
 	{
-		// echo $obj->getMap('use');
-		// $obj->close();
-		// echo $obj->getMap('use');
-		// var_dump($_SESSION);
 		if(!$this->isAjax && $this->method == 'POST')
 		{
 			$user = $_POST;
@@ -62,29 +58,102 @@ class User extends Controller{
 		}
 	}
 
+	/**
+	 * 添加组
+	 */
 	public function Group()
 	{
 		//ajax 添加组名
 		if($this->isAjax && $this->method == 'POST')
 		{
-			$obj = self::$Session; 
-			$name = $obj->getMap('userId');
+			$group = $_POST;
+			$my = new Mysql();
+			$groupOnly = "select count(1) as ctn from dntk_chat_group where group_name = '$group[groupName]'";
+			$cnt = $my->count($groupOnly);//
+			if(empty($cnt['ctn'])){//未
+				$group['group_name'] = $group['groupName'];
+				$group['create_by'] = Session::get('userId');
+				if($my->insert('dntk_chat_group',$group))
+					echo $my->lastInsertId();
+				echo 'false';				
+			}else{//已经
+				echo 'false';
+			}
 		}
 	}
 
 	public function panel()
 	{
 		$name = Session::get('nickName');
-		$list = array('contact'=>'联系客服',
-					  '组名称_1'=>array('成员11'=>'id','成员12'=>'id','成员13'=>'id','成员14'=>'id'),
-					  '组名称_2'=>array('成员21'=>'id','成员22'=>'id','成员23'=>'id','成员24'=>'id'),
-					  // '组名称_3'=>array('成员31'=>'id','成员32'=>'id','成员33'=>'id','成员34'=>'id'),
-					  // '组名称_4'=>array('成员41'=>'id','成员42'=>'id','成员43'=>'id','成员44'=>'id'),
-					  // '组名称_5'=>array('成员51'=>'id','成员52'=>'id','成员53'=>'id','成员54'=>'id'),
-						);
-		$this->loadView('this',array('name'=>$name,'list'=>$list));
+		$userId = Session::get('userId');
+		//列出用户自建组
+		$my = new Mysql();
+		$groups = $my->field("id,group_name")->where(array('create_by'=>$userId))->select('dntk_chat_group');
+
+		//获取各组下好友列表
+		$groupsIn = implode(',',array_get_by_key($groups,'id'));
+		$sql = "select u.id,u.nickname,u.realname,u.sex,gu.group_id from dntk_chat_user u, dntk_chat_group_user gu where u.id = gu.user_id and gu.group_id in($groupsIn) ";
+		$users = $my->doSql($sql);
+		//数据处理
+		$list = getPanelList($groups,$users);
+		//页面显示
+		$this->loadView('this',array('name'=>$name,'groups'=>$groups,'list'=>$list));
+	}
+
+	/**
+	 * 搜索用户
+	 */
+	public function search()
+	{
+		$sql = "select u.id,u.nickname from dntk_chat_user u where u.nickname like '%%' ";
+		$my = new Mysql();
+		$users = $my->doSql($sql);
+		header('Content-type:text/json'); 
+		echo Json::Arr2J($users);
+	}
+
+	public function friend()
+	{
+		$params = $this->url->params;
+		$my = new Mysql();
+		$params['user_id'] = $params['friendId'];
+		$params['group_id'] = $params['groupId'];
+		if($my->insert('dntk_chat_group_user',$params))
+		{
+			echo true;
+		} else {
+			echo false;
+		}
 	}
 }
 //接口Json API
 // $a =  Json::J2Arr($this->body);
 // var_dump($a);
+
+
+
+/* 
+author: yangyu@sina.cn 
+description: 根据某一特定键(下标)取出一维或多维数组的所有值；
+不用循环的理由是考虑大数组的效率，把数组序列化，然后根据序列化结构的特点提取需要的字符串
+*/  
+function array_get_by_key(array $array, $string){  
+    if (!trim($string)) return false;  
+    preg_match_all("/\"$string\";\w{1}:(?:\d+:|)(.*?);/", serialize($array), $res);  
+    return $res[1];  
+} 
+
+function getPanelList($groups,$users)
+{
+	$list = array('contact'=>'联系客服');
+	foreach ($groups as $index => &$group) {
+		foreach ($users as $user) {
+			if( $group['id']== $user['group_id']){
+				unset($user['group_id']);
+				$group['users'][]= $user;
+			}
+		}
+	}
+	$list =array_merge($list,$groups);
+	return $list;
+}

@@ -62,20 +62,20 @@ class Template extends WebObject{
 	    $str = preg_replace("/#(.+?)\+\+@/","<?php \\1++;?>", $str);  
 	    $str = preg_replace("/#(.+?)\-\-@/","<?php \\1--;?>", $str);
 
-	    $str = preg_replace("/#\\$([a-zA-Z0-9_\x7f-\xff]*)@/","<?php echo \\$\\1;?>", $str);//输出值--支持中文变量
-	    //变量
 		//if elseif 判断
 		$str = preg_replace("/#if\s+(.+?)@/","<?php if(\\1) { ?>", $str);  
 		$str = preg_replace("/#else@/","<?php } else { ?>", $str);  
 		$str = preg_replace("/#elseif\s+(.+?)@/","<?php } elseif (\\1) { ?>", $str);  
 		$str = preg_replace("/#if\/@/","<?php } ?>", $str);  
 	    //foreach 循环 
-	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)@/","<?php if(is_array(\\1)) foreach(\\1 AS \\2){ ?>", $str );
-	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)\s+(\S+)@/","<?php if(is_array(\\1)) foreach(\\1 AS \\2=>\\3){?>",$str );  
+	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)@/","<?php if(isset(\\1) && is_array(\\1)) foreach(\\1 AS \\2){ ?>", $str );
+	    $str = preg_replace("/#foreach\s+(\S+)\s+(\S+)\s+(\S+)@/","<?php if(isset(\\1) && is_array(\\1)) foreach(\\1 AS \\2=>\\3){?>",$str );  
 	    //for 循环 
 	    $str = preg_replace("/#for\s+(.+?)@/","<?php for(\\1) { ?>", $str);  
 	    $str = preg_replace("/#for\/@/","<?php}?>", $str);  
 	    $str = preg_replace("/#foreach\/@/","<?php } ?>", $str);  
+	    //变量
+	    $str = preg_replace("/#\\$([a-zA-Z0-9_\x7f-\xff\[\]\']*)@/","<?php echo \\$\\1;?>", $str);//输出值--支持中文变量
 	    $this->tplFile = $str;
 	}
 

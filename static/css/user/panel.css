@@ -15,12 +15,24 @@
 	position: relative;
 	margin:8px 4px;
 }
+.self_search span:nth-child(2){
+	background: red;
+	cursor: pointer;
+}
 .self_search>div{
 	position:  absolute;
-	display: none;
+	/*display: none;*/
+	border: 1px solid blue;
 }
-
+.search_groups{
+	position: relative;
+	width: 160px;
+}
+.friend_result{
+	top:60px;
+}
 .self_friend{
+	display: none;
 	margin-top: 8px;
 	border: 1px solid green;
 }
@@ -42,10 +54,8 @@
 
 .friend_group{
 	border:  1px solid #00dcb4;
-	cursor: pointer;
 	margin-top: 8px;
 }
 .friend_group ul{
 	margin-left: 16px;
-	/*display:  none;*/
 }
