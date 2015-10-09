@@ -1,7 +1,7 @@
 <?php
 namespace base\web;
 
-class HTTP extends WebObject{
+class Http extends WebObject{
 
 	private $url;
 	private $method;
