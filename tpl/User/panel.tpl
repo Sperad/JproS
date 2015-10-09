@@ -29,7 +29,20 @@
 			#if !is_int($k)@
 				<li class="chat_contact">
 					<a href="#">#$group@</a>
-					<span>+加组</span>
+					<span class="do_addGroup">+加组</span>
+					<span class="do_recordFriend">你有<a href="#">#$requestRecord@</a>条消息</span>
+					<div class="recordFriend">
+						<div class="recordFriend_groups">
+							添加到
+							<select name="" id="recordFriend_groups">
+								#foreach $groups $group@
+									<option value=#$group['id']@>#$group['group_name']@</option>
+								#foreach/@
+							</select>
+						</div>
+						<ul class="recordFriend_list" id="recordFriend_list">
+						</ul>
+					</div>
 				</li>
 			#else@
 				<li class="friend_group">#$group['group_name']@

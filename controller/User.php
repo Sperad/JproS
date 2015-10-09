@@ -96,8 +96,13 @@ class User extends Controller{
 		$users = $my->doSql($sql);
 		//数据处理
 		$list = getPanelList($groups,$users);
+
+		//获取好友请求消息
+		$requestRecord = "select count(1) as cnt from dntk_chat_request_record where to_user_id = $userId and status=1";
+		$cnt = $my->count($requestRecord);
 		//页面显示
-		$this->loadView('this',array('name'=>$name,'groups'=>$groups,'list'=>$list));
+		$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
+								'groups'=>$groups,'list'=>$list));
 	}
 
 	/**
@@ -112,18 +117,54 @@ class User extends Controller{
 		echo Json::Arr2J($users);
 	}
 
+	/**
+	 * 添加好友
+	 */
 	public function friend()
 	{
-		$params = $this->url->params;
 		$my = new Mysql();
-		$params['user_id'] = $params['friendId'];
-		$params['group_id'] = $params['groupId'];
-		if($my->insert('dntk_chat_group_user',$params))
+		$userId = Session::get('userId');
+		//添加好友
+		if($this->method == "POST")
 		{
-			echo true;
-		} else {
-			echo false;
+			$params = $this->url->params;
+			$params['user_id'] = $params['friendId'];
+			$params['group_id'] = $params['groupId'];
+			if($params['status']==1){//发送请求
+				if($my->insert('dntk_chat_group_user',$params))
+				{	//向好友发送请求
+					$record = array('from_user_id'=>$userId,'to_user_id'=>$params['user_id']);
+					$my->insert('dntk_chat_request_record',$record);
+					echo true;
+				} else {
+					echo false;
+				}
+			}else{//接收者回复发送者
+				//修改状态
+				$my->where(array('from_user_id'=>$params['user_id'],'to_user_id'=>$userId))->update('dntk_chat_request_record',array('status'=>$params['status']));
+
+				if($params['status']==3){//如果添加
+					if($my->insert('dntk_chat_group_user',$params))
+					{
+						echo true;
+					}
+				}else{
+					echo false;
+				}
+			}
 		}
+		//获取发送请求好友的列表
+		if($this->method == 'GET')
+		{
+			$sql = "select u.id, u.nickname,u.realname,u.sex,u.birthday ".
+						"from dntk_chat_user u,dntk_chat_request_record rr ".
+							"where u.id = rr.from_user_id  and rr.status = 1 and rr.to_user_id = $userId";
+			$users = $my->doSql($sql);
+			header('Content-type:text/json'); 
+			echo Json::Arr2J($users);
+		}
+
+
 	}
 }
 //接口Json API

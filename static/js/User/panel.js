@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var contactPanel = $("#self_contact");
 	//点击添加组
-	contactPanel.find('.chat_contact span').bind('click',function(event) {
+	contactPanel.find('.do_addGroup').bind('click',function(event) {
 		if(contactPanel.find('.add_group')[0] == undefined)
 		{
 			panel.appendAddGroup(contactPanel);
@@ -21,8 +21,17 @@ $(document).ready(function(){
 
 	//点击查找好友
 	$(".self_search").find('.doFind').bind('click',function(){
+		$(".self_friend").hide(function(){
+			$(".self_search").find('div').show();
+		})
 		panel.findFriend($(this).prev('span').find('input'));
-	})
+	});
+
+	//点击请求好友消息
+	$(".do_recordFriend").find("a").bind('click',function(event){
+		event.preventDefault();
+		panel.requestFriend();
+	});
 	
 });
 var panel = {
@@ -70,14 +79,13 @@ var panel = {
 					var friends = $("#friend_result ul");
 					$.each(data, function(index, value){
 						friends.append('<li><span>'+value.nickname+'</span>'+
-											'<a href="index.php?User_friend/friendId='+value.id+'">添加</a></li>')
+											'<a href="index.php?User_friend/friendId='+value.id+'&status=1">添加</a></li>')
 					});
 					//绑定标签进行添加好友
 					friends.find('li a').bind('click',function(event){
 						event.preventDefault();
 						var url = $(this).attr('href');
 						var groupId = '&groupId='+$("#search_groups option:selected").val();
-						alert(url+groupId);
 						_this.addFriend(url+groupId);
 					});
 				}else{
@@ -91,12 +99,39 @@ var panel = {
 			$.post(url, '', function(data, textStatus, xhr){
 				if(data == true)//添加成功
 				{
-					alert("添加成功");
+					alert("添加成功");//刷新当前页面
 					//隐藏
-					$("#friend_result ul").hide();
 				}else{
 					alert('添加失败');
 				}
 			});
+		},
+
+		requestFriend : function()
+		{
+			var _this = this;
+			$.get('index.php?User_friend',function(data)
+			{
+				if(data != 'false')
+				{	
+					var recordFriend = $("#recordFriend_list");
+					$.each(data, function(index, value){
+						recordFriend.append('<li><span>'+value.nickname+'</span>'+
+											'<a href="index.php?User_friend/friendId='+value.id+'&status=3">添加</a>'+
+											'<a href="index.php?User_friend/friendId='+value.id+'&status=5">拒绝</a>'+
+											'</li>')
+					});
+					//绑定标签进行添加好友
+					recordFriend.find('li a').bind('click',function(event){
+						event.preventDefault();
+						var url = $(this).attr('href');
+						var groupId = '&groupId='+$("#recordFriend_groups option:selected").val();
+						_this.addFriend(url+groupId);
+					});
+				}else{
+					alert('获取数据失败');
+				}
+			});
 		}
+
 	}

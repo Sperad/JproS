@@ -19,24 +19,22 @@
 	background: red;
 	cursor: pointer;
 }
-.self_search>div{
+.search_groups, .friend_result{
 	position:  absolute;
-	/*display: none;*/
+	display: none;
 	border: 1px solid blue;
 }
 .search_groups{
-	position: relative;
 	width: 160px;
 }
 .friend_result{
 	top:60px;
 }
 .self_friend{
-	display: none;
 	margin-top: 8px;
 	border: 1px solid green;
 }
-
+/*联系(第一个li)*/
 .chat_contact{
 	border:  1px solid red;
 	height: 30px;
@@ -49,9 +47,17 @@
 .chat_contact span{
 	background-color: #00bce4;
 	cursor: pointer;
-	font-size: 20px;
+}
+.recordFriend {
+	position: relative;
+	left: 260px;
+	top:-30px;
+	width: 160px;
+	border: 1px solid green;
+	display: none;
 }
 
+/*好友组详细*/
 .friend_group{
 	border:  1px solid #00dcb4;
 	margin-top: 8px;

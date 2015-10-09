@@ -22,7 +22,7 @@ CREATE TABLE `dntk_chat_group`(
 DROP TABLE IF EXISTS `dntk_chat_group_user`;
 CREATE TABLE `dntk_chat_group_user`(
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT ,
-	`user_id` int(11) NOT NULL COMMENT '用户ID',
+	`user_id` int(11) NOT NULL COMMENT '好友用户ID',
 	`group_id` int(11) NOT NULL COMMENT '组ID',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
@@ -50,6 +50,6 @@ CREATE TABLE `dntk_chat_request_record`(
 	`id` int(11) unsigned NOT null AUTO_INCREMENT,
 	`from_user_id` int(11) NOT null COMMENT '发送者的id',
 	`to_user_id` int(11) NOT null COMMENT '待接收者的id',
-	`status` tinyint(3) NOT null DEFAULT 1 COMMENT '此条记录的状态,1为发送者已发送(默认),3为接收者已接收(删除)',
+	`status` tinyint(3) NOT null DEFAULT 1 COMMENT '此条记录的状态,1为发送者已发送(默认),3为接收者已接收(删除),5为接收者拒绝接收',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
