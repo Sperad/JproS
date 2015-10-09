@@ -44,3 +44,12 @@ CREATE TABLE `dntk_chat_visitor`(
 	`session_id` varchar(64) NOT null COMMENT '游客的Session_id',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `dntk_chat_request_record`;
+CREATE TABLE `dntk_chat_request_record`(
+	`id` int(11) unsigned NOT null AUTO_INCREMENT,
+	`from_user_id` int(11) NOT null COMMENT '发送者的id',
+	`to_user_id` int(11) NOT null COMMENT '待接收者的id',
+	`status` tinyint(3) NOT null DEFAULT 1 COMMENT '此条记录的状态,1为发送者已发送(默认),3为接收者已接收(删除)',
+	PRIMARY KEY (`id`)
+)DEFAULT CHARSET=utf8;
