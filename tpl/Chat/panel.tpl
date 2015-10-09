@@ -1,10 +1,14 @@
 @base/common/header.tpl#
 @css/chat/panel.css#
 <div class="chat">
-	<div id="chat_message">
+	<div  id="chat_message">
 		<span>消息内容</span>
 		<div class="content">
-			<ul></ul>
+			<ul>
+				#foreach $chatHistory $record@
+				<li>时间:<span>#$record['create_time']@</span> <p>#$record['content']@</p></li>
+				#foreach/@
+			</ul>
 		</div>
 	</div>
 	<div id="sendMsg">

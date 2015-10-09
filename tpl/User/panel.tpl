@@ -48,7 +48,7 @@
 				<li class="friend_group">#$group['group_name']@
 					<ul>
 					#foreach $group['users'] $user@
-						<li><a href="index.php?chat_panel">#$user['nickname']@</a></li>
+						<li><a href="index.php?chat_panel/chatwith=#$user['id']@">#$user['nickname']@</a></li>
 					#foreach/@
 					</ul>
 				</li>

@@ -29,27 +29,28 @@ CREATE TABLE `dntk_chat_group_user`(
 
 DROP TABLE IF EXISTS `dntk_chat_message`;
 CREATE TABLE `dntk_chat_message`(
-	`id` int(11) unsigned NOT NULL COMMENT '聊天信息ID',
-	`from` int(11) NOT NULL COMMENT '聊天的发送者',
-	`to` int(11) NOT null COMMENT '聊天的接收者',
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '聊天信息ID',
+	`from_user_id` int(11) NOT NULL COMMENT '聊天的发送者',
+	`to_user_id` int(11) NOT NULL COMMENT '聊天的接收者',
 	`content` text COMMENT '聊天发送的内容',
+	`status` tinyint(3) NOT NULL DEFAULT 1 COMMENT '消息状态:1发送成功(对方最新),3对方接收()',
 	`create_time` datetime COMMENT '聊天的发送时间',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `dntk_chat_visitor`;
 CREATE TABLE `dntk_chat_visitor`(
-	`id` int(11) unsigned NOT null COMMENT '游客的ID',
-	`nickname` varchar(32) NOT null COMMENT '游客的昵称',
-	`session_id` varchar(64) NOT null COMMENT '游客的Session_id',
+	`id` int(11) unsigned NOT NULL COMMENT '游客的ID',
+	`nickname` varchar(32) NOT NULL COMMENT '游客的昵称',
+	`session_id` varchar(64) NOT NULL COMMENT '游客的Session_id',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `dntk_chat_request_record`;
 CREATE TABLE `dntk_chat_request_record`(
-	`id` int(11) unsigned NOT null AUTO_INCREMENT,
-	`from_user_id` int(11) NOT null COMMENT '发送者的id',
-	`to_user_id` int(11) NOT null COMMENT '待接收者的id',
-	`status` tinyint(3) NOT null DEFAULT 1 COMMENT '此条记录的状态,1为发送者已发送(默认),3为接收者已接收(删除),5为接收者拒绝接收',
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`from_user_id` int(11) NOT NULL COMMENT '发送者的id',
+	`to_user_id` int(11) NOT NULL COMMENT '待接收者的id',
+	`status` tinyint(3) NOT NULL DEFAULT 1 COMMENT '此条记录的状态,1为发送者已发送(默认),3为接收者已接收(删除),5为接收者拒绝接收',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;

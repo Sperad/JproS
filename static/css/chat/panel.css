@@ -6,10 +6,10 @@
 /*聊天的控制面板*/
 .chat{
 	margin:16px auto;
-	width: 600px;
+	width: 530px;
 }
 .chat span {
-	text-align: center
+	text-align: center;
 	float : left;
 	width : 100%;
 	height:20px;
