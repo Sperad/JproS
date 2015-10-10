@@ -8,34 +8,19 @@
 	</div>
 	<!--好友搜索 / 查看好友添加消息 -->
 	<div class="search_news">
-		<div class="srch_ns_groups"><b>选择组</b>
+		<div class="srch_ns_groups">
+			<b>选择组</b>
 			<select name="groupId" id="srch_ns_groups">
 				#foreach $groups $group@
 					<option value=#$group['id']@>#$group['group_name']@</option>
 				#foreach/@
 			</select>
+			<span class='srch_ns_close'>关闭</span>
 		</div>
 		<ul class="srch_ns_result" id="srch_ns_result">
 				<li>
 					<span>结果1</span>
 					<a href="#">删除</a>
-					<a href="#">添加</a>
-				</li>
-				<li>
-					<span>结果1</span>
-					<a href="#">删除</a>
-					<a href="#">添加</a>
-				</li>
-				<li>
-					<span>结果1</span>
-					<a href="#">添加</a>
-				</li>
-				<li>
-					<span>结果1</span>
-					<a href="#">添加</a>
-				</li>
-				<li>
-					<span>结果1</span>
 					<a href="#">添加</a>
 				</li>
 				<li>
@@ -56,12 +41,16 @@
 				</li>
 			#else@
 				<li class="friend_group">#$group['group_name']@
-					<a href="">删除</a>
+					<a class="delGroup" href="">删除</a>
 					<ul group=#$group['id']@>
 					#foreach $group['users'] $user@
 						<li class="chat_friend">
-							<a href="index.php?chat_panel/chatwith=#$user['id']@"  class='chat_with'>
-								#$user['nickname']@
+							<a href="index.php?chat_panel/chatwith=#$user['id']@"  class='chat_with'> #$user['nickname']@ 
+								<span> 
+									#if isset($user['recordCnt']) @
+										(#$user['recordCnt']@)
+								  #if/@
+								</span>
 							</a>
 							<a class="movFriend" href="#$user['id']@">移动</a>
 							<a class="delFriend" href="#$user['id']@">删除</a>

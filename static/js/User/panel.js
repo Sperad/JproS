@@ -10,27 +10,52 @@ $(document).ready(function(){
 		}
 	});
 	
-	//点击聊天
-	$(".chat_with").bind('click',function(event){
+	//点击删除组
+	contactPanel.find('.delGroup').bind('click',function(event) {
 		event.preventDefault();
-		var sFeatures = "height=600, width=600, scrollbars=yes, resizable=yes";
-		$(this).target = "_blank"; 
-		 window.open($(this).attr('href'), '3km', sFeatures );
+		var groupId = $(this).next('ul[group]').attr('group');
+		panel.delGroup(groupId);
 	});
 
 	//点击查找好友
-	$(".self_search").find('.doFind').bind('click',function(){
-		$(".self_friend").hide(function(){
-			$(".self_search").find('div').show();
-		})
-		panel.findFriend($(this).prev('span').find('input'));
+	$('.doFind').bind('click',function(){
+		var resultPanel = $(".search_news");
+		o_this = $(this);
+		resultPanel.find('.btn_movFriend').hide();
+		resultPanel.show(function(){
+			panel.findFriend($(this),o_this.prev().val());
+			$(".srch_ns_close").bind('click',function(event) {
+				resultPanel.hide();
+			});
+		});
+	});
+
+	//点击移动好友
+	$(".movFriend").bind('click', function(event) {
+		event.preventDefault();
+		var resultPanel = $(".search_news");
+		var friendId = $(this).attr('href');
+		var oldGroupId = $(this).parents('ul[group]').attr('group');
+		resultPanel.find('.srch_ns_result').empty().next('.btn_movFriend').show();
+		resultPanel.show(function(){
+			panel.movFriend($(this),friendId,oldGroupId);
+			$(".srch_ns_close").bind('click',function(event) {
+				resultPanel.hide();
+			});
+		});
+
 	});
 
 	//点击请求好友消息
-	$(".btn_recordFriend").find("a").bind('click',function(event){
+	$(".btn_recordFriend").bind('click',function(event){
 		event.preventDefault();
-		$(".recordFriend").show(function(){
-			panel.requestFriend();
+		var resultPanel = $(".search_news");
+		resultPanel.find('.srch_ns_result').empty().next('.btn_movFriend').hide();
+		resultPanel.show(function(){
+			panel.requestFriend($(this));
+			$(".srch_ns_close").bind('click',function(event) {
+				resultPanel.hide();
+			});
 		});
 	});
 	
@@ -40,6 +65,15 @@ $(document).ready(function(){
 		var friendId = $(this).attr('href');
 		var groupId = $(this).parents('ul[group]').attr('group');
 		panel.delFriend(friendId,groupId);
+	});
+
+	
+	//点击聊天
+	contactPanel.find(".chat_with").bind('click',function(event){
+		event.preventDefault();
+		var sFeatures = "height=600, width=600, scrollbars=yes, resizable=yes";
+		$(this).target = "_blank"; 
+		 window.open($(this).attr('href'), '3km', sFeatures );
 	});
 });
 var panel = {
@@ -77,23 +111,23 @@ var panel = {
 			});
 		},
 
-		findFriend : function (option)
+		findFriend : function (panelShow,text)
 		{	
 			var _this = this;
-			$.post('index.php?User_search', option, function(data, textStatus, xhr)
-			{
+			$.get('index.php?User_search/search='+text, function(data){
 				if(data != 'false')
 				{	
-					var friends = $("#friend_result ul");
+					var friends = panelShow.find('.srch_ns_result');
+					friends.empty();
 					$.each(data, function(index, value){
 						friends.append('<li><span>'+value.nickname+'</span>'+
 											'<a href="index.php?User_friend/friendId='+value.id+'&status=1">添加</a></li>')
 					});
 					//绑定标签进行添加好友
-					friends.find('li a').bind('click',function(event){
+					friends.find('a').bind('click',function(event){
 						event.preventDefault();
 						var url = $(this).attr('href');
-						var groupId = '&groupId='+$("#search_groups option:selected").val();
+						var groupId = '&groupId='+$("#srch_ns_groups option:selected").val();
 						_this.addFriend(url+groupId);
 					});
 				}else{
@@ -116,14 +150,14 @@ var panel = {
 			});
 		},
 
-		requestFriend : function()
+		requestFriend : function(panelShow)
 		{
 			var _this = this;
 			$.get('index.php?User_friend',function(data)
 			{
 				if(data != 'false')
 				{	
-					var recordFriend = $("#recordFriend_list");
+					var recordFriend = panelShow.find('.srch_ns_result');
 					$.each(data, function(index, value){
 						recordFriend.append('<li><span>'+value.nickname+'</span>'+
 											'<a href="index.php?User_friend/friendId='+value.id+'&status=3">添加</a>'+
@@ -134,7 +168,7 @@ var panel = {
 					recordFriend.find('li a').bind('click',function(event){
 						event.preventDefault();
 						var url = $(this).attr('href');
-						var groupId = '&groupId='+$("#recordFriend_groups option:selected").val();
+						var groupId = '&groupId='+$("#srch_ns_groups option:selected").val();
 						_this.addFriend(url+groupId);
 					});
 				}else{
@@ -152,6 +186,31 @@ var panel = {
 					{
 						alert('删除成功');window.location.reload();
 					}
+			});
+		},
+		delGroup : function (groupId)
+		{
+			$.post('index.php?User_delGroup',
+					{'groupId':groupId}, 
+				function(data, textStatus, xhr) {
+					if(data == true)
+					{
+						alert('删除成功');window.location.reload();
+					}else{
+						alert('该组还有成员,请删除以后再删除组');
+					}
+			});
+		},
+		movFriend : function(panelShow,friendId,oldGroupId){
+			panelShow.find('.btn_movFriend').bind('click',function(){
+				var groupId = $("#srch_ns_groups option:selected").val();
+				$.post('index.php?User_movFriend',
+					{'friendId':friendId,'groupId':groupId,'oldGroupId':oldGroupId}, 
+					function(data, textStatus, xhr) {
+						if(data == true) {
+							alert('移动成功');window.location.reload();
+						}
+				});
 			});
 		}
 	}

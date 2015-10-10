@@ -34,7 +34,7 @@
 	margin: 0px 8px;
 	width: 160px;
 	height: 100%;
-	float: left;
+	float: left
 }
 .self_search p, .add_group span{
 	height: 100%;
@@ -42,7 +42,7 @@
 	float: left;
 	cursor: pointer;
 	margin-right: 8px;/*只对.add_group span 有效*/
-	box-shadow: 1px 1px 3px red;
+	box-shadow: 1px 1px 3px red
 }
 /*共用(搜索结果+添加消息)*/
 .search_news {
@@ -51,7 +51,8 @@
 	top:24px;
 	width: 160px;
 	background: #eee;
-	box-shadow: 1px 1px 1px #999
+	box-shadow: 1px 1px 1px #999;
+	display: none
 }
 .srch_ns_groups{
 	text-indent: 4px;
@@ -59,6 +60,9 @@
 	line-height: 28px;
 	border-bottom: 1px solid red;
 	color: red;
+}
+.srch_ns_groups select{
+	width:56px;
 }
 .srch_ns_result li{
 	border-bottom: 1px solid red;

@@ -34,7 +34,7 @@ class Route extends WebObject{
 			$_CclassName = CONTROLLER_DIR.'\\'.$_CclassName;
 			$_C = new $_CclassName;
 			$action = self::$http->url->CV[1];
-			if(!is_null($action) || method_exists($_C,$action)){
+			if(!is_null($action) && method_exists($_C,$action)){
 				$_C->$action();
 			}else{
 				die('方法不存在');
