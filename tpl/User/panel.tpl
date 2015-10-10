@@ -1,4 +1,4 @@
-@base/common/header.tpl#
+@common/header.tpl#
 @css/user/panel.css#
 <div id="chat_self" class="chat_self">
 	<span class="self_top">你好:  #$name@</span>
@@ -45,7 +45,7 @@
 					<ul group=#$group['id']@>
 					#foreach $group['users'] $user@
 						<li class="chat_friend">
-							<a href="index.php?chat_panel/chatwith=#$user['id']@"  class='chat_with'> #$user['nickname']@ 
+							<a href="index.php?chat_dialog/chatwith=#$user['id']@"  class='chat_with'> #$user['nickname']@ 
 								<span> 
 									#if isset($user['recordCnt']) @
 										(#$user['recordCnt']@)

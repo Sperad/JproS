@@ -8,16 +8,19 @@ use base\db\Mysql;
 class Chat extends Controller {
 
 	/*聊天页面*/
-	public function panel()
+	public function dialog()
 	{
 		$chatWith = intval($this->url->params['chatwith']);
 		$userId = Session::get("userId");
 		Session::set('chatWith',$chatWith);
 		$my = new Mysql();
-		//获取上次聊天记录5条
-		$sql = "select * from dntk_chat_message m where ((m.from_user_id = $userId and m.to_user_id = $chatWith) ".
-					"or (m.from_user_id = $chatWith and m.to_user_id = $userId)) and m.status=3 limit 2";
+		//获取未读取的信息
+		$sql = "select * from dntk_chat_message m where ".
+					"(m.from_user_id = $chatWith and m.to_user_id = $userId) and m.status=1";
 		$chatHistory = $my->doSql($sql);
+		//将信息标记为已读
+/*		$my->where(array('from_user_id'=>$chatWith,'to_user_id'=>$userId))
+			->update('dntk_chat_message',array('status'=>3));*/
 		$this->loadView('this',array('chatHistory'=>$chatHistory));
 	}
 

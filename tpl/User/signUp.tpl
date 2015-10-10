@@ -1,4 +1,4 @@
-@base/common/header.tpl#
+@common/header.tpl#
 <body>
 <form action="index.php?User_signUp" method="post">
 <table id="table1">
@@ -36,4 +36,5 @@
 	</tr> 
 </table>
 </form>
+</body>
 <script type="text/javascript" src="../static/js/plug/laydate.js"></script>
