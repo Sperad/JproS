@@ -91,9 +91,12 @@ class User extends Controller{
 		$groups = $my->field("id,group_name")->where(array('create_by'=>$userId))->select('dntk_chat_group');
 
 		//获取各组下好友列表
-		$groupsIn = implode(',',array_get_by_key($groups,'id'));
-		$sql = "select u.id,u.nickname,u.realname,u.sex,gu.group_id from dntk_chat_user u, dntk_chat_group_user gu where u.id = gu.user_id and gu.group_id in($groupsIn) ";
-		$users = $my->doSql($sql);
+		$users = array();
+		if(!empty($groups)){
+			$groupsIn = implode(',',array_get_by_key($groups,'id'));
+			$sql = "select u.id,u.nickname,u.realname,u.sex,gu.group_id from dntk_chat_user u, dntk_chat_group_user gu where u.id = gu.user_id and gu.group_id in($groupsIn) ";
+			$users = $my->doSql($sql);
+		}
 		//数据处理
 		$list = getPanelList($groups,$users);
 
@@ -163,8 +166,21 @@ class User extends Controller{
 			header('Content-type:text/json'); 
 			echo Json::Arr2J($users);
 		}
+	}
 
-
+	/**
+	 * 删除好友
+	 */
+	public function delFriend()
+	{
+		if($this->method == 'POST')
+		{
+			$friendId = $_POST['friendId'];
+			$groupId = $_POST['groupId'];
+			$my = new Mysql();
+			$my->where(array('user_id'=>$friendId,'group_id'=>$groupId))->delete('dntk_chat_group_user');
+			return true;
+		}
 	}
 }
 //接口Json API

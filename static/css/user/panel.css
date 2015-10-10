@@ -2,66 +2,123 @@
 	margin:0;
 	padding: 0;
 	list-style: none;
+	font-size: 16px;
+	text-decoration: none;
 }
 /*用户个人中心的控制面板*/
-#chat_self{
+.chat_self{
 	position: absolute;
 	top:20;
 	right: 400px;
 	width: 260px;
-	border: 1px solid red;
+	background: #eee;
+	box-shadow: 5px 5px 5px #aaa;
 }
-.self_container{
-	position: relative;
-	margin:8px 4px;
-}
-.self_search span:nth-child(2){
-	background: red;
-	cursor: pointer;
-}
-.search_groups, .friend_result{
-	position:  absolute;
-	display: none;
-	border: 1px solid blue;
-}
-.search_groups{
-	width: 160px;
-}
-.friend_result{
-	top:60px;
-}
-.self_friend{
-	margin-top: 8px;
-	border: 1px solid green;
-}
-/*联系(第一个li)*/
-.chat_contact{
-	border:  1px solid red;
-	height: 30px;
-	line-height: 30px;
+.self_top{
+	display: block;
 	width: 100%;
+	height: 24px;
+	line-height: 24px;
+	text-indent: 8px;
+	border-bottom: 1px solid red;
 }
-.chat_contact a{
+/*好友搜索*/
+.self_search,.add_group{
+	margin: 2px;
+	height: 26px;
+	width: 100%;
+	padding-bottom: 4px;
+	border-bottom: 1px solid red;
+}
+.self_search input,.add_group input{
+	margin: 0px 8px;
+	width: 160px;
+	height: 100%;
+	float: left;
+}
+.self_search p, .add_group span{
+	height: 100%;
+	line-height: 26px;
+	float: left;
+	cursor: pointer;
+	margin-right: 8px;/*只对.add_group span 有效*/
+	box-shadow: 1px 1px 3px red;
+}
+/*共用(搜索结果+添加消息)*/
+.search_news {
+	position: absolute;
+	left: 264px;
+	top:24px;
+	width: 160px;
+	background: #eee;
+	box-shadow: 1px 1px 1px #999
+}
+.srch_ns_groups{
+	text-indent: 4px;
+	height: 28px;
+	line-height: 28px;
+	border-bottom: 1px solid red;
+	color: red;
+}
+.srch_ns_result li{
+	border-bottom: 1px solid red;
+	width: 100%;
+	height: 18px;
+	line-height: 18px;
+	margin-top: 1px;
+}
+.srch_ns_result li span{
 	margin-left: 8px;
 }
-.chat_contact span{
-	background-color: #00bce4;
-	cursor: pointer;
+.srch_ns_result li a{
+	 float: right;
+	 font-size: 14px;
+	 margin-right: 4px;
 }
-.recordFriend {
-	position: relative;
-	left: 260px;
-	top:-30px;
-	width: 160px;
-	border: 1px solid green;
+.btn_movFriend{
+	background: #00dcb4;
+	width: 50%;
+	display: block;
+	margin:auto;
+	text-align: center;
 	display: none;
+}
+/*好友组列表显示*/
+.self_group{
+	margin:4px auto;
+}
+/*联系(第一个li)*/
+.chat_news{
+	border-bottom:  1px solid red;
+	height: 24px;
+	line-height: 24px;
+	width: 100%;
+	text-indent: 8px;
+}
+.chat_news span{
+	float: right;
+	margin-right: 8px;
+	cursor: pointer;
+	font-size: 14px;
+	box-shadow: 1px 0px 3px #999;
 }
 
 /*好友组详细*/
 .friend_group{
-	border:  1px solid #00dcb4;
+	border-bottom: 1px solid red;
 	margin-top: 8px;
+	margin-left: 8px;
 }
 .friend_group ul{
 	margin-left: 16px;
+	display: block;
+}
+.friend_group>a, .delFriend,.movFriend{
+	float: right;
+	font-size: 14px;
+}
+.chat_friend{
+	height:20px;
+	line-height: 20px;
+	margin-top: 2px;
 }

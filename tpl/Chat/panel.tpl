@@ -1,6 +1,6 @@
 @base/common/header.tpl#
 @css/chat/panel.css#
-<div class="chat">
+<div class="chat">dialog(对话框)
 	<div  id="chat_message">
 		<span>消息内容</span>
 		<div class="content">

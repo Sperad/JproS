@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var contactPanel = $("#self_contact");
 	//点击添加组
-	contactPanel.find('.do_addGroup').bind('click',function(event) {
+	contactPanel.find('.btn_addGroup').bind('click',function(event) {
 		if(contactPanel.find('.add_group')[0] == undefined)
 		{
 			panel.appendAddGroup(contactPanel);
@@ -11,8 +11,7 @@ $(document).ready(function(){
 	});
 	
 	//点击聊天
-	var friend_group = $(".friend_group");
-	friend_group.find('a').bind('click',function(event){
+	$(".chat_with").bind('click',function(event){
 		event.preventDefault();
 		var sFeatures = "height=600, width=600, scrollbars=yes, resizable=yes";
 		$(this).target = "_blank"; 
@@ -28,11 +27,20 @@ $(document).ready(function(){
 	});
 
 	//点击请求好友消息
-	$(".do_recordFriend").find("a").bind('click',function(event){
+	$(".btn_recordFriend").find("a").bind('click',function(event){
 		event.preventDefault();
-		panel.requestFriend();
+		$(".recordFriend").show(function(){
+			panel.requestFriend();
+		});
 	});
 	
+	//点击删除好友
+	$(".delFriend").bind('click',function(event){
+		event.preventDefault();
+		var friendId = $(this).attr('href');
+		var groupId = $(this).parents('ul[group]').attr('group');
+		panel.delFriend(friendId,groupId);
+	});
 });
 var panel = {
 		appendAddGroup : function(contactPanel){
@@ -60,9 +68,9 @@ var panel = {
 		addGroup : function ( group,dest) {
 			$.post('index.php?User_Group', group, function(data, textStatus, xhr) {
 				if(data != 'false'){
-					alert('添加成功')
+					alert('添加成功');window.location.reload();
 					//移除input 标签，改为li标签
-					dest.parents(".friend_group").removeClass('add_group').empty().append(group.val());
+					// dest.parents(".friend_group").removeClass('add_group').empty().append(group.val());
 				}else{
 					alert('添加失败,查看是否重名');
 				}
@@ -100,6 +108,7 @@ var panel = {
 				if(data == true)//添加成功
 				{
 					alert("添加成功");//刷新当前页面
+					window.location.reload();
 					//隐藏
 				}else{
 					alert('添加失败');
@@ -132,6 +141,17 @@ var panel = {
 					alert('获取数据失败');
 				}
 			});
-		}
+		},
 
+		delFriend :function(friendId,groupId)
+		{
+			$.post('index.php?User_delFriend',
+					{'friendId':friendId,'groupId':groupId}, 
+				function(data, textStatus, xhr) {
+					if(data = true)
+					{
+						alert('删除成功');window.location.reload();
+					}
+			});
+		}
 	}
