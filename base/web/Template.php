@@ -23,7 +23,7 @@ class Template extends WebObject{
 	 */
 	private function parseTpl()
 	{
-		$pattern = "/@[a-zA-Z\/\.]+#/";
+		$pattern = "/@[a-zA-Z\/\._]+#/";
 
 		$this->tplFile = file_get_contents($this->fromPath) or die('模板 源文件 不存在');
 		//正则 找到 文件 路径

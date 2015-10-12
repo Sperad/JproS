@@ -13,7 +13,8 @@
 .message_box{
 	/*border: 1px solid red;*/
 	width : 100%;
-	height: 400px
+	height: 400px;
+	overflow-y: scroll;
 }
 .message_box>span{
 	display: block;
@@ -32,9 +33,15 @@
 .chat_content li span{
 	display: block;
 	float: left;
-	width: 50%;
+	width: 100%;
 	height: 20px;
 	background: #edc;
+}
+.msg_from{
+	text-align: left;
+}
+.msg_to{
+	text-align: right;
 }
 .sendMsg{
 	width: 100%;
@@ -44,11 +51,12 @@
 	width: 100%;
 	height: 70px;
 }
-.sendBtn {
-	width: 40px;
+.btn {
 	height: 26px;
 	line-height: 26px;
 	background: #00dcb4;
 	display: block;
-	cursor: pointer
+	cursor: pointer;
+	float:left;
+	margin-left: 8px;
 }

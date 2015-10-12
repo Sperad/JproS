@@ -45,7 +45,7 @@
 					<ul group=#$group['id']@>
 					#foreach $group['users'] $user@
 						<li class="chat_friend">
-							<a href="index.php?chat_dialog/chatwith=#$user['id']@"  class='chat_with'> #$user['nickname']@ 
+							<a href="index.php?chat_dialog/chatwithId=#$user['id']@"  class='chat_with'> #$user['nickname']@ 
 								<span> 
 									#if isset($user['recordCnt']) @
 										(#$user['recordCnt']@)

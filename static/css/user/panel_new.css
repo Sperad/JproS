@@ -1,0 +1,199 @@
+@charset "utf-8";
+/* CSS Document */
+* {
+    margin: 0px;
+    padding: 0px;
+    border: 0 none;
+    font-size: 12px;
+    color: #5c5c5c;
+    font-family: "微软雅黑";
+}
+ul,li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: #d7212d;
+}
+.clr {
+    clear: both;
+}
+.user_panel {
+    background: #434d64;
+    width: 280px;
+    height: auto;
+    margin: 10px auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-top: 26px;
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+.user_panel>h1 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: normal;
+    margin-left: 8px;
+}
+.user_name {
+    color: #fff;
+    font-size: 18px;
+}
+.user_news {
+    margin-top: 8px;
+    margin-left: 54px;
+}
+.user_news a {
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+.user_news span {
+    color: #ff759f;
+    font-size: 14px;
+}
+.user_search {
+    width: 270px;
+    height: 25px;
+    margin: 0 auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
+    border: 2px solid #29303f;
+    margin-bottom: 10px;
+}
+.user_search>input {
+    width: 230px;
+    height: 25px;
+    color: #acb2bd;
+    margin-left: 5px;
+    float: left;
+}
+.user_search>button {
+    background: url(../../img/sousuo.png) no-repeat center;
+    width: 30px;
+    height: 25px;
+}
+.user_option {
+    background: #222b34;
+    overflow: hidden;
+}
+.option_contactor {
+    width: 138px;
+    height: 30px;
+    line-height: 138px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    line-height: 30px;
+}
+.option_add_friend {
+    width: 138px;
+    height: 30px;
+    display: inline-block;
+    float: right;
+    text-align: center;
+    line-height: 30px;
+}
+.option_active {
+    background: #7687ae !important;
+}
+.digest img {
+    vertical-align: middle;
+}
+/*user_friends start*/
+.user_friends {
+    background: #2b3343;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    /*display: none;*/
+}
+.user_friends h1 {
+    color: #fff;
+    background: url(../../img/sanjiaoxinga.png) no-repeat center left;
+    padding-left: 20px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+.user_friends h1.user_friends_active {
+    background: url(../../img/sanjiaoxingb.png) no-repeat center left;
+}
+.user_friends span {
+    float: right;
+    margin-right: 8px;
+    cursor: pointer;
+}
+.user_group{
+	color: #fff;
+    position: relative;
+}
+.user_group>span{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.user_group li {
+    color: #fff;
+    margin-top: 6px;
+    padding: 4px 0px;
+    padding-left: 26px;
+    overflow: hidden;
+    /*display: none;*/
+}
+.user_group li i {
+    color: #8b577b;
+    font-size: 12px;
+}
+.user_group li:nth-child(even) {
+    background: #3a384c;
+}
+.user_group li a {
+    color: #fff;
+}
+
+/*search start*/
+.reslut_add_friends {
+    display: none;
+}
+
+.reslut_add_friends>select {
+    width: 278px;
+    height: 30px;
+    background: #d1d1d1;
+    color: #525252;
+    margin: 0 auto;
+    margin-left: 1px;
+}
+
+.reslut_add_friends>select>option {
+    background: #fff;
+    padding: 10px 4px;
+    overflow: hidden;
+}
+
+.reslut_friends {
+    color: #fff;
+}
+
+.reslut_friends li {
+    color: #fff;
+    padding: 8px 0px;
+    padding-left: 26px;
+}
+
+.reslut_friends li:nth-child(even) {
+    background: #3a384c;
+}
+
+.reslut_friends li a {
+    color: #fff;
+}
+
+.reslut_friends span {
+    float: right;
+    margin-right: 8px;
+    cursor: pointer;
+}

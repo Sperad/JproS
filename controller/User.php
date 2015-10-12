@@ -40,7 +40,7 @@ class User extends Controller{
 
 		if($this->method == 'GET' && !$this->isAjax)
 		{
-			$this->loadView('this'); //或者 $this->loadView('user/login');
+			$this->loadView('this');
 		}
 	}
 
@@ -120,10 +120,10 @@ class User extends Controller{
 							           "where gu.group_id = g.id and g.create_by =$userId)";
 			$cnt = $my->count($requestRecord);
 
-			
+			$this->loadView('user/panel_new');
 			//页面显示
-			$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
-									'groups'=>$groups,'list'=>$list));
+			/*$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
+									'groups'=>$groups,'list'=>$list));*/
 		}
 	}
 
