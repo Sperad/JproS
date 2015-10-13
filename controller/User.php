@@ -120,10 +120,9 @@ class User extends Controller{
 							           "where gu.group_id = g.id and g.create_by =$userId)";
 			$cnt = $my->count($requestRecord);
 
-			$this->loadView('user/panel_new');
 			//页面显示
-			/*$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
-									'groups'=>$groups,'list'=>$list));*/
+			$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
+									'groups'=>$groups,'list'=>$list));
 		}
 	}
 
@@ -159,12 +158,12 @@ class User extends Controller{
 		if($this->method == "POST")
 		{
 			$params = $this->url->params;
-			$params['user_id'] = $params['friendId'];
-			$params['group_id'] = $params['groupId'];
+			$_params['user_id'] = $toUserId=$params['friendId'];
+			$_params['group_id'] = $params['groupId'];
 			if($params['status']==1){//发送请求
-				if($my->insert('dntk_chat_group_user',$params))
+				if($my->insert('dntk_chat_group_user',$_params))
 				{	//向好友发送请求
-					$record = array('from_user_id'=>$userId,'to_user_id'=>$params['user_id']);
+					$record = array('from_user_id'=>$userId,'to_user_id'=>$toUserId);
 					$my->insert('dntk_chat_request_record',$record);
 					echo true;
 				} else {
@@ -276,15 +275,13 @@ function getPanelList($groups,$users,$recordCnt)
 			}
 		}
 	}
-	$list = array('contact'=>'联系客服');
-	foreach ($groups as $index => &$group) {
-		foreach ($users as $user) {
-			if( $group['id']== $user['group_id']){
-				$group['users'][]= $user;
+	
+	foreach ($groups as &$group) {
+		foreach ($users as $usertmp) {
+			if( $group['id']== $usertmp['group_id']){
+				$group['users'][]= $usertmp;
 			}
 		}
 	}
-	$list =array_merge($list,$groups);
-	// print_r($list); exit;
-	return $list;
+	return $groups;
 }

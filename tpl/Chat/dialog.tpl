@@ -2,7 +2,7 @@
 @css/chat/dialog.css#
 <div class="chat_dialog">
 	<div  id="chat_message" class="message_box">
-		<span>消息内容(#$nickname@)</span>
+		<span>正在与 (#$nickname@) 聊天</span>
 		<div class="chat_content">
 			<ul id="msg_box" chatWithId="#$chatWithId@">
 				#foreach $chatHistory $record@
@@ -12,7 +12,7 @@
 				</li>
 				#foreach/@
 			</ul>
-			<!-- <ul id="chat_box">
+			<ul id="chat_box">
 				<li>
 				<span>2015-10-10 15:55:41</span>
 				<p>你好</p>
@@ -21,7 +21,7 @@
 				<span>2015-10-10 15:55:41</span>
 				<p>你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</p>
 				</li>
-			</ul> -->
+			</ul>
 		</div>
 	</div>
 	<div id="sendMsg" class="sendMsg">

@@ -1,128 +1,230 @@
-*{
-	margin:0;
-	padding: 0;
-	list-style: none;
-	font-size: 16px;
-	text-decoration: none;
+@charset "utf-8";
+* {
+    margin: 0px;
+    padding: 0px;
+    border: 0 none;
+    font-size: 12px;
+    color: #5c5c5c;
+    font-family: "微软雅黑";
 }
-/*用户个人中心的控制面板*/
-.chat_self{
-	position: absolute;
-	top:20;
-	right: 400px;
-	width: 260px;
-	background: #eee;
-	box-shadow: 5px 5px 5px #aaa;
+ul,li {
+    list-style: none;
 }
-.self_top{
-	display: block;
-	width: 100%;
-	height: 24px;
-	line-height: 24px;
-	text-indent: 8px;
-	border-bottom: 1px solid red;
+a {
+    text-decoration: none;
 }
-/*好友搜索*/
-.self_search,.add_group{
-	margin: 2px;
-	height: 26px;
-	width: 100%;
-	padding-bottom: 4px;
-	border-bottom: 1px solid red;
+a:hover {
+    color: #d7212d;
 }
-.self_search input,.add_group input{
-	margin: 0px 8px;
-	width: 160px;
-	height: 100%;
-	float: left
+.clr {
+    clear: both;
 }
-.self_search p, .add_group span{
-	height: 100%;
-	line-height: 26px;
-	float: left;
-	cursor: pointer;
-	margin-right: 8px;/*只对.add_group span 有效*/
-	box-shadow: 1px 1px 3px red
+.user_panel {
+    background: #434d64;
+    width: 280px;
+    margin: 10px auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-top: 26px;
+    overflow: hidden;
 }
-/*共用(搜索结果+添加消息)*/
-.search_news {
-	position: absolute;
-	left: 264px;
-	top:24px;
-	width: 160px;
-	background: #eee;
-	box-shadow: 1px 1px 1px #999;
-	display: none
+.user_panel>h1 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: normal;
+    margin-left: 8px;
 }
-.srch_ns_groups{
-	text-indent: 4px;
-	height: 28px;
-	line-height: 28px;
-	border-bottom: 1px solid red;
-	color: red;
+.user_name {
+    color: #fff;
+    font-size: 18px;
 }
-.srch_ns_groups select{
-	width:56px;
+.user_news {
+    margin-top: 8px;
+    margin-left: 54px;
 }
-.srch_ns_result li{
-	border-bottom: 1px solid red;
-	width: 100%;
-	height: 18px;
-	line-height: 18px;
-	margin-top: 1px;
+.user_news a {
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 2px;
 }
-.srch_ns_result li span{
-	margin-left: 8px;
+.user_news span {
+    color: #ff759f;
+    font-size: 14px;
 }
-.srch_ns_result li a{
-	 float: right;
-	 font-size: 14px;
-	 margin-right: 4px;
+.user_search {
+    width: 270px;
+    height: 25px;
+    margin: 0 auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
+    border: 2px solid #29303f;
+    margin-bottom: 10px;
 }
-.btn_movFriend{
-	background: #00dcb4;
+.user_search>input {
+    width: 230px;
+    height: 25px;
+    color: #acb2bd;
+    margin-left: 5px;
+    float: left;
+}
+.user_search>button {
+    background: url(../../img/sousuo.png) no-repeat center;
+    width: 30px;
+    height: 25px;
+}
+.user_options {
+    background: #222b34;
+    overflow: hidden;
+    height:26px;
+}
+.user_option{
 	width: 50%;
-	display: block;
-	margin:auto;
-	text-align: center;
-	display: none;
+	height: 100%;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    cursor: pointer;
 }
-/*好友组列表显示*/
-.self_group{
-	margin:4px auto;
-}
-/*联系(第一个li)*/
-.chat_news{
-	border-bottom:  1px solid red;
-	height: 24px;
-	line-height: 24px;
-	width: 100%;
-	text-indent: 8px;
-}
-.chat_news span{
-	float: right;
-	margin-right: 8px;
-	cursor: pointer;
-	font-size: 14px;
-	box-shadow: 1px 0px 3px #999;
+.user_option img {
+    vertical-align: middle;
 }
 
-/*好友组详细*/
-.friend_group{
-	border-bottom: 1px solid red;
-	margin-top: 8px;
-	margin-left: 8px;
+.option_active {
+    background: #7687ae !important;
 }
-.friend_group ul{
-	margin-left: 16px;
-	display: block;
+/*user_friends start*/
+.user_friends {
+    background: #2b3343;
+    padding-bottom: 8px;
+    height: 300px;
+    /*display: none;*/
 }
-.friend_group>a, .delFriend,.movFriend{
-	float: right;
-	font-size: 14px;
+.user_group{
+	color: #fff;
+    position: relative;
+    margin-top: 8px;
 }
-.chat_friend{
-	height:20px;
+.user_group>span{
+	height: 24px;
+	line-height: 24px;
+	width: 100%;
+	float: left;
+}
+.user_group>span h1{
+    color: #fff;
+    background: url(../../img/sanjiaoxinga.png) no-repeat center left;
+    padding-left: 16px;
+    margin-left: 8px;
+    width: 84%;
+    float: left;
+    cursor: pointer;
+}
+.user_group>span h1.user_friends_active {
+    background: url(../../img/sanjiaoxingb.png) no-repeat center left;
+}
+.user_group>span img{
+	float: left;
+	margin-top:8px;
+}
+.user_group ul{
+	float: left;
+	width: 90%;
+	margin-left:20px; 
+}
+.user_group ul li,.reslut_friends li{
+	width: 100%;
+	height: 20px;
 	line-height: 20px;
 	margin-top: 2px;
+}
+.group_friend a:first-child, .reslut_friends li a:first-child{
+	color: #eee;
+	float: left;
+}
+.group_friend a{
+    float: right;    
+}
+.group_friend a i{
+	color: #ff759f;
+}
+.group_friend img, .reslut_friends li img{
+	margin: 5px 2px 0px 0px;
+	float: right;
+}
+
+.user_help{
+	width: 100%;
+	height: 22px;
+	line-height: 22px;
+	margin:4px 0px;
+}
+.help_addgroup{
+	width: 100%;
+	float: left;
+}
+.help_addgroup>span{
+	margin-left: 8px;
+	height: 100%;
+    width: 30px;
+    text-indent: 2px;
+    line-height: 22px;
+    float: left;
+	cursor: pointer;
+	background:#7687ae;
+	color: #fff;
+}
+.help_addgroup form{
+    float: left;
+    margin: 0px 8px;
+    display: none;
+}
+.help_addgroup form input{
+    height: 100%;
+}
+.form_submit{
+    width: 26px;
+    cursor: pointer;
+}
+
+/*search start*/
+.friends_news {
+    height: 300px;
+    display: none;
+}
+.group_select{
+    height: 24px;
+    line-height: 24px;
+    color: #ff759f;
+    margin-left: 8px;
+}
+.group_select>select {
+    margin-left: 8px;
+    height: 24px;
+    width: 80%;
+    background: #d1d1d1;
+    color: #525252;
+}
+.group_select>select>option {
+    background: #fff;
+    padding: 10px 4px;
+    overflow: hidden;
+}
+.reslut_friends {
+    width: 100%;
+    height: 270px;
+}
+.reslut_friends li {
+	line-height: 26px;
+    height: 26px;
+}
+.reslut_friends li:nth-child(even) {
+    background: #3a384c;
+}
+.reslut_friends li a {
+	margin-left: 16px;
+}
+.reslut_friends li img{
+    margin-right: 8px;
 }
