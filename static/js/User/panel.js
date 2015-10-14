@@ -1,4 +1,24 @@
 $(document).ready(function(){
+	//前台动画
+	var userGroupsCls = $('.user_group');
+	var flag =false;
+	userGroupsCls.find('span').hover(function(){
+		$(this).children('img').show();
+	},function(){
+		$(this).children('img').hide();
+	});
+	userGroupsCls.find('h1').bind('click',function(event){
+		if(!flag){
+			$(this).addClass('user_friends_active');
+			$(this).parent().next().show();
+			flag = true;
+		}else{
+			$(this).removeClass('user_friends_active');
+			$(this).parent().next().hide();
+			flag = false;
+		}
+	})
+	//后台操作
 	var userOption = $(".user_option");
 	var userHelp = $("#userHelp");
 	var userGroups = $('#userGroups');

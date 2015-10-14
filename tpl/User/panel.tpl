@@ -25,22 +25,22 @@
  		#foreach $list $k $group@
 	 		<div class="user_group">
 	 			<span group="#$group['id']@" name="#$group['group_name']@">
-			    <h1>#$group['group_name']@</h1> 
+				    <h1>#$group['group_name']@</h1> 
 	 				<img src="../static/img/del.png" class="delGroup" />
 	 			</span>
-		  	<ul>
-		  		#foreach $group['users'] $user@
-		     	<li class="group_friend">
-		     		<a class="chat_with" href="index.php?chat_dialog/chatwithId=#$user['id']@">#$user['nickname']@
-		     			<i>#if isset($user['recordCnt']) @
-										(#$user['recordCnt']@)
-								  #if/@</i>
-		     		</a>
-		     		<a class="delFriend" href="#$user['id']@"><img src="../static/img/del.png"/></a>
-		     		<a class="movFriend" href="#$user['id']@" name='#$user['nickname']@'>移动</a>
-		     	</li>
-		     	#foreach/@ 
-		    </ul> 
+			  	<ul>
+			  		#foreach $group['users'] $user@
+			     	<li class="group_friend">
+			     		<a class="chat_with" href="index.php?chat_dialog/chatwithId=#$user['id']@">#$user['nickname']@
+			     			<i>#if isset($user['recordCnt']) @
+											(#$user['recordCnt']@)
+									  #if/@</i>
+			     		</a>
+			     		<a class="delFriend" href="#$user['id']@"><img src="../static/img/del.png"/></a>
+			     		<a class="movFriend" href="#$user['id']@" name='#$user['nickname']@'>移动</a>
+			     	</li>
+			     	#foreach/@ 
+			    </ul> 
 	 		</div>
 		#foreach/@
   </div>

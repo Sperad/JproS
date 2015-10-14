@@ -103,7 +103,6 @@ a:hover {
 }
 .user_group{
 	color: #fff;
-    position: relative;
     margin-top: 8px;
 }
 .user_group>span{
@@ -111,6 +110,9 @@ a:hover {
 	line-height: 24px;
 	width: 100%;
 	float: left;
+}
+.user_group>span:hover,.user_group ul li:hover{
+    background: #434D64;
 }
 .user_group>span h1{
     color: #fff;
@@ -127,17 +129,20 @@ a:hover {
 .user_group>span img{
 	float: left;
 	margin-top:8px;
+    display: none;
 }
 .user_group ul{
 	float: left;
 	width: 90%;
-	margin-left:20px; 
+	margin-left:20px;
+    display: none;
 }
 .user_group ul li,.reslut_friends li{
 	width: 100%;
 	height: 20px;
 	line-height: 20px;
 	margin-top: 2px;
+    cursor:pointer;
 }
 .group_friend a:first-child, .reslut_friends li a:first-child{
 	color: #eee;
