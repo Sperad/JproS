@@ -22,6 +22,11 @@ class Session extends WebObject {
     	self::$name = $name;
     }
 
+    public static function getID($name)
+    {
+        return self::$id ;
+    }
+
     public static function setExpire($expire)
     {
     	self::$expire = $expire;

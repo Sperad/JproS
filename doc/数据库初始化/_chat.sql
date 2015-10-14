@@ -34,6 +34,7 @@ CREATE TABLE `dntk_chat_message`(
 	`from_user_id` int(11) NOT NULL COMMENT '聊天的发送者',
 	`to_user_id` int(11) NOT NULL COMMENT '聊天的接收者',
 	`content` text COMMENT '聊天发送的内容',
+	'from_role' tinyint(3) NOT NULl DEFAULT 1 COMMENT '发送者角色: 6 好友, 7游客'
 	`status` tinyint(3) NOT NULL DEFAULT 1 COMMENT '消息状态:1发送成功(对方最新),3对方接收()',
 	`create_time` datetime COMMENT '聊天的发送时间',
 	PRIMARY KEY (`id`)
@@ -41,7 +42,8 @@ CREATE TABLE `dntk_chat_message`(
 
 DROP TABLE IF EXISTS `dntk_chat_visitor`;
 CREATE TABLE `dntk_chat_visitor`(
-	`id` int(11) unsigned NOT NULL COMMENT '游客的ID',
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '游客的ID',
+	`nickname` varchar(32) NOT NULL COMMENT '昵称',
 	`session_id` varchar(64) NOT NULL COMMENT '游客的Session_id',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;

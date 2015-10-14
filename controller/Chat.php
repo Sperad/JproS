@@ -10,12 +10,12 @@ class Chat extends Controller {
 	/*聊天页面*/
 	public function dialog()
 	{
-		//判断是否为游客
 		$chatWithId = intval($this->url->params['chatwithId']);
 		$userId = Session::get("userId");
-		if($chatWithId && $userId){
-			Session::set('chatWithId',$chatWithId);
-			$my = new Mysql();
+		Session::set('chatWithId',$chatWithId);
+		$my = new Mysql();
+		if($userId && $chatWithId)
+		{
 			//获取对方信息
 			$sql = "select nickname from dntk_chat_user where id = $chatWithId";
 			$chatWith = $my->doSql($sql);
@@ -29,6 +29,22 @@ class Chat extends Controller {
 			$this->loadView('this',array('chatHistory'=>$chatHistory,
 								'nickname'=>$chatWith[0]['nickname'],
 								'chatWithId'=>$chatWithId) );
+		}else{//游客
+			$seionId = Session::$id;
+			//判断是否存在该游客
+			$visitorOnly = "select count(1) as cnt from dntk_chat_visitor where session_id = '$seionId' ";
+			$cnt = $my->count($visitorOnly);//
+			if(empty($cnt['cnt'])){//未注册
+				$visitor['session_id']= $seionId;
+				$visitor['nickname']  = rand(1000,9999).substr(md5($seionId),10,6);
+				if($my->insert('dntk_chat_visitor',$visitor))
+				{//注册成功,自动登陆
+					$visitorId = $my->lastInsertId();
+					//保存session
+					Session::set('userId',$visitorId);
+					Session::set('nickName',$visitor['nickname']);
+				}
+			}
 		}
 	}
 

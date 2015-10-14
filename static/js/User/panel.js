@@ -82,12 +82,18 @@ $(document).ready(function(){
 	});
 
 	//点击消息
-	userNews.bind('click',function(event){
+	userNews.find('.friend_news').bind('click',function(event){
 		event.preventDefault();
 		resultFriends.empty();
 		panel.toggle_option($('.user_option[data-toggle=newsFriends]')).requestFriend(resultFriends);
 	});
-	
+
+	userNews.find('.visitor_news').bind('click',function(event){
+		event.preventDefault();
+		resultFriends.empty();
+		panel.toggle_option($('.user_option[data-toggle=newsFriends]'));//.requestFriend(resultFriends);
+	});
+
 	//点击删除好友
 	userGroups.find(".delFriend").bind('click',function(event){
 		event.preventDefault();

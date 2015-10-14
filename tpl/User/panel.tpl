@@ -4,8 +4,14 @@
 <div id="user_panel" class="user_panel">
 	<h1>你好：<span class="user_name">#$name@</span></h1>
 	<div class="user_news btn_recordFriend" id="userNews">
-    	<img src="../static/img/msg.png" /> 
-    	<a href="#" target="">(<span>#$requestRecord@</span>)</a>
+		<div class="friend_news">
+    		<img src="../static/img/msg.png" /> 
+    		<a href="#" target="">(<span>#$requestRecord@</span>)</a>
+    	</div>
+    	<div class="visitor_news">
+    		<img src="../static/img/msg.png" /> 
+    		<a href="#" target="">(<span>游客消息#$visitorCnt@</span>)</a>
+    	</div>
  	</div>
  	<form class="user_search" id="userSearch" >
 	    <input type="text" name="like" placeholder="查找"/> 

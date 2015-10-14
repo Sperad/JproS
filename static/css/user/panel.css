@@ -40,7 +40,11 @@ a:hover {
 }
 .user_news {
     margin-top: 8px;
-    margin-left: 54px;
+    margin-left: 50px;
+}
+.user_news>div{
+    margin-left: 2px;
+    float: left;
 }
 .user_news a {
     color: #fff;

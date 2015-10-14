@@ -108,9 +108,12 @@ class User extends Controller{
 			}
 
 			//获取好友发来的消息数量
-			$sql = "select count(1) as cnt,from_user_id from dntk_chat_message where to_user_id = $userId and status = 1 group by from_user_id";
+			$sql = "select count(1) as cnt,from_user_id from dntk_chat_message where to_user_id = $userId and status = 1 and from_role=6 group by from_user_id";
 			$recordCnt = $my->doSql($sql);
 
+			//获取游客发来的消息数量
+			$sql = "select count(1) as cnt from dntk_chat_message where to_user_id = $userId and status = 1 and from_role=7 ";
+			$visitorCnt = $my->doSql($sql);
 			//数据处理
 			$list = getPanelList($groups,$users,$recordCnt);
 
@@ -123,7 +126,7 @@ class User extends Controller{
 
 			//页面显示
 			$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
-									'groups'=>$groups,'list'=>$list));
+									'groups'=>$groups,'list'=>$list,'visitorCnt'=>$visitorCnt[0]['cnt']));
 		}
 	}
 
