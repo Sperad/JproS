@@ -12,9 +12,9 @@
 			<ul class="msg_history">
 				#foreach $chatHistory $record@
 					#if $chatWithId==$record['from_user_id']@
-						<li class="msg_from">
+						<li class="msg_from" msgId=#$record['id']@>
 					#else@
-						<li class="msg_to">
+						<li class="msg_to" msgId=#$record['id']@>
 					#if/@
 					<span> #$record['create_time']@ </span>
 					<p>#$record['content']@</p>

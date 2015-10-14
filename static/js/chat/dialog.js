@@ -3,14 +3,19 @@ $(document).ready(function() {
 	var msgBoxOld = $("#msg_box .msg_history");
 	var msgBoxNew = $("#msg_box .msg_news");
 	
+	//点击关闭对话
+	$('.title_close').bind('click',function(event) {
+		event.preventDefault();
+		window.close();
+	});
 	//发送消息
 	msgBtn.bind('click', function(event){
 		var msgData = $(this).parent('span').prev('textarea');
 		if(msgData.val()==''){
 			alert('请输入内容');
 		}else{
+			dialog.sendMsg(msgBoxNew,{'content':msgData.val()});
 			msgData.val('');
-			dialog.sendMsg({'content':msgData.val()},msgBoxNew);
 		}
 	})
 
@@ -21,7 +26,16 @@ $(document).ready(function() {
 	$('#msgHistory').bind('click',function(event) {
 		if(!$(this).is('.msgBtn_history')) {
 			$(this).addClass('msgBtn_history');
-			dialog.msgHistory(msgBoxOld);
+			//获取最新的聊天记录id
+			msgNewli = msgBoxNew.children();
+			msgOldli = msgBoxOld.children();
+			queryTimes ={times:0};
+
+			if(msgNewli.length)
+				queryTimes = {times:$(msgNewli).length};
+			if(msgBoxOld.length)
+				queryTimes = {times:$(msgOldli).length};
+			dialog.msgHistory(msgBoxOld,queryTimes);
 		}
 	});
 });
@@ -29,7 +43,7 @@ $(document).ready(function() {
 var dialog = {
 	chatWithId: $('#msg_box').attr('chatWithId'),
 
-	sendMsg: function(msg, msgBoxNew)
+	sendMsg: function(msgBoxNew,msg)
 	{
 		_this = this;
 		$.ajax({
@@ -63,26 +77,27 @@ var dialog = {
 		var className = 'to';
 		if(infoData.from_user_id == this.chatWithId)
 			className = 'from';
-		msgBox.append('<li class="msg_'+className+'"><span>'+
+		msgBox.append('<li class="msg_'+className+'" msgId="'+infoData.id+'"><span>'+
 				infoData.create_time+'</span> <p>'+infoData.content+'</p></li>')
 	},
 
-	msgHistory : function(msgBoxOld)
+	msgHistory : function(msgBoxOld,times)
 	{
 		_this = this;
-		$.getJSON('index.php?chat_historyRecord','', 
+		if(times != 'undefined' )  queryTimes = times;
+		$.getJSON('index.php?chat_historyRecord/',queryTimes, 
 			function(back, textStatus) {
 				if(back){
 					$.each(back, function(index, item) {
 						_this.historyMore(msgBoxOld,item);
 					});
+					msgBoxOld.prepend('<li class="history_more"><a href="#">更多...</a></li>');
+					$('.history_more a').bind('click',function(event){
+						event.preventDefault();
+							msgBoxOld.find('.history_more a').parent().remove();
+						_this.msgHistory(msgBoxOld);
+					});
 				}
-				msgBoxOld.prepend('<li class="history_more"><a href="#">更多...</a></li>');
-				$('.history_more a').bind('click',function(event){
-					event.preventDefault();
-						msgBoxOld.find('.history_more a').parent().remove();
-					_this.msgHistory(msgBoxOld);
-				});
 				
 		});
 	},

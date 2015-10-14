@@ -61,6 +61,7 @@ class Chat extends Controller {
 			//插入数据库
 			$my = new Mysql();
 			if($my->insert('dntk_chat_message',$message)){
+				$message['id'] = $my->lastInsertId();
 				header('Content-type:text/json;charset=utf-8'); 
 				echo Json::Arr2J($message);
 			}
@@ -71,7 +72,12 @@ class Chat extends Controller {
 	{
 		$chatWithId = Session::get('chatWithId');
 		$userId = Session::get('userId');
-		$page = $_POST['moreTimes'];
+		if( isset($this->url->params['times'])){
+			$page = $this->url->params['times'];
+			Session::set('moreTimes',$page);
+		}else{
+			$page = Session::get('moreTimes');
+		}
 		$pageSize = 2;
 		$limit = 'limit '.$page*$pageSize.','.$pageSize;
 		$sql = "select * from dntk_chat_message m ".
@@ -82,7 +88,9 @@ class Chat extends Controller {
 		$my = new Mysql();
 		$historyRecord = $my->doSql($sql);
 		header('Content-type:text/json;charset=utf-8'); 
-
+		if(empty($historyRecord)){
+			echo false;exit;
+		}
 		// echo Json::Arr2J(array_reverse($historyRecord));
 		echo Json::Arr2J($historyRecord);
 	}
