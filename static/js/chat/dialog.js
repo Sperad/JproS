@@ -1,33 +1,35 @@
 $(document).ready(function() {
 	var msgBtn = $("#sendBtn");
-	var msgBox = $("#msg_box");
+	var msgBoxOld = $("#msg_box .msg_history");
+	var msgBoxNew = $("#msg_box .msg_news");
 	
 	//发送消息
 	msgBtn.bind('click', function(event){
-		event.preventDefault();
-		var msgData = $('.editMsg').val();
-		if(msgData==''){
+		var msgData = $(this).parent('span').prev('textarea');
+		if(msgData.val()==''){
 			alert('请输入内容');
 		}else{
-			dialog.sendMsg({'content':msgData},msgBox);
+			msgData.val('');
+			dialog.sendMsg({'content':msgData.val()},msgBoxNew);
 		}
 	})
 
 	//接收消息
-	setInterval(function(){dialog.getMsg(msgBox)},1500); //每1秒发送一次请求
+	setInterval(function(){dialog.getMsg(msgBoxNew)},1500); //每1秒发送一次请求
 
 	//获取历史消息记录
 	$('#msgHistory').bind('click',function(event) {
-		if(!$(this).is('.msg_history')) {
-			$(this).addClass('msg_history');
-			dialog.msgHistory(msgBox);
+		if(!$(this).is('.msgBtn_history')) {
+			$(this).addClass('msgBtn_history');
+			dialog.msgHistory(msgBoxOld);
 		}
 	});
-
 });
 
 var dialog = {
-	sendMsg: function(msg, msgBox)
+	chatWithId: $('#msg_box').attr('chatWithId'),
+
+	sendMsg: function(msg, msgBoxNew)
 	{
 		_this = this;
 		$.ajax({
@@ -38,19 +40,19 @@ var dialog = {
 			dataType: 'json',//服务器返回的数据类型  与下一个注释 二选一
 			success:function(back){
 				// back = JSON.parse(back);
-				_this.appendMsg(msgBox,back);
+				_this.appendMsg(msgBoxNew,back);
 			}
 		})
 	},
 
-	getMsg : function(msgBox)
+	getMsg : function(msgBoxNew)
 	{
 		_this = this;
 		$.getJSON('index.php?chat_record','', 
 			function(back, textStatus) {
 				if(back){
 					$.each(back, function(index, item) {
-						_this.appendMsg(msgBox,item);
+						_this.appendMsg(msgBoxNew,item);
 					});
 				}
 		});
@@ -58,40 +60,37 @@ var dialog = {
 
 	appendMsg : function(msgBox,infoData)
 	{
-		var chatWithId = msgBox.attr('chatWithId');
-		var className = 'from';
-		if(infoData.to_user_id == chatWithId )
-				className = 'to';
+		var className = 'to';
+		if(infoData.from_user_id == this.chatWithId)
+			className = 'from';
 		msgBox.append('<li class="msg_'+className+'"><span>'+
 				infoData.create_time+'</span> <p>'+infoData.content+'</p></li>')
 	},
 
-	msgHistory : function(msgBox)
+	msgHistory : function(msgBoxOld)
 	{
 		_this = this;
 		$.getJSON('index.php?chat_historyRecord','', 
 			function(back, textStatus) {
-
 				if(back){
 					$.each(back, function(index, item) {
-						_this.historyMore(msgBox,item);
+						_this.historyMore(msgBoxOld,item);
 					});
 				}
-				msgBox.prepend('<li><a class="history_more" href="#">more</a></li>');
-				$('.history_more').bind('click',function(event){
+				msgBoxOld.prepend('<li class="history_more"><a href="#">更多...</a></li>');
+				$('.history_more a').bind('click',function(event){
 					event.preventDefault();
-						msgBox.find('.history_more').parent().remove();
-					_this.msgHistory(msgBox);
+						msgBoxOld.find('.history_more a').parent().remove();
+					_this.msgHistory(msgBoxOld);
 				});
 				
 		});
 	},
-	historyMore : function(msgBox,infoData){
-		var chatWithId = msgBox.attr('chatWithId');
+	historyMore : function(msgBoxOld,infoData){
 		var className = 'from';
-		if(infoData.to_user_id == chatWithId )
+		if(infoData.to_user_id == this.chatWithId )
 				className = 'to';
-		msgBox.prepend('<li class="msg_'+className+'"><span>'+
+		msgBoxOld.prepend('<li class="msg_'+className+'"><span>'+
 				infoData.create_time+'</span> <p>'+infoData.content+'</p></li>')
 	}
 }

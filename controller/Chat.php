@@ -13,22 +13,20 @@ class Chat extends Controller {
 		$chatWithId = intval($this->url->params['chatwithId']);
 		$userId = Session::get("userId");
 		Session::set('chatWithId',$chatWithId);
-		Session::set('moreTimes',0);
 		$my = new Mysql();
 		//获取对方信息
 		$sql = "select nickname from dntk_chat_user where id = $chatWithId";
 		$chatWith = $my->doSql($sql);
 		//获取未读取的信息
-		$sql = "select * from dntk_chat_message m where ".
-					"(m.from_user_id = $chatWithId and m.to_user_id = $userId) and m.status=1";
+		$sql = "select * from dntk_chat_message m where  ((m.from_user_id = $userId and m.to_user_id = $chatWithId) or".
+					"(m.from_user_id = $chatWithId and m.to_user_id = $userId)) and m.status=1 order by id asc";
 		$chatHistory = $my->doSql($sql);
 		//将信息标记为已读
 		$my->where(array('from_user_id'=>$chatWithId,'to_user_id'=>$userId))
 			->update('dntk_chat_message',array('status'=>3));
 		$this->loadView('this',array('chatHistory'=>$chatHistory,
 							'nickname'=>$chatWith[0]['nickname'],
-							'chatWithId'=>$chatWithId)
-			);
+							'chatWithId'=>$chatWithId) );
 	}
 
 	public function record()
@@ -73,12 +71,12 @@ class Chat extends Controller {
 	{
 		$chatWithId = Session::get('chatWithId');
 		$userId = Session::get('userId');
-		$page = Session::get('moreTimes');
+		$page = $_POST['moreTimes'];
 		$pageSize = 2;
 		$limit = 'limit '.$page*$pageSize.','.$pageSize;
 		$sql = "select * from dntk_chat_message m ".
-				" where (m.from_user_id = $userId and m.to_user_id =$chatWithId) or ".
-					" (m.from_user_id =$chatWithId and m.to_user_id = $userId) ".
+				" where ((m.from_user_id = $userId and m.to_user_id =$chatWithId) or ".
+					" (m.from_user_id =$chatWithId and m.to_user_id = $userId))".
 						"and m.status =3 order by id desc ".$limit;
 		Session::set('moreTimes',++$page);
 		$my = new Mysql();
