@@ -60,6 +60,7 @@ class User extends Controller{
 		}
 		if($this->method == 'GET' && !$this->isAjax)
 		{	
+			Session::destroy();
 			$this->loadView('this'); //或者 $this->loadView('user/login');
 		}
 	}

@@ -8,8 +8,8 @@
     	<a href="#" target="">(<span>#$requestRecord@</span>)</a>
  	</div>
  	<form class="user_search" id="userSearch" >
-    <input type="text" name="like" placeholder="查找"/> 
-    <button type="submit" class="doFind"></button> 
+	    <input type="text" name="like" placeholder="查找"/> 
+	    <button type="submit" class="doFind"></button> 
  	</form>
  	<!-- 选项卡 --> 
  	<div class="user_options"> 
@@ -43,34 +43,34 @@
 			    </ul> 
 	 		</div>
 		#foreach/@
-  </div>
-  <!-- result start --> 
-  <div class="friends_news" id="newsFriends">
-  	<div class="group_select">选择组
-	  	<select name="groupId" 
-	  		id="groupsName">
-	    		#foreach $groups $group@
+  	</div>
+    <!-- result start --> 
+    <div class="friends_news" id="newsFriends">
+	  	<div class="group_select">选择组
+		  	<select name="groupId" 
+		  		id="groupsName">
+		    		#foreach $groups $group@
 						<option value=#$group['id']@>#$group['group_name']@</option>
 					#foreach/@
-	  	</select>
+		  	</select>
+	  	</div>
+	    <ul class="reslut_friends" id="resultFriends"> 
+			<!--<li>
+	     		<a href="">CLOVER</a>
+	     		<a href="#"><img src="../static/img/jiahao__hongse.png" /></a>
+	     		<a href="#"><img src="../static/img/del.png" /></a>
+	     	</li>  -->
+	    </ul> 
   	</div>
-    <ul class="reslut_friends" id="resultFriends"> 
-<!--      	<li>
-     		<a href="">CLOVER</a>
-     		<a href="#"><img src="../static/img/jiahao__hongse.png" /></a>
-     		<a href="#"><img src="../static/img/del.png" /></a>
-     	</li>  -->
-    </ul> 
-  </div>
-  <!-- 底部help-->
-  <div class="user_help" id="userHelp">
-	  <div class="help_addgroup">
-	  	<span>加组</span>
-	  	<form action="">
-	  		<input type="text" name="" />
-	  		<input type="submit" class="form_submit" value="确定" />
-	  	</form>
-	  </div>
-  </div>
+	<!-- 底部help-->
+	<div class="user_help" id="userHelp">
+	  	<div class="help_addgroup">
+		  	<span>加组</span>
+		  	<form action="">
+		  		<input type="text" name="" />
+		  		<input type="submit" class="form_submit" value="确定" />
+		  	</form>
+	  	</div>
+  	</div>
 </div>
 @js/user/panel.js#

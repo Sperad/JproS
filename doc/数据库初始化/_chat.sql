@@ -5,7 +5,8 @@ CREATE TABLE `dntk_chat_user` (
    	`nickname` varchar(32) NOT NULL COMMENT '昵称',
   	`password` varchar(64) NOT NULL COMMENT '密码',
   	`realname` varchar(32) COMMENT '真实姓名',
-  	`sex` tinyint(1) NOT NULL DEFAULT 0 COMMENT '性别',
+  	`online` tinyint(3) NOT NULL DEFAULT 0 COMMENT '用户是否在线',
+  	`sex` tinyint(3) NOT NULL DEFAULT 0 COMMENT '性别',
   	`birthday` datetime NOT NULL COMMENT '生日',
   	PRIMARY KEY (`id`),
   	UNIQUE KEY `nickname` (`nickname`)
@@ -41,7 +42,6 @@ CREATE TABLE `dntk_chat_message`(
 DROP TABLE IF EXISTS `dntk_chat_visitor`;
 CREATE TABLE `dntk_chat_visitor`(
 	`id` int(11) unsigned NOT NULL COMMENT '游客的ID',
-	`nickname` varchar(32) NOT NULL COMMENT '游客的昵称',
 	`session_id` varchar(64) NOT NULL COMMENT '游客的Session_id',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
