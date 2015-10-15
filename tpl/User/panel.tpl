@@ -37,7 +37,7 @@
 			  	<ul>
 			  		#foreach $group['users'] $user@
 			     	<li class="group_friend">
-			     		<a class="chat_with" href="index.php?chat_dialog/chatwithId=#$user['id']@">#$user['nickname']@
+			     		<a class="chat_with" href="index.php?chat_dialog/chatwithId=#$user['id']@&role=friend&fromRole=friend">#$user['nickname']@
 			     			<i>#if isset($user['recordCnt']) @
 											(#$user['recordCnt']@)
 									  #if/@</i>

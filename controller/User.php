@@ -55,6 +55,7 @@ class User extends Controller{
 			{
 				Session::set('userId',$_user['id']);
 				Session::set('nickName',$user['nickname']);
+				// setcookie('visitor','',time()-3600);
 				echo "<script>alert('登录成功');window.location.href='index.php?User_panel'</script>";
 			}
 		}

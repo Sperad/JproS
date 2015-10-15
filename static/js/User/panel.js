@@ -251,8 +251,14 @@ var panel = {
 			{	
 				$.each(data, function(index, visitor){
 					resultFriends.append('<li class="group_friend">'+
-						'<a class="chat_with" href="index.php?chat_dialog/chatwithId='+visitor.id+'">'+
+						'<a class="chat_with" href="index.php?chat_dialog/chatwithId='+visitor.id+'&role=friend&fromRole=visitor">'+
 							visitor.nickname+'<i>('+visitor.cnt+')</i></a>');
+				});
+				resultFriends.find(".chat_with").bind('click',function(event){
+					event.preventDefault();
+					var sFeatures = "height=600, width=600, scrollbars=yes, resizable=yes";
+					$(this).target = "_blank"; 
+					 window.open($(this).attr('href'), '3km', sFeatures );
 				});
 			}else{
 				alert('获取数据失败');
