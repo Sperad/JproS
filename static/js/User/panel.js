@@ -88,10 +88,11 @@ $(document).ready(function(){
 		panel.toggle_option($('.user_option[data-toggle=newsFriends]')).requestFriend(resultFriends);
 	});
 
+	//点击获取游客消息
 	userNews.find('.visitor_news').bind('click',function(event){
 		event.preventDefault();
 		resultFriends.empty();
-		panel.toggle_option($('.user_option[data-toggle=newsFriends]'));//.requestFriend(resultFriends);
+		panel.toggle_option($('.user_option[data-toggle=newsFriends]')).requestVisitor(resultFriends);
 	});
 
 	//点击删除好友
@@ -239,6 +240,23 @@ var panel = {
 				if(data == true) {
 					alert('移动成功');window.location.reload();
 				}
+		});
+	},
+
+	requestVisitor: function(resultFriends){
+		var _this = this;
+		$.get('index.php?User_visitors',function(data)
+		{
+			if(data != 'false')
+			{	
+				$.each(data, function(index, visitor){
+					resultFriends.append('<li class="group_friend">'+
+						'<a class="chat_with" href="index.php?chat_dialog/chatwithId='+visitor.id+'">'+
+							visitor.nickname+'<i>('+visitor.cnt+')</i></a>');
+				});
+			}else{
+				alert('获取数据失败');
+			}
 		});
 	}
 }

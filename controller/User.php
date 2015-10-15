@@ -251,6 +251,25 @@ class User extends Controller{
 				->update('dntk_chat_group_user',array('group_id'=>$groupId));
 		echo true;
 	}
+
+	/**
+	 * 游客信息
+	 */
+	public function visitors()
+	{
+		$my = new Mysql();
+		$userId = Session::get('userId');
+		if($this->method == 'GET')
+		{
+			$sql = "select count(1) as cnt,v.id,v.nickname ".
+						"from dntk_chat_message m, dntk_chat_visitor v ".
+							"where m.to_user_id = $userId  and m.from_user_id = v.id ".
+								"and m.status = 1 and m.from_role=7 group by m.from_user_id ";
+			$users = $my->doSql($sql);
+			header('Content-type:text/json'); 
+			echo Json::Arr2J($users);
+		}
+	}
 }
 //接口Json API
 // $a =  Json::J2Arr($this->body);

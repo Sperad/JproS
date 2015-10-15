@@ -31,6 +31,7 @@ class Chat extends Controller {
 								'chatWithId'=>$chatWithId) );
 		}else{//游客
 			$seionId = Session::$id;
+			Session::set('role','visitor');
 			//判断是否存在该游客
 			$visitorOnly = "select count(1) as cnt from dntk_chat_visitor where session_id = '$seionId' ";
 			$cnt = $my->count($visitorOnly);//
@@ -41,7 +42,7 @@ class Chat extends Controller {
 				{//注册成功,自动登陆
 					$visitorId = $my->lastInsertId();
 					//保存session
-					Session::set('userId',$visitorId);
+					Session::set('userId',intval($visitorId));
 					Session::set('nickName',$visitor['nickname']);
 				}
 			}
@@ -76,6 +77,11 @@ class Chat extends Controller {
 			$message['from_user_id'] = Session::get('userId');
 			$message['to_user_id'] = $chatWithId;
 			$message['content'] = $a['content'];
+			$role = Session::get('role');
+			$message['from_role'] = 6;
+			if($role == 'visitor'){
+				$message['from_role'] = 7;
+			}
 
 			//插入数据库
 			$my = new Mysql();
