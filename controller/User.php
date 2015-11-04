@@ -109,12 +109,9 @@ class User extends Controller{
 			}
 
 			//获取好友发来的消息数量
-			$sql = "select count(1) as cnt,from_user_id from dntk_chat_message where to_user_id = $userId and status = 1 and from_role=6 group by from_user_id";
+			$sql = "select count(1) as cnt,from_user_id from dntk_chat_message where to_user_id = $userId and status = 1 group by from_user_id";
 			$recordCnt = $my->doSql($sql);
 
-			//获取游客发来的消息数量
-			$sql = "select count(1) as cnt from dntk_chat_message where to_user_id = $userId and status = 1 and from_role=7 ";
-			$visitorCnt = $my->doSql($sql);
 			//数据处理
 			$list = getPanelList($groups,$users,$recordCnt);
 
@@ -127,7 +124,7 @@ class User extends Controller{
 
 			//页面显示
 			$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
-									'groups'=>$groups,'list'=>$list,'visitorCnt'=>$visitorCnt[0]['cnt']));
+									'groups'=>$groups,'list'=>$list));
 		}
 	}
 
@@ -251,25 +248,6 @@ class User extends Controller{
 		$my->where(array('group_id'=>$oldGroupId,'user_id'=>$friendId))
 				->update('dntk_chat_group_user',array('group_id'=>$groupId));
 		echo true;
-	}
-
-	/**
-	 * 游客信息
-	 */
-	public function visitors()
-	{
-		$my = new Mysql();
-		$userId = Session::get('userId');
-		if($this->method == 'GET')
-		{
-			$sql = "select count(1) as cnt,v.id,v.nickname ".
-						"from dntk_chat_message m, dntk_chat_visitor v ".
-							"where m.to_user_id = $userId  and m.from_user_id = v.id ".
-								"and m.status = 1 and m.from_role=7 group by m.from_user_id ";
-			$users = $my->doSql($sql);
-			header('Content-type:text/json'); 
-			echo Json::Arr2J($users);
-		}
 	}
 }
 //接口Json API

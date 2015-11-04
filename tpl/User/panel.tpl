@@ -8,10 +8,6 @@
     		<img src="../static/img/msg.png" /> 
     		<a href="#" target="">(<span>#$requestRecord@</span>)</a>
     	</div>
-    	<div class="visitor_news">
-    		<img src="../static/img/msg.png" /> 
-    		<a href="#" target="">(<span>游客消息#$visitorCnt@</span>)</a>
-    	</div>
  	</div>
  	<form class="user_search" id="userSearch" >
 	    <input type="text" name="like" placeholder="查找"/> 
@@ -37,13 +33,13 @@
 			  	<ul>
 			  		#foreach $group['users'] $user@
 			     	<li class="group_friend">
-			     		<a class="chat_with" href="index.php?chat_dialog/chatwithId=#$user['id']@&role=friend&fromRole=friend">#$user['nickname']@
+			     		<a class="chat_with" href="index.php?chat_dialog/chatwithId=#$user['id']@">#$user['nickname']@
 			     			<i>#if isset($user['recordCnt']) @
 											(#$user['recordCnt']@)
 									  #if/@</i>
 			     		</a>
 			     		<a class="delFriend" href="#$user['id']@"><img src="../static/img/del.png"/></a>
-			     		<a class="movFriend" href="#$user['id']@" name='#$user['nickname']@'>移动</a>
+			     		<a class="movFriend" href="#$user['id']@" name='#$user['nickname']@'><img src="../static/img/right.png" /></a>
 			     	</li>
 			     	#foreach/@ 
 			    </ul> 

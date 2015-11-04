@@ -71,7 +71,7 @@ $(document).ready(function(){
 		var oldGroupName = $(this).parents('ul').prev('span[group]').attr('name');
 		resultFriends.empty();
 		panel.toggle_option($('.user_option[data-toggle=newsFriends]'));
-		resultFriends.append('<li><a>'+friendName+'</a><a class="mov" herf="#"><img src="../static/img/del.png" /></a></li>');
+		resultFriends.append('<li><a>'+friendName+'</a><a class="mov" herf="#"><img src="../static/img/right.png" /></a></li>');
 		resultFriends.find('.mov').bind('click',function(event) {
 			event.preventDefault();
 			var newGroup = $("#groupsName option:selected");

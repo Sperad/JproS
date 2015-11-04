@@ -153,7 +153,8 @@ a:hover {
 	float: left;
 }
 .group_friend a{
-    float: right;    
+    float: right; 
+    margin-left: 8px; 
 }
 .group_friend a i{
 	color: #ff759f;

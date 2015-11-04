@@ -10,36 +10,14 @@ class Chat extends Controller {
 	/*聊天页面*/
 	public function dialog()
 	{
-		$this->visitorSignUp();
 		$userId = Session::get("userId");
 		//是否存在chatWith
 		$chatWithId = intval($this->url->params['chatwithId']);
 		if(!$chatWithId) return false;
 		Session::set('chatWithId',$chatWithId);
-		//是否存在role
-		$params = $this->url->params;
-		if(!isset($params['role'])) return false;
-		Session::set('role','friend');
-		Session::set('fromRole',7);
-		$role = $params['role'];//自己的身份
-
-		//用户-游客
-		$tableUser = 'dntk_chat_visitor';
-		
-		//游客--用户
-		if($role =='visitor') //--自己为游客
-		{
-			$tableUser = 'dntk_chat_user';
-			Session::set('role','visitor');
-		}
-		//用户与用户
-		if(isset($params['fromRole']) && $params['fromRole']== 'friend'){
-				Session::set('fromRole',6);
-				$tableUser = 'dntk_chat_user';
-		}
 		$my = new Mysql();
 		//获取对方信息
-		$sql = "select nickname from $tableUser where id = $chatWithId";
+		$sql = "select nickname from dntk_chat_user where id = $chatWithId";
 		$chatWith = $my->doSql($sql);
 		$chatwithName = strlen($chatWith[0]['nickname'])<9 ? $chatWith[0]['nickname']:substr($chatWith[0]['nickname'],0,6).'...';
 		//获取未读取的信息
@@ -54,44 +32,13 @@ class Chat extends Controller {
 							'chatWithId'=>$chatWithId) );
 	}
 
-	private function visitorSignUp()
-	{
-		$userId = Session::get("userId");
-		$my = new Mysql();
-		if(!$userId){//游客--未注册/登录
-			$seionId =  Session::$id;
-			if(isset($_COOKIE['visitor']))
-			{//更新游客session
-				$visitorName= $_COOKIE['visitor'];
-				$sql = "select count(1) as cnt,id from dntk_chat_visitor where nickname = '$visitorName' ";
-				$cnt = $my->doSql($sql);
-				if(!empty($cnt[0]['cnt'])){//更新session_id
-					$my->where(array('nickname'=>$visitorName))
-						->update('dntk_chat_visitor',array('session_id'=>$seionId));
-					$visitorId = $cnt[0]['id'];
-				}
-			}else{//(注册游客)
-				$visitor['session_id']= $seionId;
-				$visitor['nickname']  = $visitorName = rand(1000,9999).substr(md5($seionId),2,16);
-				if($my->insert('dntk_chat_visitor',$visitor))
-					$visitorId = $my->lastInsertId();
-			}
-			//保存session
-			Session::set('userId',$visitorId);
-			Session::set('nickName',$visitorName);
-			//设置cookie
-			setcookie('visitor',$visitorName,time()+3600);
-		}
-	}
 	public function record()
 	{
 		$userId = Session::get("userId");
 		$chatWithId = Session::get('chatWithId');
 		$my = new Mysql();
-		$role = Session::get('role');
-		$fromRole = $role=='friend' ? 7 : 6;
 		$sql = "select * from dntk_chat_message m where m.from_user_id = $chatWithId ".
-				 "and m.to_user_id =$userId  and status=1 and from_role=$fromRole";
+				 "and m.to_user_id =$userId  and status=1 ";
 		$newRecord = $my->doSql($sql);
 		if(empty($newRecord)){
 			echo false; exit;
@@ -115,7 +62,6 @@ class Chat extends Controller {
 			$message['to_user_id'] = $chatWithId;
 			$message['content'] = $a['content'];
 			$role = Session::get('role');
-			$message['from_role'] = Session::get('fromRole');;
 
 			//插入数据库
 			$my = new Mysql();
@@ -139,12 +85,11 @@ class Chat extends Controller {
 		}
 		$pageSize = 2;
 		$limit = 'limit '.$page*$pageSize.','.$pageSize;
-		$fromRole = Session::get('fromRole');
 
 		$sql = "select * from dntk_chat_message m ".
 				" where ((m.from_user_id = $userId and m.to_user_id =$chatWithId) or ".
 					" (m.from_user_id =$chatWithId and m.to_user_id = $userId)) ".
-						"and m.status =3 and m.from_role = $fromRole order by id desc ".$limit;
+						"and m.status =3 order by id desc ".$limit;
 		Session::set('moreTimes',++$page);
 		$my = new Mysql();
 		$historyRecord = $my->doSql($sql);
