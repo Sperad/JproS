@@ -1,6 +1,6 @@
 ﻿
-DROP TABLE IF EXISTS `dntk_chat_user`;
-CREATE TABLE `dntk_chat_user` (
+DROP TABLE IF EXISTS `chat_user`;
+CREATE TABLE `chat_user` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
    	`nickname` varchar(32) NOT NULL COMMENT '昵称',
   	`password` varchar(64) NOT NULL COMMENT '密码',
@@ -12,24 +12,24 @@ CREATE TABLE `dntk_chat_user` (
   	UNIQUE KEY `nickname` (`nickname`)
 ) DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `dntk_chat_group`;
-CREATE TABLE `dntk_chat_group`(
+DROP TABLE IF EXISTS `chat_group`;
+CREATE TABLE `chat_group`(
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '组ID',
 	`group_name` varchar(32) NOT NULL COMMENT '组名称',
 	`create_by` int(11) NOT NULL COMMENT '组的所属者',
   	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `dntk_chat_group_user`;
-CREATE TABLE `dntk_chat_group_user`(
+DROP TABLE IF EXISTS `chat_group_user`;
+CREATE TABLE `chat_group_user`(
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT ,
 	`user_id` int(11) NOT NULL COMMENT '好友用户ID',
 	`group_id` int(11) NOT NULL COMMENT '组ID',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `dntk_chat_message`;
-CREATE TABLE `dntk_chat_message`(
+DROP TABLE IF EXISTS `chat_message`;
+CREATE TABLE `chat_message`(
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '聊天信息ID',
 	`from_user_id` int(11) NOT NULL COMMENT '聊天的发送者',
 	`to_user_id` int(11) NOT NULL COMMENT '聊天的接收者',
@@ -40,16 +40,16 @@ CREATE TABLE `dntk_chat_message`(
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `dntk_chat_visitor`;
-CREATE TABLE `dntk_chat_visitor`(
+DROP TABLE IF EXISTS `chat_visitor`;
+CREATE TABLE `chat_visitor`(
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '游客的ID',
 	`nickname` varchar(32) NOT NULL COMMENT '昵称',
 	`session_id` varchar(64) NOT NULL COMMENT '游客的Session_id',
 	PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `dntk_chat_request_record`;
-CREATE TABLE `dntk_chat_request_record`(
+DROP TABLE IF EXISTS `chat_request_record`;
+CREATE TABLE `chat_request_record`(
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`from_user_id` int(11) NOT NULL COMMENT '发送者的id',
 	`to_user_id` int(11) NOT NULL COMMENT '待接收者的id',
