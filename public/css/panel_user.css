@@ -1,0 +1,240 @@
+@charset "utf-8";
+* {
+    margin: 0px;
+    padding: 0px;
+    border: 0 none;
+    font-size: 12px;
+    color: #5c5c5c;
+    font-family: "微软雅黑";
+}
+ul,li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: #d7212d;
+}
+.clr {
+    clear: both;
+}
+.user_panel {
+    background: #434d64;
+    width: 280px;
+    margin: 10px auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-top: 26px;
+    overflow: hidden;
+}
+.user_panel>h1 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: normal;
+    margin-left: 8px;
+}
+.user_name {
+    color: #fff;
+    font-size: 18px;
+}
+.user_news {
+    margin-top: 8px;
+    margin-left: 50px;
+}
+.user_news>div{
+    margin-left: 2px;
+    float: left;
+}
+.user_news a {
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+.user_news span {
+    color: #ff759f;
+    font-size: 14px;
+}
+.user_search {
+    width: 270px;
+    height: 25px;
+    margin: 0 auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
+    border: 2px solid #29303f;
+    margin-bottom: 10px;
+}
+.user_search>input {
+    width: 230px;
+    height: 25px;
+    color: #acb2bd;
+    margin-left: 5px;
+    float: left;
+}
+.user_search>button {
+    background: url(../../img/sousuo.png) no-repeat center;
+    width: 30px;
+    height: 25px;
+}
+.user_options {
+    background: #222b34;
+    overflow: hidden;
+    height:26px;
+}
+.user_option{
+	width: 50%;
+	height: 100%;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+}
+.user_option img {
+    vertical-align: middle;
+}
+
+.option_active {
+    background: #7687ae !important;
+}
+/*user_friends start*/
+.user_friends {
+    background: #2b3343;
+    padding-bottom: 8px;
+    height: 300px;
+    /*display: none;*/
+}
+.user_group{
+	color: #fff;
+    margin-top: 8px;
+}
+.user_group>span{
+	height: 24px;
+	line-height: 24px;
+	width: 100%;
+	float: left;
+}
+.user_group>span:hover,.user_group ul li:hover{
+    background: #434D64;
+}
+.user_group>span h1{
+    color: #fff;
+    background: url(../../img/sanjiaoxinga.png) no-repeat center left;
+    padding-left: 16px;
+    margin-left: 8px;
+    width: 84%;
+    float: left;
+    cursor: pointer;
+}
+.user_group>span h1.user_friends_active {
+    background: url(../../img/sanjiaoxingb.png) no-repeat center left;
+}
+.user_group>span img{
+	float: left;
+	margin-top:8px;
+    display: none;
+}
+.user_group ul{
+	float: left;
+	width: 90%;
+	margin-left:20px;
+    display: none;
+}
+.user_group ul li,.reslut_friends li{
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	margin-top: 2px;
+    cursor:pointer;
+}
+.group_friend a:first-child, .reslut_friends li a:first-child{
+	color: #eee;
+	float: left;
+}
+.group_friend a{
+    float: right; 
+    margin-left: 8px; 
+}
+.group_friend a i{
+	color: #ff759f;
+}
+.group_friend img, .reslut_friends li img{
+	margin: 5px 2px 0px 0px;
+	float: right;
+}
+
+.user_help{
+	width: 100%;
+	height: 22px;
+	line-height: 22px;
+	margin:4px 0px;
+}
+.help_addgroup{
+	width: 100%;
+	float: left;
+}
+.help_addgroup>span{
+	margin-left: 8px;
+	height: 100%;
+    width: 30px;
+    text-indent: 2px;
+    line-height: 22px;
+    float: left;
+	cursor: pointer;
+	background:#7687ae;
+	color: #fff;
+}
+.help_addgroup form{
+    float: left;
+    margin: 0px 8px;
+    display: none;
+}
+.help_addgroup form input{
+    height: 100%;
+}
+.form_submit{
+    width: 26px;
+    cursor: pointer;
+}
+
+/*search start*/
+.friends_news {
+    height: 300px;
+    display: none;
+}
+.group_select{
+    height: 24px;
+    line-height: 24px;
+    color: #ff759f;
+    margin-left: 8px;
+}
+.group_select>select {
+    margin-left: 8px;
+    height: 24px;
+    width: 80%;
+    background: #d1d1d1;
+    color: #525252;
+}
+.group_select>select>option {
+    background: #fff;
+    padding: 10px 4px;
+    overflow: hidden;
+}
+.reslut_friends {
+    width: 100%;
+    height: 270px;
+}
+.reslut_friends li {
+	line-height: 26px;
+    height: 26px;
+}
+.reslut_friends li:nth-child(even) {
+    background: #3a384c;
+}
+.reslut_friends li a {
+	margin-left: 16px;
+}
+.reslut_friends li img{
+    margin-right: 8px;
+}

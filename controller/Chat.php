@@ -17,16 +17,16 @@ class Chat extends Controller {
 		Session::set('chatWithId',$chatWithId);
 		$my = new Mysql();
 		//获取对方信息
-		$sql = "select nickname from dntk_chat_user where id = $chatWithId";
+		$sql = "select nickname from chat_user where id = $chatWithId";
 		$chatWith = $my->doSql($sql);
 		$chatwithName = strlen($chatWith[0]['nickname'])<9 ? $chatWith[0]['nickname']:substr($chatWith[0]['nickname'],0,6).'...';
 		//获取未读取的信息
-		$sql = "select * from dntk_chat_message m where  ((m.from_user_id = $userId and m.to_user_id = $chatWithId) or".
+		$sql = "select * from chat_message m where  ((m.from_user_id = $userId and m.to_user_id = $chatWithId) or".
 					"(m.from_user_id = $chatWithId and m.to_user_id = $userId)) and m.status=1 order by id asc";
 		$chatHistory = $my->doSql($sql);
 		//将信息标记为已读
 		$my->where(array('from_user_id'=>$chatWithId,'to_user_id'=>$userId))
-			->update('dntk_chat_message',array('status'=>3));
+			->update('chat_message',array('status'=>3));
 		$this->loadView('this',array('chatHistory'=>$chatHistory,
 							'nickname'=>$chatwithName,
 							'chatWithId'=>$chatWithId) );
@@ -37,7 +37,7 @@ class Chat extends Controller {
 		$userId = Session::get("userId");
 		$chatWithId = Session::get('chatWithId');
 		$my = new Mysql();
-		$sql = "select * from dntk_chat_message m where m.from_user_id = $chatWithId ".
+		$sql = "select * from chat_message m where m.from_user_id = $chatWithId ".
 				 "and m.to_user_id =$userId  and status=1 ";
 		$newRecord = $my->doSql($sql);
 		if(empty($newRecord)){
@@ -46,7 +46,7 @@ class Chat extends Controller {
 			header('Content-type:text/json;charset=utf-8');
 			//修改信息记录的状态
 			$my->where(array('from_user_id'=>$chatWithId,'to_user_id'=>$userId,'status'=>1))
-							->update('dntk_chat_message',array('status'=>3));
+							->update('chat_message',array('status'=>3));
 			echo Json::Arr2J($newRecord);
 		}
 	}
@@ -65,7 +65,7 @@ class Chat extends Controller {
 
 			//插入数据库
 			$my = new Mysql();
-			if($my->insert('dntk_chat_message',$message)){
+			if($my->insert('chat_message',$message)){
 				$message['id'] = $my->lastInsertId();
 				header('Content-type:text/json;charset=utf-8'); 
 				echo Json::Arr2J($message);
@@ -86,7 +86,7 @@ class Chat extends Controller {
 		$pageSize = 2;
 		$limit = 'limit '.$page*$pageSize.','.$pageSize;
 
-		$sql = "select * from dntk_chat_message m ".
+		$sql = "select * from chat_message m ".
 				" where ((m.from_user_id = $userId and m.to_user_id =$chatWithId) or ".
 					" (m.from_user_id =$chatWithId and m.to_user_id = $userId)) ".
 						"and m.status =3 order by id desc ".$limit;

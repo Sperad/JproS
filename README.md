@@ -1,6 +1,6 @@
 # JproS
 
-###入口
-- 路径为: `/www/index.php` or `index.php`
+###webRoot
+	DocumentRoot : ~/JproS/public/index.php
 
 ###模拟Thinkphp 框架，实现MVC模式

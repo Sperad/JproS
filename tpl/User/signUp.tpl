@@ -25,12 +25,6 @@
 			<input type="radio" value='0' name="sex" />女</td>
 	</tr>
 	<tr>
-		<td class="td1">出生日期：</td>
-		<td>
-			<input placeholder="请输入日期" class="laydate-icon" name='birthday' onClick="laydate({istime: false})">
-		</td>
-	</tr>
-	<tr>
 		<td></td>
 		<td><input type="submit" value=" 注册 " id="submit" /></td>
 	</tr> 

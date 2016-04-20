@@ -15,19 +15,18 @@ class User extends Controller{
 			//相数据库写数据
 			$user = $_POST;
 			$user['password'] = md5($user['password']);
-			$user['birthday'] = strtotime($user['birthday']);
 			unset($user['repassword']);
 			$my = new Mysql();
-			$userOnly = "select count(1) as cnt from dntk_chat_user where nickname = '$user[nickname]'";
+			$userOnly = "select count(1) as cnt from chat_user where nickname = '$user[nickname]'";
 			$cnt = $my->count($userOnly);//
 			if(empty($cnt['cnt'])){//未注册
-				if($my->insert('dntk_chat_user',$user))
+				if($my->insert('chat_user',$user))
 				{//注册成功,自动登陆
 					//默认一个组(好友)
 					$userId = $my->lastInsertId();
 					$group['group_name'] = '好友';
 					$group['create_by'] = $userId;
-					$my->insert('dntk_chat_group',$group);
+					$my->insert('chat_group',$group);
 					//保存session
 					Session::set('userId',$userId);
 					Session::set('nickName',$user['nickname']);
@@ -51,7 +50,7 @@ class User extends Controller{
 			$user = $_POST;
 			$user['password'] = md5($user['password']);
 			$my = new Mysql();
-			if($_user = $my->hasOne('dntk_chat_user',$user))
+			if($_user = $my->hasOne('chat_user',$user))
 			{
 				Session::set('userId',$_user['id']);
 				Session::set('nickName',$user['nickname']);
@@ -76,12 +75,12 @@ class User extends Controller{
 		{
 			$group = $_POST;
 			$my = new Mysql();
-			$groupOnly = "select count(1) as cnt from dntk_chat_group where group_name = '$group[groupName]'";
+			$groupOnly = "select count(1) as cnt from chat_group where group_name = '$group[groupName]'";
 			$cnt = $my->count($groupOnly);//
 			if(empty($cnt['cnt'])){//未
 				$group['group_name'] = $group['groupName'];
 				$group['create_by'] = Session::get('userId');
-				if($my->insert('dntk_chat_group',$group))
+				if($my->insert('chat_group',$group))
 					echo $my->lastInsertId();
 				echo 'false';				
 			}else{//已经
@@ -98,27 +97,27 @@ class User extends Controller{
 			$userId = Session::get('userId');
 			//列出用户自建组
 			$my = new Mysql();
-			$groups = $my->field("id,group_name")->where(array('create_by'=>$userId))->select('dntk_chat_group');
+			$groups = $my->field("id,group_name")->where(array('create_by'=>$userId))->select('chat_group');
 
 			//获取各组下好友列表
 			$users = array();
 			if(!empty($groups)){
 				$groupsIn = implode(',',array_get_by_key($groups,'id'));
-				$sql = "select u.id,u.nickname,u.realname,u.sex,gu.group_id from dntk_chat_user u, dntk_chat_group_user gu where u.id = gu.user_id and gu.group_id in($groupsIn) ";
+				$sql = "select u.id,u.nickname,u.realname,u.sex,gu.group_id from chat_user u, chat_group_user gu where u.id = gu.user_id and gu.group_id in($groupsIn) ";
 				$users = $my->doSql($sql);
 			}
 
 			//获取好友发来的消息数量
-			$sql = "select count(1) as cnt,from_user_id from dntk_chat_message where to_user_id = $userId and status = 1 group by from_user_id";
+			$sql = "select count(1) as cnt,from_user_id from chat_message where to_user_id = $userId and status = 1 group by from_user_id";
 			$recordCnt = $my->doSql($sql);
 
 			//数据处理
 			$list = getPanelList($groups,$users,$recordCnt);
 
 			//获取好友请求消息 需要判断用户是否已经添加该好友
-			$requestRecord = "select count(1) as cnt from dntk_chat_request_record ".
+			$requestRecord = "select count(1) as cnt from chat_request_record ".
 								"where to_user_id = $userId  and status=1 and from_user_id not in ( ". 
-									" select gu.user_id from dntk_chat_group_user gu , dntk_chat_group g ".
+									" select gu.user_id from chat_group_user gu , chat_group g ".
 							           "where gu.group_id = g.id and g.create_by =$userId)";
 			$cnt = $my->count($requestRecord);
 
@@ -137,13 +136,13 @@ class User extends Controller{
 		$userId = Session::get('userId');
 		/*搜索获取已有好友id列表*/
 		$my = new Mysql();
-		$getIds_sql = "select gu.user_id from dntk_chat_group_user gu , dntk_chat_group g where gu.group_id = g.id and g.create_by =$userId";
+		$getIds_sql = "select gu.user_id from chat_group_user gu , chat_group g where gu.group_id = g.id and g.create_by =$userId";
 		$ids = $my->doSql($getIds_sql);
 		$ids=array_get_by_key($ids,'user_id');
 		$ids[] = $userId;
 		$strIds = implode(',',$ids);
 		//搜索结果
-		$sql = "select u.id,u.nickname from dntk_chat_user u where u.id not in($strIds) and u.nickname like '%$search%' ";
+		$sql = "select u.id,u.nickname from chat_user u where u.id not in($strIds) and u.nickname like '%$search%' ";
 		$users = $my->doSql($sql);
 		header('Content-type:text/json'); 
 		echo Json::Arr2J($users);
@@ -163,20 +162,20 @@ class User extends Controller{
 			$_params['user_id'] = $toUserId=$params['friendId'];
 			$_params['group_id'] = $params['groupId'];
 			if($params['status']==1){//发送请求
-				if($my->insert('dntk_chat_group_user',$_params))
+				if($my->insert('chat_group_user',$_params))
 				{	//向好友发送请求
 					$record = array('from_user_id'=>$userId,'to_user_id'=>$toUserId);
-					$my->insert('dntk_chat_request_record',$record);
+					$my->insert('chat_request_record',$record);
 					echo true;
 				} else {
 					echo false;
 				}
 			}else{//接收者回复发送者
 				//修改状态
-				$my->where(array('from_user_id'=>$params['user_id'],'to_user_id'=>$userId))->update('dntk_chat_request_record',array('status'=>$params['status']));
+				$my->where(array('from_user_id'=>$params['user_id'],'to_user_id'=>$userId))->update('chat_request_record',array('status'=>$params['status']));
 
 				if($params['status']==3){//如果添加
-					if($my->insert('dntk_chat_group_user',$params))
+					if($my->insert('chat_group_user',$params))
 						echo true;
 				}else{
 					echo false;
@@ -187,10 +186,10 @@ class User extends Controller{
 		if($this->method == 'GET')
 		{
 			$sql = "select u.id, u.nickname,u.realname,u.sex,u.birthday ".
-					"from dntk_chat_user u,dntk_chat_request_record rr ".
+					"from chat_user u,chat_request_record rr ".
 					"where u.id = rr.from_user_id  and rr.status = 1 and rr.to_user_id = $userId ".
 					"and rr.from_user_id not in( ".
-					    "select gu.user_id from dntk_chat_group_user gu , dntk_chat_group g ".
+					    "select gu.user_id from chat_group_user gu , chat_group g ".
 				       	"where gu.group_id = g.id and g.create_by =$userId ".
 					")" ;
 
@@ -210,7 +209,7 @@ class User extends Controller{
 			$friendId = $_POST['friendId'];
 			$groupId = $_POST['groupId'];
 			$my = new Mysql();
-			$my->where(array('user_id'=>$friendId,'group_id'=>$groupId))->delete('dntk_chat_group_user');
+			$my->where(array('user_id'=>$friendId,'group_id'=>$groupId))->delete('chat_group_user');
 			return true;
 		}
 	}
@@ -225,10 +224,10 @@ class User extends Controller{
 			$groupId = $_POST['groupId'];
 			$my = new Mysql();
 			//首先判断该组是否还有好友
-			$cntSql = "select count(1) as cnt from dntk_chat_group_user gu where gu.group_id = $groupId";
+			$cntSql = "select count(1) as cnt from chat_group_user gu where gu.group_id = $groupId";
 			$cnt = $my->count($cntSql);
 			if(empty($cnt['cnt'])){
-				$my->where(array('create_by'=>$userId,'id'=>$groupId))->delete('dntk_chat_group');
+				$my->where(array('create_by'=>$userId,'id'=>$groupId))->delete('chat_group');
 				echo true;
 			}else{
 				echo false;
@@ -246,7 +245,7 @@ class User extends Controller{
 		$oldGroupId  = $_POST['oldGroupId'];
 		$my = new Mysql();
 		$my->where(array('group_id'=>$oldGroupId,'user_id'=>$friendId))
-				->update('dntk_chat_group_user',array('group_id'=>$groupId));
+				->update('chat_group_user',array('group_id'=>$groupId));
 		echo true;
 	}
 }
