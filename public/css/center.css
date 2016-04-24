@@ -1,0 +1,94 @@
+.user-panel {
+    background: #00dcb4;
+    width: 200px;
+    float : right;
+}
+.user-name {
+    width:100%;
+    text-indent: 8px;
+    display:inline-block;
+}
+.user-news{
+    height:20px;
+    font-size: 10px;
+    line-height: 20px;
+}
+.mgs-img{
+    width:15px;
+    height:15px;
+    display:inline-block;
+    margin-left: 4px;
+    background:url('/img/msg.png') no-repeat center left;
+}
+.user-options {
+    background: #222b34;
+    height:20px;
+}
+
+.user-option{
+	width: 50%;
+	height: 100%;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    text-align: center;
+}
+.option-img1{
+    height:20px;
+    width:16px;
+    margin: 0 auto;
+    background:url('/img/touxiang.png') no-repeat center left;
+}
+.option-active {
+    background: #7687ae !important;
+}
+
+/*user-friends start*/
+.del{
+    background: url('/img/del.png') no-repeat center left;
+    width:10px;
+    height:10px;
+    margin:5px;
+    float:right;
+}
+.user-friends {
+    background: #2b3343;
+    height: 300px;
+}
+.user-group{
+	color: #fff;
+}
+.user-group>span{
+	height: 20px;
+	line-height: 20px;
+	width: 98%;
+	float: left;
+    background: url(/img/sanjiaoxinga.png) no-repeat center left;
+    margin-left: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+.user-group>span:hover{
+    background: #434D64;
+}
+.user-group>span.open {
+    background: url(/img/sanjiaoxingb.png) no-repeat center left;
+}
+.chat-with{
+    width:100%;
+    display:inline-block;
+    color:#fff;
+    text-indent: 22px;
+}
+.user-help{
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+}
+.user-help li {
+    display: inline-block;
+}
+.user-help li a{
+    font-size: 12px;
+}

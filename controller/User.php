@@ -2,68 +2,12 @@
 namespace controller;
 
 use base\Controller;
+use base\View;
 use base\db\Mysql;
 use base\helper\Json;
 use base\web\Session;
 
 class User extends Controller{
-
-	public function signUp()
-	{
-		if(!$this->isAjax && $this->method == 'POST')
-		{
-			//相数据库写数据
-			$user = $_POST;
-			$user['password'] = md5($user['password']);
-			unset($user['repassword']);
-			$my = new Mysql();
-			$userOnly = "select count(1) as cnt from chat_user where nickname = '$user[nickname]'";
-			$cnt = $my->count($userOnly);//
-			if(empty($cnt['cnt'])){//未注册
-				if($my->insert('chat_user',$user))
-				{//注册成功,自动登陆
-					//默认一个组(好友)
-					$userId = $my->lastInsertId();
-					$group['group_name'] = '好友';
-					$group['create_by'] = $userId;
-					$my->insert('chat_group',$group);
-					//保存session
-					Session::set('userId',$userId);
-					Session::set('nickName',$user['nickname']);
-					echo "<script>alert('注册成功');window.location.href='index.php?User_panel'</script>";
-				}
-			}else{//已经注册
-				echo "<script>alert('已经注册');window.location.href='index.php?User_signUp'</script>";
-			}
-		}
-
-		if($this->method == 'GET' && !$this->isAjax)
-		{
-			$this->loadView('this');
-		}
-	}
-
-	public function login()
-	{
-		if(!$this->isAjax && $this->method == 'POST')
-		{
-			$user = $_POST;
-			$user['password'] = md5($user['password']);
-			$my = new Mysql();
-			if($_user = $my->hasOne('chat_user',$user))
-			{
-				Session::set('userId',$_user['id']);
-				Session::set('nickName',$user['nickname']);
-				// setcookie('visitor','',time()-3600);
-				echo "<script>alert('登录成功');window.location.href='index.php?User_panel'</script>";
-			}
-		}
-		if($this->method == 'GET' && !$this->isAjax)
-		{	
-			Session::destroy();
-			$this->loadView('this'); //或者 $this->loadView('user/login');
-		}
-	}
 
 	/**
 	 * 添加组
@@ -89,7 +33,7 @@ class User extends Controller{
 		}
 	}
 
-	public function panel()
+	public function center()
 	{
 		//判断是否登录
 		if(Session::get('userId')){
@@ -122,7 +66,7 @@ class User extends Controller{
 			$cnt = $my->count($requestRecord);
 
 			//页面显示
-			$this->loadView('this',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
+			return new View('User/panel',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
 									'groups'=>$groups,'list'=>$list));
 		}
 	}

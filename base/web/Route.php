@@ -29,11 +29,15 @@ class Route extends WebObject{
 	public function run()
 	{
 		$_CclassName = ucwords(self::$http->url->CV[0]);
+		$action = self::$http->url->CV[1];
+		if(empty($_CclassName)){
+			$_CclassName = 	'Index';
+			$action = 'default';
+		}
 		if(in_array($_CclassName, ClassLoad::$_classMap))
 		{
 			$_CclassName = CONTROLLER_DIR.'\\'.$_CclassName;
 			$_C = new $_CclassName;
-			$action = self::$http->url->CV[1];
 			if(!is_null($action) && method_exists($_C,$action)){
 				$_C->$action();
 			}else{

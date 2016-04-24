@@ -4,6 +4,8 @@ return [
 			'CACHE_TPL_DIR' => 'cache/',
 			'TPL_DIR' => 'tpl/',
 			'CONTROLLER_DIR' => 'controller',/*不能controller/  有后面的/(与new 一个类有关系)   */
-			'STATIC_DIR' => 'static',
+			'STATIC_DIR' => 'public',
 			'WWW_DIR' => 'www',
+			'CSS' => 'css',
+			'JS' => 'js'
 		];
