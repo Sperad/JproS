@@ -9,13 +9,13 @@ use base\web\Session;
 
 class User extends Controller{
 
+	protected $user = array();
 	/**
 	 * 添加组
 	 */
 	public function Group()
 	{
-		//ajax 添加组名
-		if($this->isAjax && $this->method == 'POST')
+		if($this->isAjax && $this->method == 'POST' && $this->isLogin())
 		{
 			$group = $_POST;
 			$my = new Mysql();
@@ -23,31 +23,37 @@ class User extends Controller{
 			$cnt = $my->count($groupOnly);//
 			if(empty($cnt['cnt'])){//未
 				$group['group_name'] = $group['groupName'];
-				$group['create_by'] = Session::get('userId');
-				if($my->insert('chat_group',$group))
-					echo $my->lastInsertId();
-				echo 'false';				
-			}else{//已经
-				echo 'false';
+				$group['create_by'] = $this->user['id'];
+				if($my->insert('chat_group',$group)){
+					echo true;
+				}else{echo false;}
+			}else{
+				echo false;
 			}
 		}
+	}
+
+	protected function isLogin(){
+		$this->user = Session::get('user');
+		return !empty($this->user) ? true : false;
 	}
 
 	public function center()
 	{
 		//判断是否登录
-		if(Session::get('userId')){
-			$name = Session::get('nickName');
-			$userId = Session::get('userId');
+		if($this->isLogin()){
 			//列出用户自建组
+			$userId = $this->user['id'];
 			$my = new Mysql();
-			$groups = $my->field("id,group_name")->where(array('create_by'=>$userId))->select('chat_group');
+			$groups = $my->field("id,group_name")
+					->where(array('create_by'=>$userId))
+					->select('chat_group');
 
 			//获取各组下好友列表
 			$users = array();
 			if(!empty($groups)){
 				$groupsIn = implode(',',array_get_by_key($groups,'id'));
-				$sql = "select u.id,u.nickname,u.realname,u.sex,gu.group_id from chat_user u, chat_group_user gu where u.id = gu.user_id and gu.group_id in($groupsIn) ";
+				$sql = "select u.id,u.nickname,gu.group_id from chat_user u, chat_group_user gu where u.id = gu.user_id and gu.group_id in($groupsIn) ";
 				$users = $my->doSql($sql);
 			}
 
@@ -66,9 +72,9 @@ class User extends Controller{
 			$cnt = $my->count($requestRecord);
 
 			//页面显示
-			return new View('User/panel',array('name'=>$name,'requestRecord'=>$cnt['cnt'],
-									'groups'=>$groups,'list'=>$list));
+			return new View('User/center',array('list'=>$list));
 		}
+
 	}
 
 	/**
@@ -162,9 +168,9 @@ class User extends Controller{
 	 */
 	public function delGroup()
 	{
-		if($this->method == 'POST')
+		if($this->method == 'POST' && $this->isLogin())
 		{
-			$userId = Session::get('userId');
+			$userId = $this->user['id'];
 			$groupId = $_POST['groupId'];
 			$my = new Mysql();
 			//首先判断该组是否还有好友

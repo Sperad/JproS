@@ -26,27 +26,23 @@ $(document).ready(function(){
 	var userSearch = $('#userSearch');
 	var userNews = $('#userNews');
 	//点击添加组
-	userHelp.find('span').bind('click',function(event) {
-		str = $(this).html();
-		str = str=='加组' ? '取消':'加组';
-		$(this).html(str).next('form').toggle(function(){
-			$(this).find('input[type=submit]').click(
-				function(event) {
-					event.preventDefault();
-					var groupName = $(this).prev('input').val();
-					$(this).prev('input').val('');
-					if(groupName==''){
-						alert('请输组名');
-					}else{
-						panel.appendAddGroup(userGroups,groupName);
-					}
+	userHelp.find('#addGroup').bind('click',function(event) {
+		$('.dialog-group').show(function(){
+			$(this).find('button').click(function(){
+				var groupName = $(this).prev().val();
+				if(!groupName){
+					alert('请输组名');
+				}else{
+					panel.appendAddGroup(groupName);
+				}
 			});
 		});
+		$(this).unbind("click");
 	});
 	
 	//点击删除组 
 	userGroups.find('.delGroup').bind('click',function(event) {
-		var group = $(this).parent('span[group]');
+		var group = $(this).parents('.user-group');
 		panel.delGroup(group,group.attr('group'));
 	});
 
@@ -112,7 +108,13 @@ $(document).ready(function(){
 	});
 });
 var panel = {
-
+	addGrouped : false,
+	userGroups : '#userGroups',
+	getGroupTpl : function(groupName){
+		return '<div class="user-group">'+
+				'<span>&nbsp;&nbsp;'+groupName+
+	 				'<div class="del"></div></span></div>';
+	},
 	toggle_option: function(options){
 		toggle = options.attr('data-toggle');
 		var otherToggle = options.siblings('div');
@@ -125,28 +127,24 @@ var panel = {
 		$('#'+toggle).show();
 		return this;
 	},
-	appendAddGroup : function(userGroups,groupName){
-		//先添加组
+	appendAddGroup : function(groupName){
+		var that = this;
 		$.post('index.php?User_Group', {'groupName':groupName}, function(data, textStatus, xhr) {
-			if(data != 'false'){
+			if(data == true){
+				$(that.userGroups).append(that.getGroupTpl(groupName));
 				alert('添加成功');
-				//移除input 标签，改为li标签
-				var str = '<div class="user_group"><span><h1>'+groupName+'</h1><img src="../static/img/del.png"/></span></div>';
-				userGroups.append(str);
-			}else{
-				alert('添加失败,查看是否重名');
 			}
 		});
+		return this;
 	},
-	delGroup : function (group,groupId)
+	delGroup : function (group, groupId)
 	{
 		$.post('index.php?User_delGroup',
 				{'groupId':groupId}, 
 			function(data, textStatus, xhr) {
-				if(data == true)
-				{
+				if(data == true){
 					alert('删除成功');
-					group.parent().remove();
+					group.remove();
 				}else{
 					alert('该组还有成员,请删除以后再删除组');
 				}

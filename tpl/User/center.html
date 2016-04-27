@@ -1,0 +1,58 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Schat</title>
+	<link rel="stylesheet" href="<?php echo CSS.'/base.css';?>">
+	<link rel="stylesheet" href="<?php echo CSS.'/center.css';?>">
+	<script type="text/javascript" src="<?php echo JS.'/jq183m.js';?>"></script>
+	<script type="text/javascript" src="<?php echo JS.'/center.js';?>"></script>
+</head>
+<body>
+	<div class="nav">
+		<h3 class="logo">Schat</h3>
+		<div class="nav-bar">
+			<a href="javascript:;" id="login">name</a>
+		</div>
+	</div>
+	<div class="container">
+		<div id="user-panel" class="user-panel">
+			<div class="user-news" id="userNews">
+				<div class="mgs-img"></div>(1)
+		 	</div>
+		 	<!-- <div class="user-options"> 
+		 			    	<div class="user-option option-active" data-toggle="userGroups">
+		 			     		<div class="option-img1"></div>
+		 			    	</div> 
+		 			    	<div class="user-option"> 聊记录 </div>
+		 	</div>  -->
+			<!-- user-friends start --> 
+		 	<div class="user-friends" id="userGroups">
+		 		<?php foreach($list as $group) {?>
+		 		<div class="user-group"  group="<?php echo $group['id'];?>">
+		 			<span> &nbsp;&nbsp;<?php echo $group['group_name'];?>
+		 				<div class="del delGroup"></div>
+		 			</span>
+		 			<div class="group-friend"> 
+		 				<a href="" class="chat-with" >frientName<div class="del"></div></a>
+		 				<a href="" class="chat-with" >frientName<div class="del"></div></a>
+		 			</div>
+		 		</div>
+		 		<?php };?>
+		  	</div>
+			<!-- 底部help-->
+			<div class="user-help" id="userHelp">
+				<ul>
+					<li><a href="javascript:;" id="addGroup">加组</a></li>
+					<li><a href="javascript:;" id="addUser">加友</a></li>
+				</ul>
+				<span class="help-dialog">
+					<div class="dialog-group">
+						<input type="text" class="add-group"  placeholder="请输入组名称">
+						<button type="button">确定</button>
+					</div>
+				</span>
+		  	</div>
+		</div>
+	</div>
+</body>
+</html>

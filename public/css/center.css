@@ -92,3 +92,13 @@
 .user-help li a{
     font-size: 12px;
 }
+.dialog-group{
+    display: none;
+}
+.help-dialog button{
+    width:22%;
+}
+
+.add-group{
+    width: 75%;
+}
