@@ -11,13 +11,24 @@
 	<div class="nav">
 		<h3 class="logo">Schat</h3>
 		<div class="nav-bar">
-			<a href="javascript:;" id="login">name</a>
+			<a href="javascript:;"><?php echo $nickname;?></a>
+			<a href="javascript:;" id="logout">退出</a>
 		</div>
 	</div>
 	<div class="container">
+		<div class="user-list">
+			<div class="group-list">
+				<ul>
+					<?php foreach($list as $group){
+						echo '<li gid="'.$group['id'].'">'.$group['group_name'].'</li>';
+					};?>
+				</ul>
+			</div>
+			<div class="users" id="userList"></div>
+		</div>
 		<div id="user-panel" class="user-panel">
 			<div class="user-news" id="userNews">
-				<div class="mgs-img"></div>(1)
+				<div class="mgs-img"></div>(<?php echo $requestRecord;?>)
 		 	</div>
 		 	<!-- <div class="user-options"> 
 		 			    	<div class="user-option option-active" data-toggle="userGroups">
@@ -32,9 +43,12 @@
 		 			<span> &nbsp;&nbsp;<?php echo $group['group_name'];?>
 		 				<div class="del delGroup"></div>
 		 			</span>
-		 			<div class="group-friend"> 
-		 				<a href="" class="chat-with" >frientName<div class="del"></div></a>
-		 				<a href="" class="chat-with" >frientName<div class="del"></div></a>
+		 			<div class="group-friend">
+		 				<?php foreach($group['users'] as $user){ ?>
+		 					<a href="javascript:;" class="chat-with" ><?php echo $user['nickname'];?>
+		 						<div class="del"></div>
+		 					</a>
+		 				<?php }?>
 		 			</div>
 		 		</div>
 		 		<?php };?>

@@ -25,6 +25,8 @@ $(document).ready(function(){
 	var resultFriends = $('#resultFriends');
 	var userSearch = $('#userSearch');
 	var userNews = $('#userNews');
+
+	panel.findFriend('');
 	//点击添加组
 	userHelp.find('#addGroup').bind('click',function(event) {
 		$('.dialog-group').show(function(){
@@ -46,6 +48,11 @@ $(document).ready(function(){
 		panel.delGroup(group,group.attr('group'));
 	});
 
+	$('#logout').click(function(){
+		$.get('/User_logout',function(url){
+			window.location.href = url;
+		})
+	})
 	//点击查找好友
 	userOption.bind('click',function(event) {
 		panel.toggle_option($(this)).findFriend(resultFriends);
@@ -78,10 +85,8 @@ $(document).ready(function(){
 	});
 
 	//点击消息
-	userNews.find('.friend_news').bind('click',function(event){
-		event.preventDefault();
-		resultFriends.empty();
-		panel.toggle_option($('.user_option[data-toggle=newsFriends]')).requestFriend(resultFriends);
+	userNews.bind('click',function(event){
+		panel.listRequest();
 	});
 
 	//点击获取游客消息
@@ -110,22 +115,19 @@ $(document).ready(function(){
 var panel = {
 	addGrouped : false,
 	userGroups : '#userGroups',
+	userList   : '#userList',
 	getGroupTpl : function(groupName){
 		return '<div class="user-group">'+
 				'<span>&nbsp;&nbsp;'+groupName+
 	 				'<div class="del"></div></span></div>';
 	},
-	toggle_option: function(options){
-		toggle = options.attr('data-toggle');
-		var otherToggle = options.siblings('div');
-		$.each(otherToggle, function(index, toggleObj) {
-			$(toggleObj).removeClass('option_active');
-			var toggle_ = $(toggleObj).attr('data-toggle');
-			$('#'+toggle_).hide();
-		});
-		options.addClass('option_active');
-		$('#'+toggle).show();
-		return this;
+	getUserTpl : function(userListData){
+		var tpl = '';
+		for(i in userListData){
+			tpl += '<div class="user" uid="'+userListData[i].id+'"><h4>' + userListData[i].nickname +
+						'<span class="add"></span></h4></div>';
+		}
+		return tpl;
 	},
 	appendAddGroup : function(groupName){
 		var that = this;
@@ -150,72 +152,50 @@ var panel = {
 				}
 		});
 	},
-
-	findFriend : function (resultFriends,text)
+	findFriend : function (text)
 	{	
 		var _this = this;
-		text = text == undefined ? '': text;
 		$.get('index.php?User_search/search='+text, function(data){
-			if(data != 'false') {
-				resultFriends.empty();
-				$.each(data, function(index, friend){
-					resultFriends.append('<li><a>'+friend.nickname+'</a>'+
-						'<a class="add_friend" href="index.php?User_friend/friendId='+friend.id+'&status=1">'+
-							'<img src="../static/img/jiahao__hongse.png" />'+'</a></li>');
+			var tpl = _this.getUserTpl(data);
+			//绑定标签进行添加好友
+			$(_this.userList).append(tpl).find('.add').bind('click',function(event){
+				var uid =$(this).parents('.user').attr('uid');
+				alert('请选择组');
+				$('.group-list').show(function(){
+					$(this).find('li').bind('click',function(){
+						var gid = $(this).attr('gid');
+						_this.requestFriend({friendId:uid,groupId:gid,status:1});
+					});
 				});
-				//绑定标签进行添加好友
-				resultFriends.find('a[class=add_friend]').bind('click',function(event){
-					event.preventDefault();
-					var name = $(this).prev('a').html();
-					var url = $(this).attr('href');
-					var group = $("#groupsName option:selected");
-					if(confirm('你确定要将 '+name+' 加入到 '+group.html()+ ' 吗？')){
-						_this.addFriend(url+'&groupId='+group.val());
-					}
-				});
-			}else{
-				alert('搜索失败');
-			}
+			});
 		});
 	},
-
-	addFriend : function (url)
+	requestFriend : function (params)
 	{
-		$.post(url, '', function(data, textStatus, xhr){
-			if(data == true){//添加成功
-				alert("添加成功");//刷新当前页面
-				window.location.reload();
-				//隐藏
+		$.post('/User_friend', params, function(data, textStatus, xhr){
+			if(data == true){
+				alert("添加成功");
 			}else{
 				alert('添加失败');
 			}
+			window.location.reload();
 		});
 	},
-
-	requestFriend : function(resultFriends)
-	{
+	listRequest : function (){
 		var _this = this;
-		$.get('index.php?User_friend',function(data)
-		{
-			if(data != 'false')
-			{	
-				$.each(data, function(index, friend){
-					resultFriends.append('<li><a>'+friend.nickname+'</a>'+
-						'<a class="add_friend" href="index.php?User_friend/friendId='+friend.id+'&status=3">'+
-							'<img src="../static/img/jiahao__hongse.png" />'+'</a>'+
-						'<a href="index.php?User_friend/friendId='+friend.id+'&status=5">'+
-							'<img src="../static/img/del.png" />'+'</a>'+ '</li>')
+		$.get('index.php?User_friend', function(data){
+			var tpl = _this.getUserTpl(data);
+			//绑定标签进行添加好友
+			$(_this.userList).empty().append(tpl).find('.add').bind('click',function(event){
+				var uid =$(this).parents('.user').attr('uid');
+				alert('请选择组');
+				$('.group-list').show(function(){
+					$(this).find('li').bind('click',function(){
+						var gid = $(this).attr('gid');
+						_this.requestFriend({friendId:uid,groupId:gid,status:3});
+					});
 				});
-				//绑定标签进行添加好友
-				resultFriends.find('li a').bind('click',function(event){
-					event.preventDefault();
-					var url = $(this).attr('href');
-					var groupId = '&groupId='+$("#groupsName option:selected").val();
-					_this.addFriend(url+groupId);
-				});
-			}else{
-				alert('获取数据失败');
-			}
+			});
 		});
 	},
 

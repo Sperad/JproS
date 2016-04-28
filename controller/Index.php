@@ -23,16 +23,15 @@ class Index extends Controller
 				$this->goPage('Index_default','已经注册');
 			$user['online'] = 1;
 			if($my->insert('chat_user',$user)) { //注册成功,自动登陆
-				/*//默认一个组(好友)
-				$userId = $my->lastInsertId();
+				//默认一个组(好友)
 				$group['group_name'] = '好友';
-				$group['create_by'] = $userId;
-				$my->insert('chat_group',$group);*/
+				$group['create_by'] = $my->lastInsertId();
+				$my->insert('chat_group',$group);
 				$_user = $my->field("id,nickname,online")
 							->where(array('nickname'=>$user['nickname']))
 							->select('chat_user');
-				Session::set('user',$_user);
-				$this->goPage('User_center','注册成功');
+				Session::set('user',$_user[0]);
+				$this->goPage('/User_center','注册成功');
 			}
 		}
 	}
@@ -46,15 +45,8 @@ class Index extends Controller
 			if($_user = $my->hasOne('chat_user',$user)) {
 				unset($_user['password']);
 				Session::set('user',$_user);
-				$this->goPage('User_center','登录成功');
+				$this->goPage('/User_center','登录成功');
 			}
 		}
 	}
-
-	public function goPage($url, $msg = '')
-	{
-		echo "<script>alert('$msg');window.location.href='index.php?$url'</script>";
-		exit;
-	}
-
 }

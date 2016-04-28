@@ -25,4 +25,14 @@ class Controller extends HTTP{
 		$tpl = new Template($viewPath,$val);
 		$tpl->outPage();
 	}
+
+	public function goPage($url, $msg = '')
+	{
+		if($msg){
+			echo "<script>alert('$msg');window.location.href='$url'</script>";
+		}else{
+			echo "<script>window.location.href='$url'</script>";
+		}
+		exit;
+	}
 }
