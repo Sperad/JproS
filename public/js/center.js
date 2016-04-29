@@ -57,21 +57,19 @@ $(document).ready(function(){
 		// panel.getUser($(this).attr('uid'));
 		window.location.href = "/Chat_dialog/with=" + $(this).attr('uid');
 	});
-
-
-
-
-
-	//点击查找好友
-	userOption.bind('click',function(event) {
-		panel.toggle_option($(this)).findFriend(resultFriends);
+	//搜索好友
+	$('#addUserBtn').click(function(){
+		$('.user-search').show();
+		userSearch.bind('click', function(event) {
+			var search = $(this).prev('input').val();
+			panel.findFriend(search);
+		});
 	});
-	//form 搜索组
-	userSearch.find('button').bind('click', function(event) {
-		event.preventDefault();
-		var search = $(this).prev('input').val();
-		panel.toggle_option($('.user_option[data-toggle=newsFriends]')).findFriend(resultFriends,search);
-	});
+
+
+
+
+
 	//点击移动好友
 	userGroups.find(".movFriend").bind('click',function(event) {
 		event.preventDefault();
@@ -145,7 +143,7 @@ var panel = {
 		$.get('/User_search/search='+text, function(data){
 			var tpl = _this.getUserTpl(data);
 			//绑定标签进行添加好友
-			$(_this.userList).append(tpl).find('.add').bind('click',function(event){
+			$(_this.userList).empty().append(tpl).find('.add').bind('click',function(event){
 				var uid =$(this).parents('.user').attr('uid');
 				alert('请选择组');
 				$('.group-list').show(function(){

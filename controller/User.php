@@ -88,7 +88,7 @@ class User extends Controller{
 		if($this->isLogin()){
 			$userId = $this->user['id'];
 			$search = $this->url->params['search'];
-			$page = isset($this->url->params['page']) ? $this->url->params['page'] : 1;
+			$page = isset($this->url->params['page']) ? $this->url->params['page'] : 0;
 			$pageNo = isset($this->url->params['pageNo']) ? $this->url->params['pageNo'] : 9;
 			$my = new Mysql();
 			/*获取好友id列表*/
