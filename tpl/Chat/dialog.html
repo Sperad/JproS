@@ -1,0 +1,65 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="<?php echo '../'.CSS.'/base.css';?>">
+	<link rel="stylesheet" href="<?php echo '../'.CSS.'/chat.css';?>">
+	<script type="text/javascript" src="<?php echo '../'.JS.'/jq183m.js';?>"></script>
+	<script type="text/javascript" src="<?php echo '../'.JS.'/chat.js';?>"></script>
+</head>
+<body>
+	<div class="nav">
+		<h3 class="logo">Schat</h3>
+		<div class="nav-bar">
+			<a href="javascript:;"><?php echo $nickname;?></a>
+			<a href="javascript:;" id="logout">退出</a>
+		</div>
+	</div>
+	<div class="container">
+		<div class="chat_dialog">
+			<div class="dialog_title">
+				<span class="title_option title_name">SChat</span>
+				<span class="title_option ">与 <?php echo $withNickname; ?> 聊天</span>
+				<span class="title_option title_close"><a href="#">关闭</a></span>
+			</div>
+			<div id="chat_msg" class="msg_container">
+				<div class="msg_box" id="msg_box" chatWithId="<?php echo $withId;?>" >
+					<!--历史纪录-->
+					<ul class="msg_history">
+						<?php foreach($chatHistory as $record) { 
+							if($withId==$record['from_user_id']){
+								echo '<li class="msg_from" msgId="$record[id]" >';
+							}else{
+								echo '<li class="msg_to" msgId="$record[id]" >';
+							}?>
+							<span> <?php echo $record['create_time']; ?></span>
+							<p><?php echo $record['content']; ?></p>
+						</li>
+						<?php } ?>
+					</ul>
+					<ul class="msg_news">
+						<!-- <li class="msg_to">
+							<span>2015-10-12 15:55:41</span>
+							<p>你好</p>
+						</li>
+						<li class="msg_to">
+						<span>2015-10-12 15:55:41</span>
+						<p>你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</p>
+						</li> -->
+					</ul>
+				</div>
+				<div class="msg_edit">
+					<form action="/">
+						<!-- <div id="sendMsg" class=""> -->
+						<textarea placeholder="请输入"></textarea>
+						<span>
+							<button type="button" id="sendBtn" class="sendBtn msg_btn">发送</button>
+							<button type="button" id="msgHistory" class="msg_btn">记录</button>
+						</span>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

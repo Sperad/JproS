@@ -13,6 +13,7 @@
     height:20px;
     font-size: 10px;
     line-height: 20px;
+    cursor: pointer;
 }
 .mgs-img{
     width:15px;
@@ -52,6 +53,7 @@
     height:10px;
     margin:5px;
     float:right;
+    display : none;
 }
 .user-friends {
     background: #2b3343;
@@ -69,12 +71,13 @@
     margin-left: 4px;
     color: #fff;
     cursor: pointer;
-}
-.user-group>span:hover{
-    background: #434D64;
+    z-index: 9;
 }
 .user-group>span.open {
     background: url(/img/sanjiaoxingb.png) no-repeat center left;
+}
+.group-friend {
+    display : none;
 }
 .chat-with{
     width:100%;

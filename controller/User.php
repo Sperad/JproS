@@ -159,6 +159,19 @@ class User extends Controller{
 		}
 	}
 
+	public function getOne()
+	{
+		if($this->isLogin()){
+			$my = new Mysql();
+			$id = $this->url->params['uid'];
+			if(!$id) {echo false; exit;}
+			$sql = "select * from chat_user where id = $id; ";
+			$users = $my->doSql($sql);
+			header('Content-type:text/json'); 
+			echo Json::Arr2J($users);
+		}
+	}
+
 	/**
 	 * 删除好友
 	 */

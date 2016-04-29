@@ -3,66 +3,74 @@ namespace controller;
 use base\Controller;
 use base\helper\Json;
 use base\web\Session;
+use base\View;
 use base\db\Mysql;
 
 class Chat extends Controller {
 
+	protected $user = array();
+
 	/*聊天页面*/
 	public function dialog()
 	{
-		$userId = Session::get("userId");
-		//是否存在chatWith
-		$chatWithId = intval($this->url->params['chatwithId']);
-		if(!$chatWithId) return false;
-		Session::set('chatWithId',$chatWithId);
+		if(!$this->isLogin())
+			$this->goPage('/');
+		
+		$withId = intval($this->url->params['with']);
+		if(!$withId) return false;
+		Session::set('withId',$withId);
+
+		$userId = $this->user['id'];
 		$my = new Mysql();
 		//获取对方信息
-		$sql = "select nickname from chat_user where id = $chatWithId";
+		$sql = "select nickname from chat_user where id = $withId";
 		$chatWith = $my->doSql($sql);
 		$chatwithName = strlen($chatWith[0]['nickname'])<9 ? $chatWith[0]['nickname']:substr($chatWith[0]['nickname'],0,6).'...';
 		//获取未读取的信息
-		$sql = "select * from chat_message m where  ((m.from_user_id = $userId and m.to_user_id = $chatWithId) or".
-					"(m.from_user_id = $chatWithId and m.to_user_id = $userId)) and m.status=1 order by id asc";
+		$sql = "select * from chat_message m where  ((m.from_user_id = $userId and m.to_user_id = $withId) or".
+					"(m.from_user_id = $withId and m.to_user_id = $userId)) and m.status=1 order by id asc";
 		$chatHistory = $my->doSql($sql);
 		//将信息标记为已读
-		$my->where(array('from_user_id'=>$chatWithId,'to_user_id'=>$userId))
+		$my->where(array('from_user_id'=>$withId,'to_user_id'=>$userId))
 			->update('chat_message',array('status'=>3));
-		$this->loadView('this',array('chatHistory'=>$chatHistory,
-							'nickname'=>$chatwithName,
-							'chatWithId'=>$chatWithId) );
+		return new View('Chat/dialog',array('chatHistory'=>$chatHistory,
+							'withNickname'=>$chatwithName,
+							'nickname'=>$this->user['nickname'],
+							'withId'=>$withId) );
 	}
 
 	public function record()
 	{
-		$userId = Session::get("userId");
-		$chatWithId = Session::get('chatWithId');
-		$my = new Mysql();
-		$sql = "select * from chat_message m where m.from_user_id = $chatWithId ".
-				 "and m.to_user_id =$userId  and status=1 ";
-		$newRecord = $my->doSql($sql);
-		if(empty($newRecord)){
-			echo false; exit;
-		}else{
-			header('Content-type:text/json;charset=utf-8');
-			//修改信息记录的状态
-			$my->where(array('from_user_id'=>$chatWithId,'to_user_id'=>$userId,'status'=>1))
-							->update('chat_message',array('status'=>3));
-			echo Json::Arr2J($newRecord);
+		if($this->isLogin()){
+			$userId = $this->user['id'];
+			$withId = Session::get('withId');
+			$my = new Mysql();
+			$sql = "select * from chat_message m where m.from_user_id = $withId ".
+					 "and m.to_user_id =$userId  and status=1 ";
+			$newRecord = $my->doSql($sql);
+			if(empty($newRecord)){
+				echo false; exit;
+			}else{
+				header('Content-type:text/json;charset=utf-8');
+				//修改信息记录的状态
+				$my->where(array('from_user_id'=>$withId,'to_user_id'=>$userId,'status'=>1))
+								->update('chat_message',array('status'=>3));
+				echo Json::Arr2J($newRecord);
+			}
 		}
 	}
 	public function sendMsg()
 	{
-		$chatWithId = Session::get('chatWithId');
-		if($this->method == 'POST')
+		if($this->method == 'POST' && $this->isLogin())
 		{
 			//获取消息内容
+			$withId = Session::get('withId');
 			$a =  Json::J2Arr($this->body);
 			$message['create_time'] = date("Y-m-d H:i:s");
-			$message['from_user_id'] = Session::get('userId');
-			$message['to_user_id'] = $chatWithId;
+			$message['from_user_id'] = $this->user['id'];
+			$message['to_user_id'] = $withId;
 			$message['content'] = $a['content'];
 			$role = Session::get('role');
-
 			//插入数据库
 			$my = new Mysql();
 			if($my->insert('chat_message',$message)){
@@ -75,30 +83,41 @@ class Chat extends Controller {
 
 	public function historyRecord()
 	{
-		$chatWithId = Session::get('chatWithId');
-		$userId = Session::get('userId');
-		if(isset($this->url->params['times'])){
-			$page = $this->url->params['times'];
-			Session::set('moreTimes',$page);
-		}else{
-			$page = Session::get('moreTimes');
-		}
-		$pageSize = 2;
-		$limit = 'limit '.$page*$pageSize.','.$pageSize;
+		if($this->isLogin()){
+			$userId = $this->user['id'];
+			$withId = Session::get('withId');
+			if(isset($this->url->params['times'])){
+				$page = $this->url->params['times'];
+				Session::set('moreTimes',$page);
+			}else{
+				$page = Session::get('moreTimes');
+			}
+			$pageSize = 2;
+			$limit = 'limit '.$page*$pageSize.','.$pageSize;
 
-		$sql = "select * from chat_message m ".
-				" where ((m.from_user_id = $userId and m.to_user_id =$chatWithId) or ".
-					" (m.from_user_id =$chatWithId and m.to_user_id = $userId)) ".
-						"and m.status =3 order by id desc ".$limit;
-		Session::set('moreTimes',++$page);
-		$my = new Mysql();
-		$historyRecord = $my->doSql($sql);
-		header('Content-type:text/json;charset=utf-8'); 
-		if(empty($historyRecord)){
-			echo false;exit;
+			$sql = "select * from chat_message m ".
+					" where ((m.from_user_id = $userId and m.to_user_id =$withId) or ".
+						" (m.from_user_id =$withId and m.to_user_id = $userId)) ".
+							"and m.status =3 order by id desc ".$limit;
+			Session::set('moreTimes',++$page);
+			$my = new Mysql();
+			$historyRecord = $my->doSql($sql);
+			header('Content-type:text/json;charset=utf-8'); 
+			if(empty($historyRecord)){
+				echo false; exit;
+			}
+			// echo Json::Arr2J(array_reverse($historyRecord));
+			echo Json::Arr2J($historyRecord);
 		}
-		// echo Json::Arr2J(array_reverse($historyRecord));
-		echo Json::Arr2J($historyRecord);
+	}
+
+	/*是否登录*/
+	protected function isLogin(){
+		$this->user = Session::get('user');
+		if(empty($this->user)){
+			echo false; exit;
+		}
+		return true;
 	}
 
 }

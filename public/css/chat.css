@@ -12,7 +12,7 @@ a {
 .chat_dialog{
 	margin:8px auto;
 	width: 530px;
-	height: 550px;
+	height: 450px;
 	background:#ffe;
 	border:1px solid #656D82;
 }
@@ -48,7 +48,7 @@ a {
 }
 .msg_box{
 	overflow-y:auto;
-	height:440px; 
+	height:340px; 
 }
 .msg_box ul li{
 	margin-top: 1px;

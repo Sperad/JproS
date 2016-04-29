@@ -1,24 +1,8 @@
 $(document).ready(function(){
 	//前台动画
-	var userGroupsCls = $('.user_group');
+	var userGroupsCls = $('.user-group');
+	var toUser = $('.chat-with');
 	var flag =false;
-	userGroupsCls.find('span').hover(function(){
-		$(this).children('img').show();
-	},function(){
-		$(this).children('img').hide();
-	});
-	userGroupsCls.find('h1').bind('click',function(event){
-		if(!flag){
-			$(this).addClass('user_friends_active');
-			$(this).parent().next().show();
-			flag = true;
-		}else{
-			$(this).removeClass('user_friends_active');
-			$(this).parent().next().hide();
-			flag = false;
-		}
-	})
-	//后台操作
 	var userOption = $(".user_option");
 	var userHelp = $("#userHelp");
 	var userGroups = $('#userGroups');
@@ -47,24 +31,47 @@ $(document).ready(function(){
 		var group = $(this).parents('.user-group');
 		panel.delGroup(group,group.attr('group'));
 	});
-
+	//退出
 	$('#logout').click(function(){
 		$.get('/User_logout',function(url){
 			window.location.href = url;
 		})
 	})
+	//点击请求添加好友的消息
+	userNews.bind('click',function(event){
+		panel.listRequest();
+	});
+
+	//点击组 下拉显示好友列表
+	userGroupsCls.find('span').bind('click',function(){
+		if($(this).hasClass('open')){
+			$(this).removeClass('open').next().hide();
+			$(this).find('.delGroup').hide();
+		}else{
+			$(this).find('.delGroup').show();
+			$(this).addClass('open').next().show();
+		}
+	});
+
+	toUser.dblclick(function(){
+		// panel.getUser($(this).attr('uid'));
+		window.location.href = "/Chat_dialog/with=" + $(this).attr('uid');
+	});
+
+
+
+
+
 	//点击查找好友
 	userOption.bind('click',function(event) {
 		panel.toggle_option($(this)).findFriend(resultFriends);
 	});
-
 	//form 搜索组
 	userSearch.find('button').bind('click', function(event) {
 		event.preventDefault();
 		var search = $(this).prev('input').val();
 		panel.toggle_option($('.user_option[data-toggle=newsFriends]')).findFriend(resultFriends,search);
 	});
-
 	//点击移动好友
 	userGroups.find(".movFriend").bind('click',function(event) {
 		event.preventDefault();
@@ -83,33 +90,12 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-	//点击消息
-	userNews.bind('click',function(event){
-		panel.listRequest();
-	});
-
-	//点击获取游客消息
-	userNews.find('.visitor_news').bind('click',function(event){
-		event.preventDefault();
-		resultFriends.empty();
-		panel.toggle_option($('.user_option[data-toggle=newsFriends]')).requestVisitor(resultFriends);
-	});
-
 	//点击删除好友
 	userGroups.find(".delFriend").bind('click',function(event){
 		event.preventDefault();
 		var friendId = $(this).attr('href');
 		var groupId = $(this).parents('ul').prev('span[group]').attr('group');
 		panel.delFriend(friendId,groupId);
-	});
-	
-	//点击聊天
-	userGroups.find(".chat_with").bind('click',function(event){
-		event.preventDefault();
-		var sFeatures = "height=600, width=600, scrollbars=yes, resizable=yes";
-		$(this).target = "_blank"; 
-		 window.open($(this).attr('href'), '3km', sFeatures );
 	});
 });
 var panel = {
@@ -131,17 +117,18 @@ var panel = {
 	},
 	appendAddGroup : function(groupName){
 		var that = this;
-		$.post('index.php?User_Group', {'groupName':groupName}, function(data, textStatus, xhr) {
+		$.post('/User_Group', {'groupName':groupName}, function(data, textStatus, xhr) {
 			if(data == true){
 				$(that.userGroups).append(that.getGroupTpl(groupName));
 				alert('添加成功');
+				window.location.reload();
 			}
 		});
 		return this;
 	},
 	delGroup : function (group, groupId)
 	{
-		$.post('index.php?User_delGroup',
+		$.post('/User_delGroup',
 				{'groupId':groupId}, 
 			function(data, textStatus, xhr) {
 				if(data == true){
@@ -155,7 +142,7 @@ var panel = {
 	findFriend : function (text)
 	{	
 		var _this = this;
-		$.get('index.php?User_search/search='+text, function(data){
+		$.get('/User_search/search='+text, function(data){
 			var tpl = _this.getUserTpl(data);
 			//绑定标签进行添加好友
 			$(_this.userList).append(tpl).find('.add').bind('click',function(event){
@@ -183,7 +170,7 @@ var panel = {
 	},
 	listRequest : function (){
 		var _this = this;
-		$.get('index.php?User_friend', function(data){
+		$.get('/User_friend', function(data){
 			var tpl = _this.getUserTpl(data);
 			//绑定标签进行添加好友
 			$(_this.userList).empty().append(tpl).find('.add').bind('click',function(event){
@@ -199,9 +186,23 @@ var panel = {
 		});
 	},
 
+	//获取聊天用户信息
+	getUser : function(uid){
+		_this = this;
+		$.get('/User_getOne/uid=' + uid, function(data){
+
+		});
+	},
+
+
+
+
+
+
+
 	delFriend :function(friendId,groupId)
 	{
-			$.post('index.php?User_delFriend',
+			$.post('/User_delFriend',
 					{'friendId':friendId,'groupId':groupId}, 
 				function(data, textStatus, xhr) {
 					if(data = true)
@@ -212,7 +213,7 @@ var panel = {
 	},
 
 	movFriend : function(friendId,oldGroupId,newGroupId){
-		$.post('index.php?User_movFriend',
+		$.post('/User_movFriend',
 			{'friendId':friendId,'groupId':newGroupId,'oldGroupId':oldGroupId}, 
 			function(data, textStatus, xhr) {
 				if(data == true) {
@@ -223,13 +224,13 @@ var panel = {
 
 	requestVisitor: function(resultFriends){
 		var _this = this;
-		$.get('index.php?User_visitors',function(data)
+		$.get('/User_visitors',function(data)
 		{
 			if(data != 'false')
 			{	
 				$.each(data, function(index, visitor){
 					resultFriends.append('<li class="group_friend">'+
-						'<a class="chat_with" href="index.php?chat_dialog/chatwithId='+visitor.id+'&role=friend&fromRole=visitor">'+
+						'<a class="chat_with" href="/chat_dialog/chatwithId='+visitor.id+'&role=friend&fromRole=visitor">'+
 							visitor.nickname+'<i>('+visitor.cnt+')</i></a>');
 				});
 				resultFriends.find(".chat_with").bind('click',function(event){

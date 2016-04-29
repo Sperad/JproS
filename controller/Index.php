@@ -46,6 +46,8 @@ class Index extends Controller
 				unset($_user['password']);
 				Session::set('user',$_user);
 				$this->goPage('/User_center','登录成功');
+			}else{
+				$this->goPage('/','未注册');
 			}
 		}
 	}

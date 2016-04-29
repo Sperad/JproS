@@ -40,15 +40,23 @@
 		 	<div class="user-friends" id="userGroups">
 		 		<?php foreach($list as $group) {?>
 		 		<div class="user-group"  group="<?php echo $group['id'];?>">
-		 			<span> &nbsp;&nbsp;<?php echo $group['group_name'];?>
+		 			<span> &nbsp;&nbsp;&nbsp;&nbsp;<?php echo $group['group_name'];?>
 		 				<div class="del delGroup"></div>
 		 			</span>
 		 			<div class="group-friend">
-		 				<?php foreach($group['users'] as $user){ ?>
-		 					<a href="javascript:;" class="chat-with" ><?php echo $user['nickname'];?>
-		 						<div class="del"></div>
-		 					</a>
-		 				<?php }?>
+		 				<?php 
+							if(isset($group['users'])){
+		 						foreach($group['users'] as $user){ ?>
+			 					<a href="javascript:;" class="chat-with" uid="<?php echo $user['id'];?>" >
+			 						<?php 
+			 							echo $user['nickname'];
+										if(isset($user['recordCnt'])){
+											echo  "<".$user['recordCnt'].">";
+										}
+		 							?>
+			 						<!-- <div class="del"></div> -->
+			 					</a>
+		 				<?php }}?>
 		 			</div>
 		 		</div>
 		 		<?php };?>
