@@ -1,0 +1,27 @@
+.info-form{
+	width: 400px;
+	min-width: 300px;
+	margin: 8px auto;
+}
+.info-form form{
+	padding: 16px;
+}
+.form-line{
+	display: inline-table;
+	width:100%;
+	height: 38px;
+	line-height: 38px;
+}
+.form-line span{
+	display : inline-table;
+	text-align: right;
+	margin-right: 8px;
+	width : 20%;
+	min-width: 20px;
+}
+.form-line input{
+	height : 26px;
+}
+.form-line button{
+	margin-left: 22%;
+}

@@ -15,7 +15,15 @@
 		</div>
 	</div>
 	<div class="container">
-		
+		<div class="user-list">
+			<div class="users" id="userList">
+			<?php foreach($userList as $user){ ?>
+				<div class="user" uid="<?php echo $user['id']; ?>">
+					<h4> <?php echo $user['nickname']; ?></h4>
+				</div>
+			<?php } ?>
+			</div>
+		</div>
 	</div>
 
 	<div class="dialog" id="dialog">

@@ -1,0 +1,78 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="<?php echo CSS.'/jquim.css';?>">
+	<link rel="stylesheet" href="<?php echo CSS.'/base.css';?>">
+	<link rel="stylesheet" href="<?php echo CSS.'/info.css';?>">
+	<script type="text/javascript" src="<?php echo JS.'/jq183m.js';?>"></script>
+	<script type="text/javascript" src="<?php echo JS.'/jquim.js';?>"></script>
+	<script>
+		$(function(){
+			$("#birthday").datepicker({dateFormat:'yy-mm-dd'});
+			$('#selectSex').selectmenu();
+		});
+  	</script>
+</head>
+<body>
+<div class="nav">
+	<h3 class="logo">Schat</h3>
+	<div class="nav-bar">
+		<a href="/User_center"><?php echo $nickname;?></a>
+		<a href="/User_logout">退出</a>
+	</div>
+</div>
+<div class="container">
+	<div class="info-form">
+		<form method="post" action="/Info_upsert">
+			<div class="form-line">
+				<span>真实姓名:</span>
+				<input type="text" name="real_name" value="<?php echo $info['real_name'];?>" />
+			</div>
+			<div class="form-line">
+				<span>性别:</span>
+				<select name="sex" id="selectSex">
+				<?php if( 'female' === $info['sex']) {?>
+					<option value="female">女</option>
+					<option value="male">男</option>
+				<?php }else{ ?>
+					<option value="male">男</option>
+					<option value="female">女</option>
+				<?php } ?>
+				</select>
+			</div>
+			<div class="form-line">
+				<span>邮箱:</span>
+				<input type="text" name="email" value="<?php echo $info['email'];?>" />
+			</div>
+			<div class="form-line">
+				<span>个人说明:</span>
+				<input type="text" name="motto" value="<?php echo $info['motto'];?>" />
+			</div>
+			<div class="form-line">
+				<span>生日:</span>
+				<input type="text" name="birthday" value="<?php echo $info['birthday'];?>"  
+					id="birthday"/>
+			</div>
+			<div class="form-line">
+				<span>地址:</span>
+				<input type="text" name="address" value="<?php echo $info['address'];?>" />
+			</div>
+			<div class="form-line">
+				<span>电话:</span>
+				<input type="text" name="phone" value="<?php echo $info['phone'];?>" />
+			</div>
+			<div class="form-line">
+				<span>血型:</span>
+				<input type="text" name="blood_type" value="<?php echo $info['blood_type'];?>" />
+			</div>
+			<div class="form-line">
+				<span>学校:</span>
+				<input type="text" name="school" value="<?php echo $info['school'];?>" />
+			</div>
+			<div class="form-line">
+				<button type="submit">保存</button>
+			</div>
+		</form>
+	</div>
+</div>

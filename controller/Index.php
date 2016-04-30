@@ -10,7 +10,10 @@ class Index extends Controller
 {
 	public function default()
 	{
-		return new View('Index/default', array('num'=>9));
+		$my = new Mysql();
+		$sql = "select u.id,u.nickname from chat_user u limit 0,9";
+		$userList = $my->doSql($sql);
+		return new View('Index/default', array('userList'=>$userList));
 	}
 
 	public function register()

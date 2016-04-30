@@ -9,7 +9,6 @@ use base\web\Session;
 
 class User extends Controller{
 
-	protected $user = array();
 	/* 添加组 */
 	public function Group()
 	{
@@ -29,14 +28,6 @@ class User extends Controller{
 				echo false;
 			}
 		}
-	}
-	/*是否登录*/
-	protected function isLogin(){
-		$this->user = Session::get('user');
-		if(empty($this->user)){
-			echo false; exit;
-		}
-		return true;
 	}
 
 	/*控制中心*/
@@ -74,12 +65,11 @@ class User extends Controller{
 			return new View('User/center',array('list'=>$list, 'requestRecord' => $cnt['cnt'],
 												'nickname'=>$this->user['nickname']));
 		}
-		$this->goPage('/');
 	}
 	/*退出*/
 	public function logout(){
 		Session::set('user', '');
-		echo '/';
+		$this->goPage('/');
 	}
 
 	/* 搜索用户 */

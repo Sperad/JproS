@@ -8,7 +8,6 @@ use base\db\Mysql;
 
 class Chat extends Controller {
 
-	protected $user = array();
 
 	/*聊天页面*/
 	public function dialog()
@@ -110,14 +109,4 @@ class Chat extends Controller {
 			echo Json::Arr2J($historyRecord);
 		}
 	}
-
-	/*是否登录*/
-	protected function isLogin(){
-		$this->user = Session::get('user');
-		if(empty($this->user)){
-			echo false; exit;
-		}
-		return true;
-	}
-
 }

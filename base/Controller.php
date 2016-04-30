@@ -3,9 +3,11 @@ namespace base;
 use base\web\HTTP;
 use base\web\Route;
 use base\web\Template;
+use base\web\Session;
 
 class Controller extends HTTP{
 
+	protected $user = array();
 	public function __construct()
 	{
 		parent::__construct();
@@ -34,5 +36,14 @@ class Controller extends HTTP{
 			echo "<script>window.location.href='$url'</script>";
 		}
 		exit;
+	}
+
+	/*是否登录*/
+	public function isLogin(){
+		$this->user = Session::get('user');
+		if(empty($this->user)){
+			$this->goPage('/');
+		}
+		return true;
 	}
 }
