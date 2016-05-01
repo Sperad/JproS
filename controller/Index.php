@@ -11,7 +11,8 @@ class Index extends Controller
 	public function default()
 	{
 		$my = new Mysql();
-		$sql = "select u.id,u.nickname from chat_user u limit 0,9";
+		$sql = "select u.id, u.nickname, i.sex, i.motto, i.address, i.birthday ,i.blood_type, i.school ".
+					"from chat_user u  LEFT JOIN chat_user_info i ON u.id = i.user_id limit 0,9 ";
 		$userList = $my->doSql($sql);
 		return new View('Index/default', array('userList'=>$userList));
 	}

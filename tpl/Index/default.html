@@ -19,7 +19,12 @@
 			<div class="users" id="userList">
 			<?php foreach($userList as $user){ ?>
 				<div class="user" uid="<?php echo $user['id']; ?>">
-					<h4> <?php echo $user['nickname']; ?></h4>
+					<p><h4>昵称: <?php echo $user['nickname']; ?></h4></p>
+					<p>性别：<?php echo $user['sex'] === 'female' ? '女' : '男' ; ?></p>
+					<p>个人说明：<?php echo $user['motto']; ?></p>
+					<p>地址：<?php echo $user['address']; ?></p>
+					<p>生日：<?php echo $user['birthday'] ? date('Y-m-d', $user['birthday']) : ''; ?></p>
+					<p>血型：<?php echo $user['blood_type']; ?></p>
 				</div>
 			<?php } ?>
 			</div>
