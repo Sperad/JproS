@@ -27,7 +27,7 @@ $(document).ready(function() {
 	})
 
 	//接收消息
-	// setInterval(function(){dialog.getMsg(msgBoxNew)},1500); //每1秒发送一次请求
+	setInterval(function(){dialog.getMsg(msgBoxNew)},1500); //每1秒发送一次请求
 
 	//获取历史消息记录
 	$('#msgHistory').bind('click',function(event) {

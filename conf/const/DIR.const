@@ -7,5 +7,6 @@ return [
 			'STATIC_DIR' => 'public',
 			'WWW_DIR' => 'www',
 			'CSS' => 'css',
-			'JS' => 'js'
+			'JS' => 'js',
+			'TPL' => 'tpl'
 		];

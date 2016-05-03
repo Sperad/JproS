@@ -1,0 +1,28 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Schat</title>
+	<link rel="stylesheet" href="<?php echo CSS.'/base.css';?>">
+	<link rel="stylesheet" href="<?php echo CSS.'/center.css';?>">
+	<link rel="stylesheet" href="<?php echo CSS.'/chat.css';?>">
+	<link rel="stylesheet" href="<?php echo CSS.'/info.css';?>">
+	<link rel="stylesheet" href="<?php echo CSS.'/jquim.css';?>">
+	<script type="text/javascript" src="<?php echo JS.'/jq183m.js';?>"></script>
+	<script type="text/javascript" src="<?php echo JS.'/jquim.js';?>"></script>
+	<script type="text/javascript" src="<?php echo JS.'/index.js';?>"></script>
+	<!-- <script type="text/javascript" src="<?php echo JS.'/center.js';?>"></script>
+	<script type="text/javascript" src="<?php echo JS.'/chat.js';?>"></script> -->
+</head>
+<body>
+	<div class="nav">
+		<h3 class="logo">Schat</h3>
+		<div class="nav-bar">
+		<?php if(empty($nickname)){ ?>
+			<!-- <button type="button" id="login">登录</button>
+			<button type="button" id="register">注册</button> -->
+		<?php }else{ ?>
+			<a href="/Info_default"><?php echo $nickname;?></a>
+			<a href="/User_logout">退出</a>
+		<?php } ?>
+		</div>
+	</div>

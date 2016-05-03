@@ -1,55 +1,53 @@
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<link rel="stylesheet" href="<?php echo CSS.'/base.css';?>">
-	<script type="text/javascript" src="<?php echo JS.'/jq183m.js';?>"></script>
-	<script type="text/javascript" src="<?php echo JS.'/index.js';?>"></script>
-</head>
-<body>
-	<div class="nav">
-		<h3 class="logo">Schat</h3>
-		<div class="nav-bar">
-			<a href="javascript:;" id="login">登录</a>
-			<a href="javascript:;" id="register">注册</a>
-		</div>
-	</div>
+<?php include TPL.'/header.html'; ?>
 	<div class="container">
 		<div class="user-list">
 			<div class="users" id="userList">
 			<?php foreach($userList as $user){ ?>
-				<div class="user" uid="<?php echo $user['id']; ?>">
-					<p><h4>昵称: <?php echo $user['nickname']; ?></h4></p>
-					<p>性别：<?php echo $user['sex'] === 'female' ? '女' : '男' ; ?></p>
-					<p>个人说明：<?php echo $user['motto']; ?></p>
-					<p>地址：<?php echo $user['address']; ?></p>
-					<p>生日：<?php echo $user['birthday'] ? date('Y-m-d', $user['birthday']) : ''; ?></p>
-					<p>血型：<?php echo $user['blood_type']; ?></p>
+				<div class="user ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" 
+						uid="<?php echo $user['id']; ?>">
+				    <div class="user-nickname ui-widget-header ui-corner-all">
+						<span class='ui-icon ui-icon-plusthick portlet-toggle'></span>
+				    	昵称: <?php echo $user['nickname']; ?>
+				    </div>
+				    <div class="user-content">
+						<p>性别：<?php echo $user['sex'] === 'female' ? '女' : '男' ; ?><br />
+						个人说明：<?php echo $user['motto']; ?><br />
+						生日：<?php echo $user['birthday'] ? date('Y-m-d', $user['birthday']) : ''; ?><br /></p>
+				    </div>
 				</div>
 			<?php } ?>
 			</div>
 		</div>
-	</div>
 
-	<div class="dialog" id="dialog">
-		<div class="dialog-box">
-			<div class="dialog-close"><span href="javascript:;" class="close">x</span></div>
-			<div class="dialog-content">
-				<span class="dialog-title"> <h3>登录</h3> </span>
-				<div class="dialog-body">
-					<form action="" class="dialog-form" method="post">
-						<div class="form-row">
-							<input type="text" name="nickname" placeholder="用户名" />
-						</div>
-						<div class="form-row">
-							<input type="text" name="password" placeholder="密码" />
-						</div>
-						<div class="form-row">
-							<button type="submit" class="submit" >确定</button>
-						</div>
-					</form>
-				</div>
-			</div>
+		<div id="accordion" class="accordion">
+		  	<h3>登录</h3>
+		  	<div>
+			   	<form action="/Index_login" class="dialog-form" method="post">
+			   		<div class="form-row">
+			   			<input type="text" name="nickname" placeholder="用户名" />
+			   		</div>
+			   		<div class="form-row">
+			   			<input type="text" name="password" placeholder="密码" />
+			   		</div>
+			   		<div class="form-row">
+			   			<button type="submit" class="submit" >登录</button>
+			   		</div>
+			   	</form>
+		  	</div>
+		  	<h3>注册</h3>
+		  	<div>
+			    <form action="/Index_register" class="dialog-form" method="post">
+			    	<div class="form-row">
+			    		<input type="text" name="nickname" placeholder="用户名" />
+			    	</div>
+			    	<div class="form-row">
+			    		<input type="text" name="password" placeholder="密码" />
+			    	</div>
+			    	<div class="form-row">
+			    		<button type="submit" class="submit" >注册</button>
+			    	</div>
+			    </form>
+		  	</div>
 		</div>
 	</div>
 </body>

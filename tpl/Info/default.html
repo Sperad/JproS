@@ -1,27 +1,10 @@
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<link rel="stylesheet" href="<?php echo CSS.'/jquim.css';?>">
-	<link rel="stylesheet" href="<?php echo CSS.'/base.css';?>">
-	<link rel="stylesheet" href="<?php echo CSS.'/info.css';?>">
-	<script type="text/javascript" src="<?php echo JS.'/jq183m.js';?>"></script>
-	<script type="text/javascript" src="<?php echo JS.'/jquim.js';?>"></script>
+<?php include TPL.'/header.html'; ?>
 	<script>
 		$(function(){
 			$("#birthday").datepicker({dateFormat:'yy-mm-dd'});
 			$('#selectSex').selectmenu();
 		});
   	</script>
-</head>
-<body>
-<div class="nav">
-	<h3 class="logo">Schat</h3>
-	<div class="nav-bar">
-		<a href="/User_center"><?php echo $nickname;?></a>
-		<a href="/User_logout">退出</a>
-	</div>
-</div>
 <div class="container">
 	<div class="info-form">
 		<form method="post" action="/Info_upsert">

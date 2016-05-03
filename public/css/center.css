@@ -114,33 +114,6 @@
 .user-search input{
     margin: 6px 0 0 20px;
 }
-.user-list{
-    width: 680px;
-    max-width: 100%;
-    min-width: 340px;
-    float : left;
-    height: 340px;
-    margin-left: 20px;
-    background:#dedede;
-    position:relative;
-}
-.user{
-    height: 100px;
-    min-width: 100px;
-    width:30%;
-    float : left;
-    background-color: #cdcdcd;
-    margin : 10px 0 0 2.6%;
-}
-.user .add{
-    width : 12px;
-    background : url('/img/add.png') no-repeat center left;
-    height : 12px;
-    display: inline-block;
-    float : right;
-    margin : -3px -3px 0 0;
-    cursor: pointer;
-}
 .group-list {
     position: absolute;
     display: none;
