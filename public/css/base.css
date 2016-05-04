@@ -37,8 +37,9 @@ a:hover {
 .nav-bar{
 	display:inline-block;
 	float: right;
-	width:120px;
+	width:240px;
 	height:100%;
+	text-align: center;
 	padding-top: 5px;
 }
 .nav-bar button{
@@ -48,7 +49,7 @@ a:hover {
 	font-weight : 400;
 	cursor: pointer;
 	border: 1px solid #ccc;
-	width:40px;
+	width:80px;
 	height:20px;
 }
 .container{
@@ -117,15 +118,6 @@ a:hover {
 }
 .user-more{
 	display: none;
-}
-.user .add{
-    width : 12px;
-    background : url('/img/add.png') no-repeat center left;
-    height : 12px;
-    display: inline-block;
-    float : right;
-    margin : -3px -3px 0 0;
-    cursor: pointer;
 }
 .user p{
 	font-size: 12px;

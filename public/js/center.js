@@ -1,35 +1,56 @@
 $(document).ready(function(){
+
+	var icons = {
+      header: "ui-icon-circle-arrow-e",
+      activeHeader: "ui-icon-circle-arrow-s"
+    };
+    $( "#accordion" ).accordion({
+      icons: icons
+    });
+
 	//前台动画
-	var userGroupsCls = $('.user-group');
+	var userGroupsCls = $('#userGroups');
+
 	var toUser = $('.chat-with');
-	var flag =false;
-	var userOption = $(".user_option");
-	var userHelp = $("#userHelp");
-	var userGroups = $('#userGroups');
+
+	var userGroups = $('#userGroups');// 无用
+
 	var resultFriends = $('#resultFriends');
-	var userSearch = $('#userSearch');
 	var userNews = $('#userNews');
+	var userSearch = $('#userSearch');
+	var addGroup = $("#addGroup");
 
 	panel.findFriend('');
+
+	//点击请求添加好友的消息
+	userNews.bind('click',function(event){
+		panel.listRequest();
+	});
+	//搜索好友
+	$('#addUserBtn').click(function(){
+		$('.user-search').show();
+		userSearch.bind('click', function(event) {
+			var search = $(this).parents('.user-search').find('input').val();
+			panel.findFriend(search);
+		});
+	});
 	//点击添加组
-	userHelp.find('#addGroup').bind('click',function(event) {
-		$('.dialog-group').show(function(){
-			$(this).find('button').click(function(){
-				var groupName = $(this).prev().val();
-				if(!groupName){
-					alert('请输组名');
-				}else{
-					panel.appendAddGroup(groupName);
-				}
-			});
+	$('#addGroupBtn').bind('click',function() {
+		$('.user-addgroup').show();
+		addGroup.bind('click', function(event){
+			var groupName = $(this).parents('.user-addgroup').find('input').val();
+			if(!groupName){
+				alert('请输组名');
+			}else{
+				panel.appendAddGroup(groupName);
+			}
 		});
 		$(this).unbind("click");
 	});
 	
 	//点击删除组 
 	userGroups.find('.delGroup').bind('click',function(event) {
-		var group = $(this).parents('.user-group');
-		panel.delGroup(group,group.attr('group'));
+		panel.delGroup($(this).parents('h3'),$(this).attr('gid'));
 	});
 	//退出
 	$('#logout').click(function(){
@@ -37,19 +58,14 @@ $(document).ready(function(){
 			window.location.href = url;
 		})
 	})
-	//点击请求添加好友的消息
-	userNews.bind('click',function(event){
-		panel.listRequest();
-	});
+	
 
 	//点击组 下拉显示好友列表
-	userGroupsCls.find('span').bind('click',function(){
-		if($(this).hasClass('open')){
-			$(this).removeClass('open').next().hide();
-			$(this).find('.delGroup').hide();
-		}else{
+	userGroupsCls.find('h3').hover(function(){
+		if($(this).hasClass('ui-state-hover')){
 			$(this).find('.delGroup').show();
-			$(this).addClass('open').next().show();
+		}else{
+			$(this).find('.delGroup').hide();
 		}
 	});
 
@@ -57,14 +73,7 @@ $(document).ready(function(){
 		// panel.getUser($(this).attr('uid'));
 		window.location.href = "/Chat_dialog/with=" + $(this).attr('uid');
 	});
-	//搜索好友
-	$('#addUserBtn').click(function(){
-		$('.user-search').show();
-		userSearch.bind('click', function(event) {
-			var search = $(this).prev('input').val();
-			panel.findFriend(search);
-		});
-	});
+	
 
 
 
@@ -108,8 +117,9 @@ var panel = {
 	getUserTpl : function(userListData){
 		var tpl = '';
 		for(i in userListData){
-			tpl += '<div class="user" uid="'+userListData[i].id+'"><h4>' + userListData[i].nickname +
-						'<span class="add"></span></h4></div>';
+			tpl += '<div class="user ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" uid="'+userListData[i].id+'">'+
+						'<div class="user-nickname ui-widget-header ui-corner-all"><span class="ui-icon ui-icon-plusthick portlet-toggle add"></span>'+
+							userListData[i].nickname +'</div><div class="user-content">asdas</div></div>';
 		}
 		return tpl;
 	},

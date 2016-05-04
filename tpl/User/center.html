@@ -2,37 +2,50 @@
 	<div class="container">
 		<div class="user-list">
 			<div class="user-search">
-				<input type="text" />
-				<button type="button" id="userSearch">搜索</button>
+				<div class="form-row">
+					<input type="text" />
+				</div>
+				<div class="form-row">
+					<button type="button" class="submit" id="userSearch">搜索</button>
+				</div>
 			</div>
+			<div class="user-addgroup">
+				<div class="form-row">
+					<input type="text" />
+				</div>
+				<div class="form-row">
+					<button type="button" class="submit" id="addGroup">添加组</button>
+				</div>
+			</div>
+
 			<div class="group-list">
 				<ul>
 					<?php foreach($list as $group){
-						echo '<li gid="'.$group['id'].'">'.$group['group_name'].'</li>';
+						echo '<li class="ui-widget-header" gid="'.$group['id'].'">'.$group['group_name'].'</li>';
 					};?>
 				</ul>
 			</div>
 			<div class="users" id="userList"></div>
 		</div>
+
 		<div id="user-panel" class="user-panel">
-			<div class="user-news" id="userNews">
-				<div class="mgs-img"></div>(<?php echo $requestRecord;?>)
+			<div class="user-news ui-widget-header ui-corner-all">
+				<ul>
+					<li id="userNews"><div class="mgs-img"></div>(<?php echo $requestRecord;?>)</li>
+					<li><a href="javascript:;" id="addGroupBtn">加组</a></li>
+					<li><a href="javascript:;" id="addUserBtn">加友</a></li>
+				</ul>
 		 	</div>
-		 	<!-- <div class="user-options"> 
-		 			    	<div class="user-option option-active" data-toggle="userGroups">
-		 			     		<div class="option-img1"></div>
-		 			    	</div> 
-		 			    	<div class="user-option"> 聊记录 </div>
-		 	</div>  -->
 			<!-- user-friends start --> 
 		 	<div class="user-friends" id="userGroups">
-		 		<?php foreach($list as $group) {?>
-		 		<div class="user-group"  group="<?php echo $group['id'];?>">
-		 			<span> &nbsp;&nbsp;&nbsp;&nbsp;<?php echo $group['group_name'];?>
-		 				<div class="del delGroup"></div>
-		 			</span>
-		 			<div class="group-friend">
-		 				<?php 
+		 		<div id="accordion">
+		 			<?php foreach($list as $group) {?>
+			 		  	<h3 style="margin: 0;padding: 0; padding-left: 2.2em;">
+			 		  		<?php echo $group['group_name'];?>
+			 		  		<div class="del delGroup" gid="<?php echo $group['id'];?>"></div>
+			 		  	</h3>
+			 		  	<div style="padding: 8px;">
+			 		  	  	<?php 
 							if(isset($group['users'])){
 		 						foreach($group['users'] as $user){ ?>
 			 					<a href="javascript:;" class="chat-with" uid="<?php echo $user['id'];?>" >
@@ -44,25 +57,13 @@
 		 							?>
 			 						<!-- <div class="del"></div> -->
 			 					</a>
-		 				<?php }}?>
-		 			</div>
+		 					<?php }}?>
+			 		  	</div>
+		 			<?php };?>
 		 		</div>
-		 		<?php };?>
-		  	</div>
-			<!-- 底部help-->
-			<div class="user-help" id="userHelp">
-				<ul>
-					<li><a href="javascript:;" id="addGroup">加组</a></li>
-					<li><a href="javascript:;" id="addUserBtn">加友</a></li>
-				</ul>
-				<span class="help-dialog">
-					<div class="dialog-group">
-						<input type="text" class="add-group"  placeholder="请输入组名称">
-						<button type="button">确定</button>
-					</div>
-				</span>
-		  	</div>
+			</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="<?php echo JS.'/center.js';?>"></script>
 </body>
 </html>
