@@ -111,9 +111,11 @@ var panel = {
 	getUserTpl : function(userListData){
 		var tpl = '';
 		for(i in userListData){
-			tpl += '<div class="user ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" uid="'+userListData[i].id+'">'+
-						'<div class="user-nickname ui-widget-header ui-corner-all"><span class="ui-icon ui-icon-plusthick portlet-toggle add"></span>'+
-							userListData[i].nickname +'</div><div class="user-content">asdas</div></div>';
+			tpl +=  '<div class="user ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" uid="'+
+					userListData[i].id+'"><div class="user-nickname ui-widget-header ui-corner-all">'+
+					'<span class="ui-icon ui-icon-plusthick portlet-toggle add"></span>'+ userListData[i].nickname+
+					'</div><div class="user-content"><p>性别：'+ userListData[i].sex + '<br />个人说明：'+userListData[i].motto +
+					'<br />生日：'+userListData[i].birthday+'<br /></p></div></div>';
 		}
 		return tpl;
 	},
