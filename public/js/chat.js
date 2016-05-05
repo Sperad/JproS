@@ -10,10 +10,9 @@ $(document).ready(function() {
 	var msgBoxOld = $("#msg_box .msg_history");
 	var msgBoxNew = $("#msg_box .msg_news");
 	
-	//点击关闭对话
+	//点击关闭对话 <改为换组>
 	$('.title_close').bind('click',function(event) {
-		event.preventDefault();
-		window.close();
+
 	});
 	//发送消息
 	msgBtn.bind('click', function(event){

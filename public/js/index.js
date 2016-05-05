@@ -4,4 +4,6 @@ $(document).ready(function(){
 	    $( "#accordion" ).accordion();
 	});
 
+	$("#menu").menu();
+
 }); 

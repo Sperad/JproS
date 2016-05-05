@@ -41,8 +41,14 @@
     float:right;
     display : none;
 }
+.user-icon{
+    float: left;
+}
+.user-change{
+    float: right;
+}
 .chat-with{
-    width:100%;
+    width:90%;
     display:inline-block;
     color:#333;
 }
@@ -60,8 +66,8 @@
 .group-list {
     position: absolute;
     display: none;
-    right : -70px;
-    width: 70px;
+    right : -50px;
+    width: 55px;
 }
 .group-list li{
     width : 100%;

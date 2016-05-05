@@ -44,10 +44,11 @@
 			 		  		<?php echo $group['group_name'];?>
 			 		  		<div class="del delGroup" gid="<?php echo $group['id'];?>"></div>
 			 		  	</h3>
-			 		  	<div style="padding: 8px;">
+			 		  	<div style="padding: 8px 0;" class="users-div">
 			 		  	  	<?php 
 							if(isset($group['users'])){
 		 						foreach($group['users'] as $user){ ?>
+				 		  		<span class="ui-menu-icon ui-icon ui-icon-carat-1-e user-icon"></span>
 			 					<a href="javascript:;" class="chat-with" uid="<?php echo $user['id'];?>" >
 			 						<?php 
 			 							echo $user['nickname'];
@@ -55,7 +56,10 @@
 											echo  "<".$user['recordCnt'].">";
 										}
 		 							?>
-			 						<!-- <div class="del"></div> -->
+		 							<span class="ui-menu-icon ui-icon ui-icon-carat-1-e user-change" 
+		 								style="display: none;">
+		 							</span>
+			 						<div class="del"></div>
 			 					</a>
 		 					<?php }}?>
 			 		  	</div>

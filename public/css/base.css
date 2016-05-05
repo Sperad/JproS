@@ -37,20 +37,10 @@ a:hover {
 .nav-bar{
 	display:inline-block;
 	float: right;
-	width:240px;
+	width:80px;
 	height:100%;
 	text-align: center;
 	padding-top: 5px;
-}
-.nav-bar button{
-	display:inline-block;
-	color : #555;
-	font-size : 0.5em;
-	font-weight : 400;
-	cursor: pointer;
-	border: 1px solid #ccc;
-	width:80px;
-	height:20px;
 }
 .container{
 	width: 80%;

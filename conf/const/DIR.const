@@ -1,12 +1,16 @@
 <?php
 
+$PHP_SELF=$_SERVER['PHP_SELF'];
+$url ='http://'.$_SERVER['HTTP_HOST'].substr($PHP_SELF,0,strrpos($PHP_SELF,'/')+1);
+define("APP_ROOT",$url);
+
 return [
 			'CACHE_TPL_DIR' => 'cache/',
 			'TPL_DIR' => 'tpl/',
 			'CONTROLLER_DIR' => 'controller',/*不能controller/  有后面的/(与new 一个类有关系)   */
 			'STATIC_DIR' => 'public',
 			'WWW_DIR' => 'www',
-			'CSS' => 'css',
-			'JS' => 'js',
+			'CSS' => APP_ROOT. '/css',
+			'JS'  => APP_ROOT. '/js',
 			'TPL' => 'tpl'
 		];

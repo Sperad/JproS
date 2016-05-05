@@ -10,15 +10,21 @@
 	<script type="text/javascript" src="<?php echo JS.'/jq183m.js';?>"></script>
 	<script type="text/javascript" src="<?php echo JS.'/jquim.js';?>"></script>
 	<script type="text/javascript" src="<?php echo JS.'/index.js';?>"></script>
-	<!-- <script type="text/javascript" src="<?php echo JS.'/chat.js';?>"></script> -->
 </head>
 <body>
 	<div class="nav">
 		<h3 class="logo">Schat</h3>
 		<div class="nav-bar">
 		<?php if(!empty($nickname)){ ?>
-			<button type="button"><a href="/Info_default"><?php echo $nickname;?></a></button>
-			<button type="button"><a href="/User_logout">退出</a></button>
+			<ul id="menu">
+				<li><a href="javascript:;"><?php echo $nickname;?></a>
+				    <ul>
+				      	<li><a href="/User_center">中心</a></li>
+  						<li><a href="/Info_default">信息</a></li>
+  						<li><a href="/User_logout">退出</a></li>
+				    </ul>
+			  	</li>
+			</ul>
 		<?php } ?>
 		</div>
 	</div>

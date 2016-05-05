@@ -1,11 +1,11 @@
 $(document).ready(function(){
-
+	
 	var icons = {
-      header: "ui-icon-circle-arrow-e",
-      activeHeader: "ui-icon-circle-arrow-s"
+      	header: "ui-icon-circle-arrow-e",
+      	activeHeader: "ui-icon-circle-arrow-s"
     };
     $( "#accordion" ).accordion({
-      icons: icons
+      	icons: icons
     });
 
 	//前台动画
@@ -58,8 +58,6 @@ $(document).ready(function(){
 			window.location.href = url;
 		})
 	})
-	
-
 	//点击组 下拉显示好友列表
 	userGroupsCls.find('h3').hover(function(){
 		if($(this).hasClass('ui-state-hover')){
@@ -68,41 +66,37 @@ $(document).ready(function(){
 			$(this).find('.delGroup').hide();
 		}
 	});
+	toUser.hover(function(){
+		if(!$(this).hasClass('delUser')){
+			$(this).addClass('delUser').find('.del').show();
+			$(this).addClass('delUser').find('.user-change').show();
+		}else{
+			$(this).removeClass('delUser').find('.del').hide();
+			$(this).removeClass('delUser').find('.user-change').hide();
+		}
+	})
 
 	toUser.dblclick(function(){
 		// panel.getUser($(this).attr('uid'));
 		window.location.href = "/Chat_dialog/with=" + $(this).attr('uid');
 	});
-	
-
-
-
-
-
-	//点击移动好友
-	userGroups.find(".movFriend").bind('click',function(event) {
-		event.preventDefault();
-		var friendId= $(this).attr('href');
-		var friendName = $(this).attr('name');
-		var oldGroupId = $(this).parents('ul').prev('span[group]').attr('group');
-		var oldGroupName = $(this).parents('ul').prev('span[group]').attr('name');
-		resultFriends.empty();
-		panel.toggle_option($('.user_option[data-toggle=newsFriends]'));
-		resultFriends.append('<li><a>'+friendName+'</a><a class="mov" herf="#"><img src="../static/img/right.png" /></a></li>');
-		resultFriends.find('.mov').bind('click',function(event) {
-			event.preventDefault();
-			var newGroup = $("#groupsName option:selected");
-			if(confirm('确定要将 '+friendName+' 从 '+oldGroupName+ ' 移动到 ' +newGroup.html())){
-				panel.movFriend(friendId,oldGroupId,newGroup.val());
-			}
-		});
-	});
 	//点击删除好友
-	userGroups.find(".delFriend").bind('click',function(event){
-		event.preventDefault();
-		var friendId = $(this).attr('href');
-		var groupId = $(this).parents('ul').prev('span[group]').attr('group');
+	toUser.find(".del").bind('click',function(event){
+		var friendId = $(this).parents('.chat-with').attr('uid');
+		var groupId = $(this).parents('.users-div').prev().find('.delGroup').attr('gid');
 		panel.delFriend(friendId,groupId);
+	});
+	//点击移动好友
+	toUser.find(".user-change").bind('click',function(event) {
+		alert('请选择组');
+		var friendId= $(this).parents('.chat-with').attr('uid');
+		var oldGroupId = $(this).parents('.users-div').prev().find('.delGroup').attr('gid');
+		$('.group-list').show(function(){
+			$(this).find('li').bind('click',function(){
+				var newGroupId = $(this).attr('gid');
+				panel.movFriend(friendId,oldGroupId, newGroupId);
+			});
+		});
 	});
 });
 var panel = {
@@ -201,25 +195,17 @@ var panel = {
 
 		});
 	},
-
-
-
-
-
-
-
+	//删除好友
 	delFriend :function(friendId,groupId)
 	{
-			$.post('/User_delFriend',
-					{'friendId':friendId,'groupId':groupId}, 
-				function(data, textStatus, xhr) {
-					if(data = true)
-					{
-						alert('删除成功');window.location.reload();
-					}
-			});
+		$.post('/User_delFriend', {'friendId':friendId,'groupId':groupId},
+			function(data, textStatus, xhr) {
+				if(data = true) {
+					alert('删除成功');window.location.reload();
+				}
+		});
 	},
-
+	//移动好友到其他组
 	movFriend : function(friendId,oldGroupId,newGroupId){
 		$.post('/User_movFriend',
 			{'friendId':friendId,'groupId':newGroupId,'oldGroupId':oldGroupId}, 
@@ -229,27 +215,4 @@ var panel = {
 				}
 		});
 	},
-
-	requestVisitor: function(resultFriends){
-		var _this = this;
-		$.get('/User_visitors',function(data)
-		{
-			if(data != 'false')
-			{	
-				$.each(data, function(index, visitor){
-					resultFriends.append('<li class="group_friend">'+
-						'<a class="chat_with" href="/chat_dialog/chatwithId='+visitor.id+'&role=friend&fromRole=visitor">'+
-							visitor.nickname+'<i>('+visitor.cnt+')</i></a>');
-				});
-				resultFriends.find(".chat_with").bind('click',function(event){
-					event.preventDefault();
-					var sFeatures = "height=600, width=600, scrollbars=yes, resizable=yes";
-					$(this).target = "_blank"; 
-					 window.open($(this).attr('href'), '3km', sFeatures );
-				});
-			}else{
-				alert('获取数据失败');
-			}
-		});
-	}
 }
