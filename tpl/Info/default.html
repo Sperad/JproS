@@ -30,12 +30,17 @@
 			</div>
 			<div class="form-line">
 				<span>个人说明:</span>
-				<input type="text" name="motto" value="<?php echo $info['motto'];?>" />
+				<textarea name="motto" id="" cols="23" rows="3"><?php echo $info['motto'];?></textarea>
+				<!-- <input type="text" name="motto" value="<?php echo $info['motto'];?>" /> -->
 			</div>
 			<div class="form-line">
 				<span>生日:</span>
-				<input type="text" name="birthday" value="<?php echo date('Y-m-d', $info['birthday']);?>"  
+				<?php if(empty($info['birthday'])){?>
+					<input type="text" name="birthday" id="birthday"/>
+				<?php }else{ ?>
+					<input type="text" name="birthday" value="<?php echo date('Y-m-d', $info['birthday']);?>"  
 					id="birthday"/>
+				<?php } ?>
 			</div>
 			<div class="form-line">
 				<span>地址:</span>

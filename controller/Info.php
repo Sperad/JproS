@@ -17,6 +17,10 @@ class Info extends Controller
 			$info = $my->doSql($sql);
 			if(empty($info)){
 				$info = null;
+			}else {
+				if(empty($info['birthday'])){
+					$info['birthday'] = time();
+				}
 			}
 			return new View('/Info/default', array(
 								'nickname'=> $this->user['nickname'], 

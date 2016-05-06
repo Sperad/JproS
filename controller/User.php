@@ -96,20 +96,7 @@ class User extends Controller{
 					"i.user_id = u.id where u.id not in($strIds) and u.nickname ".
 					"like '%$search%' limit $page, $pageNo";
 			$users = $my->doSql($sql);
-			foreach ($users as &$user) {
-				foreach ($user as $key => $value) {
-					if(empty($value)){
-						$user[$key] = '';
-					}else{
-						if($key == 'birthday'){
-							$user[$key] = date('Y-m-d', $value);
-						}
-						if($key == 'sex'){
-							$user[$key] = $value === 'male' ? '男' : '女';
-						}
-					}
-				}
-			}
+			$users = $this->dealUser($users);
 			header('Content-type:text/json'); 
 			echo Json::Arr2J($users);
 		}
@@ -152,15 +139,15 @@ class User extends Controller{
 		{
 			$my = new Mysql();
 			$userId = $this->user['id'];
-			$sql = "select u.id, u.nickname ".
-					"from chat_user u,chat_request_record rr ".
-					"where u.id = rr.from_user_id  and rr.status = 1 and rr.to_user_id = $userId ".
-					"and rr.from_user_id not in( ".
+			$sql = "select u.id, u.nickname, i.sex, i.motto, i.birthday ".
+					"from chat_user u, chat_request_record rr, chat_user_info i ".
+					"where u.id = rr.from_user_id and i.user_id = u.id and rr.status = 1 ".
+					"and rr.to_user_id = $userId and rr.from_user_id not in( ".
 					    "select gu.user_id from chat_group_user gu , chat_group g ".
 				       	"where gu.group_id = g.id and g.create_by =$userId ".
 					")" ;
-
 			$users = $my->doSql($sql);
+			$users = $this->dealUser($users);
 			header('Content-type:text/json'); 
 			echo Json::Arr2J($users);
 		}
@@ -227,6 +214,26 @@ class User extends Controller{
 		$my->where(array('group_id'=>$oldGroupId,'user_id'=>$friendId))
 				->update('chat_group_user',array('group_id'=>$groupId));
 		echo true;
+	}
+
+
+	public function dealUser($users)
+	{
+		foreach ($users as &$user) {
+			foreach ($user as $key => $value) {
+				if(empty($value)){
+					$user[$key] = '';
+				}else{
+					if($key == 'birthday'){
+						$user[$key] = date('Y-m-d', $value);
+					}
+					if($key == 'sex'){
+						$user[$key] = $value === 'male' ? '男' : '女';
+					}
+				}
+			}
+		}
+		return $users;
 	}
 }
 //接口Json API
