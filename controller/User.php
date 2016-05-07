@@ -91,7 +91,7 @@ class User extends Controller{
 				$strIds = $userId;
 			}
 			//搜索陌生人
-			$sql =  "select u.id as uid,u.nickname,i.*".
+			$sql =  "select u.id,u.nickname,i.sex,i.motto,i.address,i.birthday,i.blood_type,i.school ".
 					"from chat_user u left join chat_user_info i on ".
 					"i.user_id = u.id where u.id not in($strIds) and u.nickname ".
 					"like '%$search%' limit $page, $pageNo";

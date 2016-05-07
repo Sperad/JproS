@@ -69,7 +69,6 @@ class Chat extends Controller {
 			$message['from_user_id'] = $this->user['id'];
 			$message['to_user_id'] = $withId;
 			$message['content'] = $a['content'];
-			$role = Session::get('role');
 			//插入数据库
 			$my = new Mysql();
 			if($my->insert('chat_message',$message)){
@@ -85,20 +84,21 @@ class Chat extends Controller {
 		if($this->isLogin()){
 			$userId = $this->user['id'];
 			$withId = Session::get('withId');
+			$pageSize = 2; 
 			if(isset($this->url->params['times'])){
-				$page = $this->url->params['times'];
-				Session::set('moreTimes',$page);
+				$times = $this->url->params['times'];
+				Session::set('moreTimes',$times);
 			}else{
-				$page = Session::get('moreTimes');
+				$times = Session::get('moreTimes');
 			}
-			$pageSize = 2;
-			$limit = 'limit '.$page*$pageSize.','.$pageSize;
-
+			$limit = 'limit '.$times.','.$pageSize;
+			
 			$sql = "select * from chat_message m ".
 					" where ((m.from_user_id = $userId and m.to_user_id =$withId) or ".
 						" (m.from_user_id =$withId and m.to_user_id = $userId)) ".
 							"and m.status =3 order by id desc ".$limit;
-			Session::set('moreTimes',++$page);
+			$times = floor($times / $pageSize +1) * $pageSize + ($times % $pageSize);
+			Session::set('moreTimes', $times);
 			$my = new Mysql();
 			$historyRecord = $my->doSql($sql);
 			header('Content-type:text/json;charset=utf-8'); 
